@@ -1,0 +1,83 @@
+---
+permalink: /webmentions/
+eleventyExcludeFromCollections: true
+---
+{#
+  Site-wide webmentions display page (the piece the original setup was missing).
+  Reads build-time data from src/site/_data/webmentions.mjs (webmentions.mentions),
+  splits interactions from mentions, and renders a facepile + a list. Includes a
+  manual "send a webmention" form pointing at your webmention.io endpoint.
+
+  CONFIG: WEBMENTION_DOMAIN must match your webmention.io domain (no scheme).
+#}
+{% set WEBMENTION_DOMAIN = meta.webmentionDomain or meta.domain or "example.com" %}
+{% set all = webmentions.mentions or [] %}
+{% set likes = [] %}{% set reposts = [] %}{% set replies = [] %}{% set mentions = [] %}
+{% for m in all %}
+  {% set p = m["wm-property"] %}
+  {% if p == "like-of" %}{% set likes = (likes.push(m), likes) %}
+  {% elif p == "repost-of" %}{% set reposts = (reposts.push(m), reposts) %}
+  {% elif p == "in-reply-to" %}{% set replies = (replies.push(m), replies) %}
+  {% else %}{% set mentions = (mentions.push(m), mentions) %}{% endif %}
+{% endfor %}
+<!DOCTYPE html>
+<html lang="{{ meta.mainLanguage }}">
+  <head>
+    <title>Webmentions</title>
+    {% include "components/pageheader.njk" %}
+  </head>
+  <body class="theme-{{ meta.baseTheme }} markdown-preview-view markdown-rendered markdown-preview-section {{ meta.bodyClasses }}">
+    <main class="content cm-s-obsidian">
+      <article class="webmentions">
+        <header><h1>Webmentions</h1>
+          <p>Replies, likes, reposts, and mentions from around the web, collected via
+            <a href="https://webmention.io/">webmention.io</a>.</p>
+        </header>
+
+        {% if likes.length or reposts.length %}
+        <section class="wm-facepile" aria-label="Likes and reposts">
+          {% for m in likes.concat(reposts) %}
+            <a class="wm-face" href="{{ m.author.url or m.url }}" title="{{ m.author.name or 'Someone' }} — {{ m['wm-property'] }}">
+              {% if m.author.photo %}<img src="{{ m.author.photo }}" alt="{{ m.author.name or 'Someone' }}" loading="lazy">
+              {% else %}<span class="wm-face-fallback" aria-hidden="true">{{ (m.author.name or '?')[0] }}</span>{% endif %}
+            </a>
+          {% endfor %}
+        </section>
+        {% endif %}
+
+        {% set threads = replies.concat(mentions) %}
+        {% if threads.length %}
+        <ul class="wm-list" role="list">
+          {% for m in threads %}
+          <li class="wm-item h-cite">
+            <a class="wm-author p-author h-card" href="{{ m.author.url or m.url }}">
+              {% if m.author.photo %}<img class="u-photo" src="{{ m.author.photo }}" alt="" loading="lazy">{% endif %}
+              <span class="p-name">{{ m.author.name or "Someone" }}</span>
+            </a>
+            <span class="wm-kind">{{ "replied" if m['wm-property'] == 'in-reply-to' else "mentioned" }}</span>
+            {% if m.content and m.content.text %}<p class="p-content">{{ m.content.text | truncate(300) }}</p>{% endif %}
+            <a class="wm-source u-url" href="{{ m.url }}">{{ m.published or m['wm-received'] }}</a>
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <p class="wm-empty">No webmentions yet. Be the first — link to a page here and send one below.</p>
+        {% endif %}
+
+        <section class="wm-send">
+          <h2>Send a webmention</h2>
+          <p>Written a response on your own site? Enter its URL and the page of mine you linked to.</p>
+          <form action="https://webmention.io/{{ WEBMENTION_DOMAIN }}/webmention" method="post">
+            <label>Your response URL
+              <input type="url" name="source" placeholder="https://your-site.example/post" required>
+            </label>
+            <label>My page you linked to
+              <input type="url" name="target" placeholder="https://{{ WEBMENTION_DOMAIN }}/some-note/" required>
+            </label>
+            <button type="submit">Send webmention</button>
+          </form>
+        </section>
+      </article>
+    </main>
+  </body>
+</html>

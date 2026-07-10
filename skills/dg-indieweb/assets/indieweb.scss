@@ -1,0 +1,81 @@
+/* ============================================================================
+   IndieWeb — webmention display styles
+   Append to src/site/styles/custom-style.scss.
+   Colors inherit DG theme tokens (light/dark automatic). Only sizes/shapes are
+   knobs — never hardcode color.
+   ============================================================================ */
+
+:root {
+  /* >>> TUNING KNOBS <<< */
+  --wm-face-size: 40px;        /* facepile avatar diameter */
+  --wm-face-overlap: -8px;     /* negative margin = overlap; 0 = no overlap */
+  --wm-gap: 0.75rem;           /* gap between list items */
+  --wm-radius: 8px;            /* card corner radius */
+  --wm-note-face-size: 28px;   /* per-note facepile avatar diameter */
+}
+
+/* --- site-wide /webmentions/ page --- */
+.webmentions {
+  .wm-facepile { display: flex; flex-wrap: wrap; margin: 1rem 0 2rem; }
+  .wm-face {
+    width: var(--wm-face-size); height: var(--wm-face-size);
+    border-radius: 50%; overflow: hidden; margin-left: var(--wm-face-overlap);
+    border: 2px solid var(--background-primary);
+    background: var(--background-secondary);
+    display: flex; align-items: center; justify-content: center;
+    img { width: 100%; height: 100%; object-fit: cover; }
+    .wm-face-fallback { color: var(--text-muted); font-weight: 600; }
+  }
+
+  .wm-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: var(--wm-gap); }
+  .wm-item {
+    border: 1px solid var(--background-modifier-border);
+    border-radius: var(--wm-radius);
+    padding: 0.9rem 1rem; background: var(--background-secondary);
+  }
+  .wm-author { display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 600; text-decoration: none; color: var(--text-normal);
+    .u-photo { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; } }
+  .wm-kind { color: var(--text-muted); margin-left: 0.35rem; font-size: 0.9em; }
+  .p-content { margin: 0.5rem 0; color: var(--text-normal); }
+  .wm-source { color: var(--text-muted); font-size: 0.85em; text-decoration: none; &:hover { color: var(--text-accent); } }
+  .wm-empty { color: var(--text-muted); }
+
+  .wm-send {
+    margin-top: 2.5rem; padding-top: 1.5rem;
+    border-top: 1px solid var(--background-modifier-border);
+    form { display: flex; flex-direction: column; gap: 0.75rem; max-width: 480px; }
+    label { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.9em; color: var(--text-muted); }
+    input {
+      padding: 0.5rem 0.65rem; border-radius: 6px;
+      border: 1px solid var(--background-modifier-border);
+      background: var(--background-primary); color: var(--text-normal);
+    }
+    button {
+      align-self: flex-start; padding: 0.5rem 1rem; border: 0; border-radius: 6px;
+      background: var(--interactive-accent); color: var(--text-on-accent);
+      cursor: pointer; transition: background .15s ease;
+      &:hover { background: var(--interactive-accent-hover); }
+    }
+  }
+}
+
+/* --- per-note facepile (notes/afterContent) --- */
+.note-webmentions {
+  margin-top: 2rem; padding-top: 1rem;
+  border-top: 1px solid var(--background-modifier-border);
+  .nwm-title { font-size: 1rem; margin: 0 0 0.5rem; color: var(--text-muted); }
+  .nwm-faces { display: flex; flex-wrap: wrap; }
+  .nwm-face {
+    width: var(--wm-note-face-size); height: var(--wm-note-face-size);
+    border-radius: 50%; overflow: hidden; margin-left: var(--wm-face-overlap);
+    border: 2px solid var(--background-primary); background: var(--background-secondary);
+    display: flex; align-items: center; justify-content: center;
+    img { width: 100%; height: 100%; object-fit: cover; }
+    .nwm-face-fallback { color: var(--text-muted); font-weight: 600; font-size: 0.75em; }
+  }
+  .nwm-all { display: inline-block; margin-top: 0.5rem; font-size: 0.85em; color: var(--text-accent); text-decoration: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .webmentions .wm-send button { transition: none; }
+}

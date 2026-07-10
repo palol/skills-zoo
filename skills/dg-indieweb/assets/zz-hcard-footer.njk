@@ -1,0 +1,16 @@
+{#
+  h-card — IndieWeb identity markup for the site owner.
+  Footer slot (common/footer). Prefix zz- so it sorts late in the footer.
+
+  CONFIG: replace the placeholders below with your identity, or wire them to
+  fields you already keep in src/site/_data/meta.* (shown as {{ meta.* }}).
+  The u-photo path should point at an image you actually ship.
+#}
+<div class="custom-footer-bottom h-card">
+  &copy; {{ meta.copyrightYears or "2013–2026" }}
+  <a class="p-name u-url u-uid" href="/" rel="me">{{ meta.author or "Your Name" }}</a>
+  <span class="footer-meta-sep" aria-hidden="true"> · </span>
+  <a href="/meta/" class="footer-version" title="Site colophon">v{{ meta.siteVersion }}</a>
+  <span class="p-note" style="display:none">{{ meta.authorBio or "One-line bio for machine readers." }}</span>
+  <img class="u-photo" src="{{ meta.authorPhoto or '/img/user/_static/images/profile.webp' }}" alt="{{ meta.author or 'Your Name' }}" style="display:none">
+</div>

@@ -1,0 +1,85 @@
+{#
+  IndieWeb head slot — notes/head (prefix aa- so it loads first).
+
+  Does three things with NO core/layout edit:
+    1. Emits webmention + IndieAuth discovery <link>s and rel="me" hints.
+    2. Decorates the core note markup into a valid microformats2 h-entry at
+       runtime (adds h-entry to <article>, e-content to .note-content, and
+       injects the required p-name / dt-published / u-url / p-author props).
+       Core note.njk ships neither the h-entry class nor e-content, and a
+       component slot can't add a class to an ancestor element it renders
+       inside — so we apply them client-side. Progressive: if JS is off, the
+       page is still valid HTML, just without the mf2 hints.
+
+  CONFIG: set WEBMENTION_DOMAIN to the domain you registered at webmention.io
+  (no scheme). Leave RELME_LINKS with your profile URLs for identity checks.
+#}
+{% set WEBMENTION_DOMAIN = meta.webmentionDomain or meta.domain or "example.com" %}
+<link rel="webmention" href="https://webmention.io/{{ WEBMENTION_DOMAIN }}/webmention">
+<link rel="pingback" href="https://webmention.io/{{ WEBMENTION_DOMAIN }}/xmlrpc">
+<link rel="authorization_endpoint" href="https://indieauth.com/auth">
+<link rel="token_endpoint" href="https://tokens.indieauth.com/token">
+
+<script>
+(function () {
+  // --- CONFIG ---
+  var AUTHOR_NAME = {{ (meta.author or "Your Name") | dump | safe }};
+  var AUTHOR_URL  = "/";
+  // --------------
+  function decorate() {
+    var article = document.querySelector('article[data-page-url]');
+    if (!article) return;
+    article.classList.add('h-entry');
+
+    var content = article.querySelector('.note-content');
+    if (content) content.classList.add('e-content');
+
+    // u-url — canonical permalink of this note
+    var url = article.getAttribute('data-page-url') || location.pathname;
+    if (!article.querySelector('.u-url')) {
+      var a = document.createElement('a');
+      a.className = 'u-url'; a.href = url; a.style.display = 'none';
+      article.appendChild(a);
+    }
+
+    // p-name — guaranteed present even when the inline title is hidden
+    if (!article.querySelector('.p-name')) {
+      var h1 = article.querySelector('h1');
+      if (h1) { h1.classList.add('p-name'); }
+      else {
+        var name = document.createElement('span');
+        name.className = 'p-name'; name.style.display = 'none';
+        name.textContent = document.title || url;
+        article.appendChild(name);
+      }
+    }
+
+    // dt-published — reuse the core "date modified" timestamp if rendered,
+    // else fall back to "date created". The theme renders both as
+    // .human-date[data-date]; the first is created, the second is modified.
+    var dates = article.querySelectorAll('.human-date[data-date]');
+    var published = dates.length ? (dates[dates.length - 1].getAttribute('data-date')
+                                    || dates[0].getAttribute('data-date')) : null;
+    if (published && !article.querySelector('.dt-published')) {
+      var t = document.createElement('time');
+      t.className = 'dt-published';
+      var iso = new Date(published);
+      t.setAttribute('datetime', isNaN(iso) ? published : iso.toISOString());
+      t.style.display = 'none';
+      article.appendChild(t);
+    }
+
+    // p-author h-card — links this entry to the site owner
+    if (!article.querySelector('.p-author')) {
+      var author = document.createElement('span');
+      author.className = 'p-author h-card'; author.style.display = 'none';
+      var al = document.createElement('a');
+      al.className = 'p-name u-url'; al.href = AUTHOR_URL; al.textContent = AUTHOR_NAME;
+      author.appendChild(al);
+      article.appendChild(author);
+    }
+  }
+  if (document.readyState !== 'loading') decorate();
+  else document.addEventListener('DOMContentLoaded', decorate);
+})();
+</script>

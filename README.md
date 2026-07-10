@@ -14,6 +14,7 @@ your agent, done.
 | [`dg-skill-authoring`](skills/dg-skill-authoring/) | Meta-skill: teaches an agent how to author a new upstream-safe Digital Garden skill — spec-compliant frontmatter, progressive disclosure, the five DG invariants, validate & package. | L1 (scaffolds skill files, reversible) |
 | [`dg-dungeon-map`](skills/dg-dungeon-map/) | Adds an interactive hex-grid dungeon map to an Obsidian Digital Garden site — a π-driven spiral of your notes with a "you are here" marker and backlink/mention overlays from `graph.json`. | L2 (adds build scripts that read notes, reversible) |
 | [`dg-random-note`](skills/dg-random-note/) | Adds a `/random` route to an Obsidian Digital Garden site that redirects visitors to a randomly chosen published note — a "surprise me" link. One self-contained page, no build scripts, no core edits. | L1 (adds one page file, reversible) |
+| [`dg-indieweb`](skills/dg-indieweb/) | Makes an Obsidian Digital Garden a first-class IndieWeb citizen: h-card + runtime h-entry microformats, webmention discovery + rel-me, a build-time `/webmentions/` display page with facepiles, and GitHub Actions to fetch received & send outgoing mentions. No plugin-core edits, no secrets in code. | L2 (build-time fetch + Actions run Node, env-gated network, reversible) |
 
 ## Install a skill
 

@@ -1,0 +1,45 @@
+name: Fetch Webmentions
+
+# Weekly pull of received webmentions from webmention.io into data/webmentions/,
+# committed to a `webmentions` branch (keeps main clean; merge/cherry-pick when
+# you want them live). Requires the WEBMENTION_IO_TOKEN repo secret.
+on:
+  schedule:
+    - cron: '0 9 * * 0'   # Sundays 09:00 UTC
+  workflow_dispatch:
+
+jobs:
+  fetch-webmentions:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - name: Fetch and save webmentions
+        run: node scripts/fetch-webmentions.js
+        env:
+          WEBMENTION_IO_TOKEN: ${{ secrets.WEBMENTION_IO_TOKEN }}
+          WEBMENTION_DOMAINS: ${{ vars.WEBMENTION_DOMAINS }}
+      - name: Commit to webmentions branch
+        run: |
+          git add data/webmentions/
+          if git diff --staged --quiet; then echo "No new webmentions"; exit 0; fi
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git fetch origin
+          if git show-ref --verify --quiet refs/remotes/origin/webmentions; then
+            git checkout webmentions && git pull origin webmentions && git add data/webmentions/
+          else
+            git checkout -b webmentions
+          fi
+          if git diff --staged --quiet; then echo "Nothing new after branch switch"; exit 0; fi
+          n=$(git diff --staged --name-only | grep -c "data/webmentions/")
+          git commit -m "Add $n new webmention files - $(date +'%Y-%m-%d %H:%M UTC')"
+          git push origin webmentions
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

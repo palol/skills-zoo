@@ -1,0 +1,27 @@
+{#
+  Per-note webmention facepile — notes/afterContent slot.
+  Shows interactions that target THIS note's URL, pulled from the same
+  build-time webmentions data. Links out to the full /webmentions/ page.
+
+  Optional: skip this file if you only want the site-wide /webmentions/ page.
+#}
+{% set all = webmentions.mentions or [] %}
+{% set here = [] %}
+{% for m in all %}
+  {% set tgt = m["wm-target"] or "" %}
+  {% if tgt and (page.url in tgt) %}{% set here = (here.push(m), here) %}{% endif %}
+{% endfor %}
+{% if here.length %}
+<aside class="note-webmentions" aria-label="Webmentions for this note">
+  <h2 class="nwm-title">{{ here.length }} webmention{{ "s" if here.length != 1 }}</h2>
+  <div class="nwm-faces">
+    {% for m in here %}
+      <a class="nwm-face" href="{{ m.author.url or m.url }}" title="{{ m.author.name or 'Someone' }}">
+        {% if m.author.photo %}<img src="{{ m.author.photo }}" alt="{{ m.author.name or 'Someone' }}" loading="lazy">
+        {% else %}<span class="nwm-face-fallback" aria-hidden="true">{{ (m.author.name or '?')[0] }}</span>{% endif %}
+      </a>
+    {% endfor %}
+  </div>
+  <a class="nwm-all" href="/webmentions/">See all webmentions →</a>
+</aside>
+{% endif %}

@@ -1,0 +1,46 @@
+name: Send Webmentions
+
+# Sends outgoing webmentions for pages in your live sitemap (monthly backup +
+# manual trigger). Uses the dedupe log in data/webmentions-sent.log so it only
+# pings pages that are new or changed. Set the SITE_URL repo variable.
+on:
+  schedule:
+    - cron: '0 8 1 * *'   # 1st of month 08:00 UTC
+  workflow_dispatch:
+
+jobs:
+  send-webmentions:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install deps
+        run: npm install --no-save xml2js jsdom @remy/webmention
+      - name: Send webmentions with smart filtering
+        run: node scripts/send-webmentions.js
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
+          SITE_TITLE: ${{ vars.SITE_TITLE }}
+      - name: Commit send log to webmentions branch
+        run: |
+          if [ ! -f data/webmentions-sent.log ] || git diff --quiet data/webmentions-sent.log 2>/dev/null; then
+            echo "No changes to webmention log"; exit 0
+          fi
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git fetch origin
+          if git show-ref --verify --quiet refs/remotes/origin/webmentions; then
+            git checkout webmentions && git pull origin webmentions
+          else
+            git checkout -b webmentions
+          fi
+          git add data/webmentions-sent.log
+          if git diff --staged --quiet; then echo "Nothing to commit"; exit 0; fi
+          git commit -m "update webmention send log"
+          git push origin webmentions
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
