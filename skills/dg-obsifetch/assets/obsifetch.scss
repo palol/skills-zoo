@@ -1,0 +1,88 @@
+/* ============================================================================
+   obsifetch — neofetch-style vault card
+   Append to src/site/styles/custom-style.scss.
+   Colors inherit DG theme tokens (light/dark automatic). Only sizes/shapes are
+   knobs. Tribute to tabibyte/obsifetch.
+   ============================================================================ */
+
+:root {
+  /* >>> TUNING KNOBS <<< */
+  --ob-max-width: 640px;      /* card max width */
+  --ob-gap: 1.5rem;           /* gap between ASCII art and stats */
+  --ob-ascii-size: 0.72rem;   /* ASCII art font size */
+  --ob-stat-size: 0.85rem;    /* stats font size */
+  --ob-swatch: 16px;          /* color swatch side length */
+  --ob-radius: 8px;           /* card corner radius */
+  --ob-accent: var(--text-accent); /* domain + key color */
+
+  /* Swatch palette — 8 theme squares, pulled from DG tokens so they track the
+     active theme. Override any of these to taste. */
+  --ob-c1: var(--text-normal);
+  --ob-c2: var(--text-muted);
+  --ob-c3: var(--text-accent);
+  --ob-c4: var(--interactive-accent);
+  --ob-c5: var(--text-error, #e06c75);
+  --ob-c6: var(--text-success, #98c379);
+  --ob-c7: var(--text-warning, #e5c07b);
+  --ob-c8: var(--text-highlight-bg, var(--text-accent));
+}
+
+.obsifetch {
+  display: flex;
+  gap: var(--ob-gap);
+  align-items: flex-start;
+  flex-wrap: wrap;
+  max-width: var(--ob-max-width);
+  margin: 2rem auto;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--ob-radius);
+  background: var(--background-secondary);
+  font-family: var(--font-monospace, 'JetBrains Mono', 'Courier New', monospace);
+}
+
+.obsifetch-ascii {
+  margin: 0;
+  font-size: var(--ob-ascii-size);
+  line-height: 1.1;
+  color: var(--ob-accent);
+  white-space: pre;
+  overflow: visible;
+}
+
+.obsifetch-info { flex: 1 1 260px; min-width: 220px; }
+
+.obsifetch-domain { color: var(--ob-accent); font-weight: 600; font-size: var(--ob-stat-size); }
+.obsifetch-rule {
+  height: 1px; margin: 0.25rem 0 0.6rem;
+  background: var(--background-modifier-border);
+}
+
+.obsifetch-stats {
+  margin: 0; font-size: var(--ob-stat-size); color: var(--text-normal);
+  div { display: flex; gap: 0.5rem; line-height: 1.6; }
+  dt { color: var(--text-muted); min-width: 8.5em; }
+  dt::after { content: ":"; }
+  dd { margin: 0; }
+}
+
+.obsifetch-swatches { display: flex; gap: 4px; margin-top: 0.75rem; }
+.ob-sw {
+  width: var(--ob-swatch); height: var(--ob-swatch); border-radius: 3px;
+  display: inline-block;
+}
+.ob-sw-1 { background: var(--ob-c1); } .ob-sw-2 { background: var(--ob-c2); }
+.ob-sw-3 { background: var(--ob-c3); } .ob-sw-4 { background: var(--ob-c4); }
+.ob-sw-5 { background: var(--ob-c5); } .ob-sw-6 { background: var(--ob-c6); }
+.ob-sw-7 { background: var(--ob-c7); } .ob-sw-8 { background: var(--ob-c8); }
+
+.obsifetch-credit {
+  margin-top: 0.75rem; font-size: 0.72rem; color: var(--text-muted);
+  a { color: var(--text-muted); text-decoration: underline; }
+  a:hover { color: var(--text-accent); }
+}
+
+@media (max-width: 520px) {
+  .obsifetch { flex-direction: column; align-items: center; text-align: left; }
+  .obsifetch-ascii { align-self: center; }
+}

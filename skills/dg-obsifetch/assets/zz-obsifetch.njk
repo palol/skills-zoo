@@ -1,0 +1,49 @@
+{#
+  obsifetch HTML card — common/footer slot (prefix zz- so it sorts late).
+  A neofetch-style card: ASCII mushroom logo on the left, keyed vault stats on
+  the right, and 8 theme-color swatches. Rendered inline from build-time
+  vaultStats (no fetch flash), with a link to the raw /neofetch.txt route.
+  Tribute to tabibyte/obsifetch (MIT).
+
+  CONFIG: keep the ASCII in sync with neofetch.txt.njk if you customize it.
+  The swatches read live DG theme tokens, so they track light/dark automatically.
+#}
+{%- set ascii -%}
+        ;++       
+      ;;+++X;     
+    :;;;;;XXXX    
+   :::::XXXXXX   
+   ::..::XXXXXX   
+   $+   .Xxx+++   
+  $$$X  .:++++++  
+ X$$$$X$&$$$$$$;;. 
+  XXXX$$$$$XXXX   
+    XX$$XXXXXXX   
+         ;XXXX    
+{%- endset -%}
+<section class="obsifetch" aria-label="Vault statistics (obsifetch)">
+  <pre class="obsifetch-ascii" aria-hidden="true">{{ ascii }}</pre>
+  <div class="obsifetch-info">
+    <div class="obsifetch-domain">{{ vaultStats.domain }}</div>
+    <div class="obsifetch-rule" aria-hidden="true"></div>
+    <dl class="obsifetch-stats">
+      <div><dt>updated</dt><dd>{{ vaultStats.lastUpdated }}</dd></div>
+      <div><dt>total files</dt><dd>{{ vaultStats.files.total.count }} ({{ vaultStats.files.total.size }})</dd></div>
+      <div><dt>markdown</dt><dd>{{ vaultStats.files.markdown.count }} ({{ vaultStats.files.markdown.size }})</dd></div>
+      <div><dt>attachments</dt><dd>{{ vaultStats.files.attachments.count }} ({{ vaultStats.files.attachments.size }})</dd></div>
+      <div><dt>orphan files</dt><dd>{{ vaultStats.orphanFiles }}</dd></div>
+      <div><dt>internal links</dt><dd>{{ vaultStats.internalLinks }}</dd></div>
+      <div><dt>theme</dt><dd>{{ vaultStats.theme.name }}</dd></div>
+    </dl>
+    <div class="obsifetch-swatches" aria-label="Theme palette">
+      <span class="ob-sw ob-sw-1"></span><span class="ob-sw ob-sw-2"></span>
+      <span class="ob-sw ob-sw-3"></span><span class="ob-sw ob-sw-4"></span>
+      <span class="ob-sw ob-sw-5"></span><span class="ob-sw ob-sw-6"></span>
+      <span class="ob-sw ob-sw-7"></span><span class="ob-sw ob-sw-8"></span>
+    </div>
+    <div class="obsifetch-credit">
+      <a href="/neofetch.txt">raw</a> ·
+      inspired by <a href="https://github.com/tabibyte/obsifetch" rel="noopener">tabibyte/obsifetch</a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,39 @@
+---
+permalink: "/neofetch.txt"
+eleventyExcludeFromCollections: true
+---
+{#
+  Plain-text obsifetch route → /neofetch.txt
+  A neofetch-style vault readout. Tribute to tabibyte/obsifetch (MIT).
+  Reads build-time data from _data/vaultStats.js. curl it, embed it, share it.
+
+  CONFIG: replace the ASCII block below with your own logo if you like — keep
+  the "inspired by: tabibyte/obsifetch" credit line to honor the original.
+#}
+{%- set ascii -%}
+        ;++       
+      ;;+++X;     
+    :;;;;;XXXX    
+   :::::XXXXXX   
+   ::..::XXXXXX   
+   $+   .Xxx+++   
+  $$$X  .:++++++  
+ X$$$$X$&$$$$$$;;. 
+  XXXX$$$$$XXXX   
+    XX$$XXXXXXX   
+         ;XXXX    
+{%- endset -%}
+{{ ascii }}
+
+{{ vaultStats.domain }}
+{{ "─".repeat(vaultStats.domain.length) }}
+updated: {{ vaultStats.lastUpdated }}
+total files: {{ vaultStats.files.total.count }} ({{ vaultStats.files.total.size }})
+markdown files: {{ vaultStats.files.markdown.count }} ({{ vaultStats.files.markdown.size }})
+attachments: {{ vaultStats.files.attachments.count }} ({{ vaultStats.files.attachments.size }})
+orphan files: {{ vaultStats.orphanFiles }}
+internal links: {{ vaultStats.internalLinks }}
+theme: {{ vaultStats.theme.name }}
+appearance: {{ vaultStats.theme.appearance }}
+■ ■ ■ ■ ■ ■ ■ ■
+inspired by: tabibyte/obsifetch
