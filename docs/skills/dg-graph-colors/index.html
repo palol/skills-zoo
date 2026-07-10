@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>dg-graph-colors — skills-zoo</title>
+<meta name="description" content="Color an Obsidian Digital Garden's graph nodes and links by top-level folder. The stock Pixi renderer already honors node.color — this populates it via a one-line wrap in the _data graph hook, plus an optional footer legend. No plugin-core edits.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236cc79a' stroke-width='2'%3E%3Ccircle cx='6' cy='6' r='2.5'/%3E%3Ccircle cx='18' cy='7' r='2.5'/%3E%3Ccircle cx='12' cy='18' r='2.5'/%3E%3Cpath d='M8 7.5l7.5 .5M7.5 8l3.5 8M16.5 9l-3.5 7'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../../">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M4 20V8a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v12"/>
+        <path d="M4 20h16M9 20v-5h6v5"/>
+        <circle cx="9" cy="9" r="1"/><circle cx="15" cy="9" r="1"/>
+      </svg>
+      <span class="brand-name">skills-zoo</span>
+    </a>
+    <span class="header-spacer"></span>
+    <a class="header-link" href="https://github.com/palol/skills-zoo/tree/main/skills/dg-graph-colors">Source</a>
+    <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme"></button>
+  </div>
+</header>
+
+<main class="wrap prose">
+
+  <a class="backlink" href="../../">← all skills</a>
+
+  <h1>dg-graph-colors</h1>
+  <p class="sub">Color the graph by folder — nodes and links, local and full view.</p>
+
+  <div class="meta-row">
+    <span class="risk-pill risk-pill--l2">L2 · build hook</span>
+    <span class="tag">v1.0</span>
+    <span class="tag">MIT</span>
+    <span class="tag">digital-garden</span>
+    <span class="tag">graph</span>
+    <span class="tag">color</span>
+  </div>
+
+  <p>Gives every graph node a <code>color</code> derived from its top-level folder (<code>Maps</code>, <code>Notes</code>, <code>Log</code>, root, …) instead of one flat theme color; links inherit their source node's color. Applies to both the per-note local graph and the full <code>/graph/</code> view. Original work — a cleaner, lower-risk rebuild of the "colored obsidian graph" feature.</p>
+
+  <div class="callout">
+    <strong>The renderer already supports this.</strong> The stock DG Pixi graph (<code>graphScript.njk</code>) already draws <code>node.color</code> and colors links by their source node — it just has no color to draw until you add one. So this skill only <em>populates</em> <code>node.color</code> at build time and changes <strong>nothing</strong> in the renderer.
+  </div>
+
+  <h2>How it works</h2>
+  <p>A tiny additive helper wraps the graph data hook and stamps a <code>color</code> onto each node from a single folder→color map. <code>graph.njk</code> serializes it to <code>/graph.json</code>; the renderer reads it. The only edit to an existing file is one wrapping line in the user-owned <code>_data</code> hook.</p>
+  <pre><code>_data hook:  graph: addGraphColors(await getGraph(data))   ← 1-line wrap
+  → graphColors.js   node.color ??= folderColor(node.url)
+  → folderColors.js  { Maps:#…, Notes:#…, root:#…, default:#… }
+  → /graph.json → graphScript.njk (core, UNEDITED) reads node.color</code></pre>
+
+  <h2>How to use it</h2>
+  <p>Copy the skill folder into your agent's skills directory, then in your Digital Garden repo ask:</p>
+  <pre><code>git clone https://github.com/palol/skills-zoo.git
+cp -r skills-zoo/skills/dg-graph-colors ~/.claude/skills/</code></pre>
+  <p style="margin-top:-.75rem;color:var(--text-muted);font-size:var(--text-sm)">(or <code>~/.agents/skills/</code>)</p>
+  <blockquote><p>Use the <strong>dg-graph-colors</strong> skill to color my digital garden's graph by folder. Drop in the two helpers, set my folder→color map, apply the one-line wrap to the graph data hook, add the optional legend, then build and walk me through verification.</p></blockquote>
+
+  <h2>What it touches</h2>
+  <ul>
+    <li><strong>New helper</strong>: <code>src/helpers/folderColors.js</code> — the folder→color map (single source of truth).</li>
+    <li><strong>New helper</strong>: <code>src/helpers/graphColors.js</code> — <code>addGraphColors</code>, a read-only build-time transform that stamps <code>color</code> per node.</li>
+    <li><strong>One wrap line</strong>: <code>_data/eleventyComputed.js</code> (user-owned <code>_data</code> path) pipes the graph through <code>addGraphColors</code>.</li>
+    <li><strong>Optional legend</strong> (autoloaded footer slot) + SCSS appended to <code>custom-style.scss</code>.</li>
+  </ul>
+
+  <div class="callout">
+    <strong>Why L2, not L3.</strong> The original site colored the graph by editing the shared <code>linkUtils.js</code> build helper. This skill avoids that: it adds two <em>new</em> files and one wrap line in a user-owned <code>_data</code> file, leaving <code>linkUtils.js</code> and the renderer untouched. Build-time, read-only, idempotent, and reversible by reverting one line.
+  </div>
+
+  <h2>What's in the box</h2>
+  <ul class="filelist" role="list">
+    <li><span class="fname">SKILL.md</span> — install workflow, invariants, risk</li>
+    <li><span class="fname">assets/folderColors.js</span> — the folder → color map (edit this)</li>
+    <li><span class="fname">assets/graphColors.js</span> — build-time color injector</li>
+    <li><span class="fname">assets/eleventyComputed.graph-hook.md</span> — the exact one-line wrap + fallback</li>
+    <li><span class="fname">assets/zz-graph-legend.njk</span> — optional autoloaded footer legend</li>
+    <li><span class="fname">assets/graph-colors.scss</span> — optional legend styles (TUNING KNOBS on top)</li>
+    <li><span class="fname">references/architecture.md</span> — renderer support, data flow, why L2 not L3</li>
+    <li><span class="fname">references/tuning.md</span> — palette, color-by-something-else, legend knobs</li>
+    <li><span class="fname">references/verify.md</span> — build / graph.json / browser / legend QA</li>
+  </ul>
+
+  <h2>Prerequisites</h2>
+  <ul>
+    <li>An oleeskild Digital Garden (Eleventy) fork with the Pixi graph (<code>graphScript.njk</code> present).</li>
+    <li>The graph global built via <code>linkUtils.getGraph</code> — stock DG wires this in <code>_data/eleventyComputed.js</code>. Confirm with <code>grep -rn "getGraph(" src/site/_data/</code>.</li>
+    <li>User-component autoloading (only for the optional legend).</li>
+  </ul>
+  <p><em>Scope is Digital Garden only</em> — this is the published-site graph, not Obsidian's in-app graph, and not Quartz.</p>
+
+  <p style="margin-top:2.5rem">
+    <a href="https://github.com/palol/skills-zoo/tree/main/skills/dg-graph-colors">Browse the full source on GitHub →</a>
+  </p>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span class="foot-mono">skills-zoo · MIT</span>
+    <span class="header-spacer"></span>
+    <a href="../../">All skills</a>
+    <a href="https://github.com/palol/skills-zoo">Source</a>
+    <a href="https://agentskills.io">Spec</a>
+  </div>
+</footer>
+
+<script src="../../theme.js"></script>
+</body>
+</html>

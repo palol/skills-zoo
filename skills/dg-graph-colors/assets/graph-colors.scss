@@ -1,0 +1,67 @@
+// graph-colors.scss — styles for the OPTIONAL graph color legend.
+// Append the contents to your DG custom-style.scss (never edit plugin core).
+// If you skipped zz-graph-legend.njk, you don't need this file — node/link
+// coloring is driven entirely by the build-time `node.color` value.
+//
+// ─────────────────────────────────────────────────────────────────────────
+//  TUNING KNOBS
+// ─────────────────────────────────────────────────────────────────────────
+:root {
+  --gl-gap:        0.5rem;   // space between legend items
+  --gl-swatch:     0.7rem;   // swatch square size
+  --gl-radius:     3px;      // swatch corner radius
+  --gl-font:       0.75rem;  // label size
+  --gl-title-font: 0.7rem;   // "Graph colors" heading size
+}
+
+.graph-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gl-gap);
+  margin-top: 0.75rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--background-modifier-border, rgba(128, 128, 128, 0.2));
+  font-size: var(--gl-font);
+  color: var(--text-muted, #888);
+}
+
+.graph-legend__title {
+  font-size: var(--gl-title-font);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.8;
+}
+
+.graph-legend__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gl-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.graph-legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.graph-legend__swatch {
+  width: var(--gl-swatch);
+  height: var(--gl-swatch);
+  border-radius: var(--gl-radius);
+  background: var(--gl-color, #666);
+  // subtle ring so light swatches stay visible on any theme background
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.15);
+  flex: 0 0 auto;
+}
+
+.graph-legend__label {
+  white-space: nowrap;
+}
+
+@media (max-width: 520px) {
+  .graph-legend { gap: 0.4rem; }
+}

@@ -1,0 +1,30 @@
+{#-
+  zz-graph-legend.njk — OPTIONAL folder-color legend for the graph.
+
+  Drop-in (optional): place at
+    src/site/_includes/components/user/common/footer/zz-graph-legend.njk
+  Autoloads via the DG user-component system (footer slot, common namespace).
+  Delete this file if you don't want a legend — node/link coloring works
+  without it.
+
+  Renders inline from the same folderColors map used at build time, so the
+  legend can never drift from the graph. JS-off safe (pure markup). The
+  `zz-` prefix sorts it last in the footer.
+-#}
+{%- set folderColors = {
+  "Maps": "#8A784E",
+  "Notes": "#4CAF50",
+  "Log": "#9C27B0",
+  "root": "#648DB3"
+} -%}
+<aside class="graph-legend" aria-label="Graph color legend">
+  <span class="graph-legend__title">Graph colors</span>
+  <ul class="graph-legend__list">
+    {%- for name, hex in folderColors -%}
+    <li class="graph-legend__item">
+      <span class="graph-legend__swatch" style="--gl-color: {{ hex }}" aria-hidden="true"></span>
+      <span class="graph-legend__label">{{ "Top level" if name == "root" else name }}</span>
+    </li>
+    {%- endfor -%}
+  </ul>
+</aside>
