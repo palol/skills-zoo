@@ -1,0 +1,174 @@
+{# Floating control: primary dock (always visible) + expandable tray. #}
+{# Auto-loaded via components/user/common/footer/ slot. zzz- => renders last. #}
+{# Customize: tray links below, wireExternalButton() URLs, primary dock items. #}
+<aside id="floating-control">
+    <div id="tray-expandable" class="floating-dock floating-dock--tray tray-hidden" aria-hidden="true">
+        {# --- Internal nav links: edit href + label --- #}
+        <a id="home-link" class="floating-dock__item" href="/" aria-label="Home" title="Home">
+            <i class="svg-icon" icon-name="home" aria-hidden="true"></i>
+            <span class="floating-dock__caption">Home</span>
+        </a>
+        <a id="maps-link" class="floating-dock__item" href="/maps/" aria-label="Maps" title="Maps">
+            <i class="svg-icon" icon-name="map" aria-hidden="true"></i>
+            <span class="floating-dock__caption">Maps</span>
+        </a>
+        <a id="logs-link" class="floating-dock__item" href="/logs/" aria-label="Logs" title="Logs">
+            <i class="svg-icon" icon-name="clipboard-list" aria-hidden="true"></i>
+            <span class="floating-dock__caption">Logs</span>
+        </a>
+        <a id="meta-link" class="floating-dock__item" href="/meta/" aria-label="Colophon" title="Colophon">
+            <i class="svg-icon" icon-name="file-cog" aria-hidden="true"></i>
+            <span class="floating-dock__caption">Colophon</span>
+        </a>
+        <a id="rss-link" class="floating-dock__item" href="/subscribe/" aria-label="Subscribe" title="Subscribe">
+            <i class="svg-icon" icon-name="rss" aria-hidden="true"></i>
+            <span class="floating-dock__caption">RSS</span>
+        </a>
+
+        {# --- Action buttons (no href) wired in the script block below --- #}
+        <button type="button" id="qr-code" class="floating-dock__item" aria-label="Contact card QR" title="Contact card QR">
+            <i class="svg-icon" icon-name="qr-code" aria-hidden="true"></i>
+            <span class="floating-dock__caption">QR</span>
+        </button>
+
+        {# --- External links: brand SVGs; update URLs in wireExternalButton() --- #}
+        <button type="button" id="github-link" class="floating-dock__item" aria-label="GitHub" title="GitHub">
+            <svg class="footer-icon" role="img" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+            <span class="floating-dock__caption">GitHub</span>
+        </button>
+    </div>
+
+    <div class="floating-dock floating-dock--primary">
+        <a href="/random/" id="random-switch" class="floating-dock__item" aria-label="Random page" title="Random">
+            <i class="svg-icon" icon-name="zap" aria-hidden="true"></i>
+        </a>
+        <span id="theme-switch" class="floating-dock__item theme-switch" role="button" tabindex="0" aria-label="Toggle theme" title="Toggle theme">
+            <i class="svg-icon light" icon-name="sun" aria-hidden="true"></i>
+            <i class="svg-icon dark" icon-name="moon" aria-hidden="true"></i>
+        </span>
+        {% if settings.dgEnableSearch === true %}
+        <a href="#" id="search-switch" class="floating-dock__item" aria-label="Search" title="Search">
+            <i class="svg-icon" icon-name="search" aria-hidden="true"></i>
+        </a>
+        {% endif %}
+        <span id="more-toggle" class="floating-dock__item" role="button" tabindex="0" aria-label="More links" title="More links" aria-expanded="false" aria-controls="tray-expandable">
+            <i class="svg-icon" icon-name="more-horizontal" aria-hidden="true"></i>
+        </span>
+    </div>
+</aside>
+
+<script>
+    // Bind click + keyboard (Enter/Space) so role="button" spans are operable.
+    function wireDockAction(el, onActivate) {
+        if (!el) return;
+        el.addEventListener('click', function(e) {
+            e.stopPropagation();
+            onActivate(e);
+        });
+        el.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                onActivate(e);
+            }
+        });
+    }
+
+    function wireExternalButton(id, url) {
+        wireDockAction(document.getElementById(id), function() {
+            window.open(url, '_blank', 'noopener,noreferrer');
+        });
+    }
+
+    // Search uses the DG search component's global toggle.
+    wireDockAction(document.getElementById('search-switch'), function(e) {
+        e.preventDefault();
+        if (typeof window.toggleSearch === 'function') window.toggleSearch();
+    });
+
+    // Example action: open a QR / contact image. Remove if unused.
+    wireDockAction(document.getElementById('qr-code'), function() {
+        window.open('/img/user/_static/images/contact_card.png', '_blank', 'noopener,noreferrer');
+    });
+
+    // CUSTOMIZE: your external URLs.
+    wireExternalButton('github-link', 'https://github.com/YOUR_USERNAME/');
+</script>
+
+<script>
+    // Theme toggle + persistence via localStorage 'site-theme'.
+    function setThemeIcon(theme) {
+        document.querySelectorAll('.theme-switch').forEach(function(el) {
+            el.classList.toggle('dark', theme === 'dark');
+            el.classList.toggle('light', theme !== 'dark');
+        });
+    }
+    function setTheme(theme, setIcon) {
+        if (setIcon) setThemeIcon(theme);
+        document.body.classList.toggle('theme-dark', theme === 'dark');
+        document.body.classList.toggle('theme-light', theme !== 'dark');
+    }
+    let theme = window.localStorage.getItem('site-theme') || 'light';
+    setTheme(theme, true);
+    window.theme = theme;
+    window.localStorage.setItem('site-theme', theme);
+
+    document.querySelectorAll('.theme-switch').forEach(function(el) {
+        wireDockAction(el, function(e) {
+            e.preventDefault();
+            const next = window.theme === 'dark' ? 'light' : 'dark';
+            setTheme(next, true);
+            window.localStorage.setItem('site-theme', next);
+            window.theme = next;
+        });
+    });
+</script>
+
+<script>
+    // Tray open/close + responsive grid sizing from item count + viewport.
+    (function() {
+        const toggle = document.getElementById('more-toggle');
+        const tray = document.getElementById('tray-expandable');
+        const root = document.documentElement;
+        if (!toggle || !tray) return;
+
+        function updateTrayLayout() {
+            const itemCount = tray.querySelectorAll('.floating-dock__item').length;
+            const isMobile = window.matchMedia('(max-width: 600px)').matches;
+            const isNarrowMobile = window.matchMedia('(max-width: 380px)').matches;
+            const trayExpanded = tray.classList.contains('tray-visible');
+
+            if (isMobile) {
+                const cols = isNarrowMobile ? 3 : 4;
+                const rows = Math.max(1, Math.ceil(itemCount / cols));
+                root.style.setProperty('--dg-floating-tray-column-count', String(cols));
+                root.style.setProperty('--dg-floating-tray-row-count', trayExpanded ? String(rows) : '0');
+                return;
+            }
+            const cols = Math.min(6, Math.max(2, itemCount));
+            const rows = Math.max(1, Math.ceil(itemCount / cols));
+            root.style.setProperty('--dg-floating-tray-column-count', String(cols));
+            root.style.setProperty('--dg-floating-tray-row-count', String(rows));
+        }
+
+        function setExpanded(expanded) {
+            tray.classList.toggle('tray-visible', expanded);
+            tray.classList.toggle('tray-hidden', !expanded);
+            tray.setAttribute('aria-hidden', expanded ? 'false' : 'true');
+            toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+        }
+
+        wireDockAction(toggle, function(e) {
+            e.preventDefault();
+            setExpanded(!tray.classList.contains('tray-visible'));
+        });
+
+        document.addEventListener('click', function(e) {
+            if (tray.classList.contains('tray-visible') && !tray.contains(e.target) && !toggle.contains(e.target)) {
+                setExpanded(false);
+            }
+        });
+
+        updateTrayLayout();
+        window.addEventListener('resize', updateTrayLayout);
+    })();
+</script>

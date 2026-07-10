@@ -1,0 +1,237 @@
+/* =========================================================================
+   Floating tray + dock. Append to your DG user stylesheet (custom-style.scss).
+   Uses DG theme tokens, so light/dark works automatically.
+   ========================================================================= */
+
+/* -------------------------------------------------------------------------
+   >>> TUNING KNOBS <<<  Edit these; everything else derives from them.
+   Safe to tweak without understanding the rest of the file.
+   ------------------------------------------------------------------------- */
+:root {
+  /* Item / spacing sizes */
+  --dg-ft-item-size:        48px;   /* desktop icon-button size */
+  --dg-ft-gap:              6px;    /* space between tray items (desktop) */
+  --dg-ft-padding:          8px;    /* tray inner padding (desktop) */
+  --dg-ft-item-size-mobile: 44px;   /* icon-button size on phones */
+  --dg-ft-gap-mobile:       8px;
+  --dg-ft-padding-mobile:   10px;
+
+  /* Icon + caption */
+  --dg-ft-icon-size:        24px;   /* desktop icon glyph size */
+  --dg-ft-icon-size-mobile: 22px;
+  --dg-ft-caption-size:     0.62rem;
+  --dg-ft-caption-size-mobile: 0.58rem;
+
+  /* Position + shape */
+  --dg-ft-bottom:           1vmax;  /* distance from bottom edge (desktop) */
+  --dg-ft-pill-radius:      999px;  /* dock pill roundness (999px = full) */
+  --dg-ft-tray-radius:      16px;   /* expandable tray corner radius */
+  --dg-ft-z:                9990;   /* stacking order (search sits above at 10000) */
+
+  /* Grid caps — JS clamps computed columns within these.
+     Column count is otherwise auto-derived from how many items you add. */
+  --dg-ft-cols-desktop-max: 6;      /* mirror in the .njk JS: Math.min(6, ...) */
+  --dg-ft-cols-desktop-min: 2;      /* mirror in the .njk JS: Math.max(2, ...) */
+  --dg-ft-cols-mobile:      4;      /* mirror in the .njk JS: isNarrowMobile ? 3 : 4 */
+  --dg-ft-cols-mobile-narrow: 3;
+
+  /* Breakpoints are literals below (600px / 380px); change both here and in
+     the .njk JS matchMedia() calls if you move them. */
+}
+
+#floating-control {
+  --dg-floating-tray-column-count: 4;
+  --dg-floating-tray-row-count: 2;
+  --dg-floating-desktop-item-size: var(--dg-ft-item-size);
+  --dg-floating-desktop-gap: var(--dg-ft-gap);
+  --dg-floating-desktop-padding: var(--dg-ft-padding);
+  --dg-floating-primary-offset: calc(var(--dg-ft-bottom) + 2 * var(--dg-ft-gap) + var(--dg-ft-item-size) + 1rem);
+  position: fixed;
+  color: var(--link-color);
+  bottom: var(--dg-ft-bottom);
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+  z-index: var(--dg-ft-z);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+
+  .floating-dock {
+    margin: 0;
+    padding: 6px;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: var(--dg-ft-pill-radius);
+    background: var(--background-secondary);
+    box-shadow: var(--input-shadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .floating-dock--primary {
+    flex-direction: row;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .floating-dock__item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    width: 48px;
+    height: 48px;
+    color: inherit;
+    cursor: pointer;
+    text-decoration: none;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    font: inherit;
+
+    &:focus-visible {
+      outline: 2px solid var(--text-accent);
+      outline-offset: 2px;
+    }
+
+    .floating-dock__caption { display: none; }
+
+    .svg-icon, i, svg.footer-icon, svg.svg-icon {
+      width: var(--dg-ft-icon-size);
+      height: var(--dg-ft-icon-size);
+      stroke-width: 2px;
+      pointer-events: none;
+    }
+    svg.footer-icon { fill: currentColor; }
+  }
+
+  #tray-expandable {
+    direction: ltr;
+    grid-template-columns: repeat(var(--dg-floating-tray-column-count), var(--dg-floating-desktop-item-size));
+    grid-template-rows: repeat(var(--dg-floating-tray-row-count), minmax(var(--dg-floating-desktop-item-size), auto));
+    grid-auto-flow: row;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    gap: var(--dg-floating-desktop-gap);
+    padding: var(--dg-floating-desktop-padding);
+    border-radius: var(--dg-ft-tray-radius);
+
+    .floating-dock__item {
+      width: var(--dg-floating-desktop-item-size);
+      height: auto;
+      min-height: var(--dg-floating-desktop-item-size);
+      flex-direction: column;
+      justify-content: center;
+      gap: 2px;
+      padding: 4px 2px;
+
+      .floating-dock__caption {
+        display: block;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: var(--dg-ft-caption-size);
+        line-height: 1.1;
+        letter-spacing: 0.01em;
+        color: var(--text-muted);
+        pointer-events: none;
+      }
+    }
+
+    &.tray-hidden { display: none; }
+    &.tray-visible { display: grid; }
+  }
+
+  #theme-switch {
+    .light, .dark { display: none; }
+    &.light .light { display: inline-flex; }
+    &.dark .dark { display: inline-flex; }
+  }
+}
+
+/* ---- Mobile: full-width bottom rail; reserve body space so content clears it ---- */
+@media (max-width: 600px) {
+  :root {
+    --dg-floating-dock-item-size: var(--dg-ft-item-size-mobile);
+    --dg-floating-dock-gap: var(--dg-ft-gap-mobile);
+    --dg-floating-dock-padding: var(--dg-ft-padding-mobile);
+    --dg-floating-tray-column-count: 4;
+    --dg-floating-tray-row-count: 2;
+    --dg-floating-rail-offset: calc(
+      env(safe-area-inset-bottom, 0px) + 0.65rem +
+        (2 * var(--dg-floating-dock-padding)) +
+        (var(--dg-floating-tray-row-count) * var(--dg-floating-dock-item-size)) +
+        max(0px, calc((var(--dg-floating-tray-row-count) - 1) * var(--dg-floating-dock-gap))) +
+        6px + (2 * var(--dg-floating-dock-padding)) +
+        var(--dg-floating-dock-item-size) + 1rem
+    );
+  }
+
+  body:has(#floating-control) main.content { padding-bottom: var(--dg-floating-rail-offset); }
+  body:has(#floating-control) .site-footer { padding-bottom: 0; }
+  .custom-footer-bottom {
+    margin-top: 1.25rem;
+    padding-bottom: calc(var(--dg-floating-rail-offset) + 0.75rem);
+  }
+
+  #floating-control {
+    bottom: max(0.65rem, env(safe-area-inset-bottom, 0px));
+    left: max(0.65rem, env(safe-area-inset-left, 0px));
+    right: max(0.65rem, env(safe-area-inset-right, 0px));
+    transform: none;
+    align-items: stretch;
+    gap: 6px;
+
+    .floating-dock { width: 100%; gap: var(--dg-floating-dock-gap); padding: var(--dg-floating-dock-padding); }
+
+    #tray-expandable {
+      display: none;
+      direction: ltr;
+      grid-template-columns: repeat(var(--dg-floating-tray-column-count), minmax(0, 1fr));
+      grid-auto-flow: row;
+      justify-items: center;
+      align-items: center;
+      border-radius: var(--dg-ft-tray-radius);
+      &.tray-visible { display: grid; }
+    }
+
+    .floating-dock--primary { display: flex; flex-direction: row; justify-content: space-evenly; border-radius: var(--dg-ft-pill-radius); }
+
+    .floating-dock__item {
+      width: var(--dg-floating-dock-item-size);
+      height: var(--dg-floating-dock-item-size);
+      .svg-icon, i, svg.footer-icon, svg.svg-icon { width: var(--dg-ft-icon-size-mobile); height: var(--dg-ft-icon-size-mobile); }
+    }
+
+    #tray-expandable .floating-dock__item {
+      flex-direction: column; justify-content: center; gap: 2px;
+      height: auto; min-height: var(--dg-floating-dock-item-size); padding: 4px 2px;
+      .floating-dock__caption {
+        display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis;
+        white-space: nowrap; font-size: var(--dg-ft-caption-size-mobile); line-height: 1.1;
+        letter-spacing: 0.01em; color: var(--text-muted); pointer-events: none;
+      }
+    }
+  }
+}
+
+/* ---- Search overlay above dock; hide dock while search is open ---- */
+.search-container.active { z-index: 10000; }
+body.search-active #floating-control { visibility: hidden; pointer-events: none; }
+
+/* ---- Narrow phones: tighter grid ---- */
+@media (max-width: 380px) {
+  :root {
+    --dg-floating-tray-column-count: 3;
+    --dg-floating-tray-row-count: 3;
+  }
+}
