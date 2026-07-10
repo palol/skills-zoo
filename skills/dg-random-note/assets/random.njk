@@ -1,0 +1,54 @@
+---
+permalink: /random/
+eleventyExcludeFromCollections: true
+---
+{#
+  Random-note redirect page.
+
+  Renders the list of published note URLs at build time, then a tiny inline
+  script picks one at random and redirects. No dependencies, no build scripts.
+
+  CONFIG (edit inline below):
+    FALLBACK_URL   where to send visitors if no published notes exist (default "/")
+    RESPECT_HIDE   also skip notes flagged dg-hide (set to true if you keep
+                   utility/index notes out of the random pool)
+#}
+<!DOCTYPE html>
+<html lang="{{ meta.mainLanguage }}">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <title>Random note</title>
+    {% include "components/pageheader.njk" %}
+    <script>
+      // --- CONFIG ---
+      const FALLBACK_URL = "/";
+      // --------------
+      const publishedNotes = [
+        {% for note in collections.note %}
+          {% if note.data['dg-publish'] and not note.data['dg-hide'] %}
+            "{{ note.url }}",
+          {% endif %}
+        {% endfor %}
+      ];
+
+      if (publishedNotes.length > 0) {
+        const randomUrl = publishedNotes[Math.floor(Math.random() * publishedNotes.length)];
+        window.location.replace(randomUrl);
+      } else {
+        window.location.replace(FALLBACK_URL);
+      }
+    </script>
+  </head>
+  <body class="theme-{{ meta.baseTheme }} markdown-preview-view markdown-rendered markdown-preview-section {{ meta.bodyClasses }}">
+    <main class="content cm-s-obsidian">
+      <header>
+        <h1>Rolling the dice&hellip;</h1>
+        <p>Sending you to a random note.</p>
+      </header>
+      <div>
+        <p><noscript>JavaScript is required for the random redirect. </noscript><a href="/">Go home</a> if nothing happens.</p>
+      </div>
+    </main>
+  </body>
+</html>
