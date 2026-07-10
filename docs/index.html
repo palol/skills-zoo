@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>skills-zoo — a menagerie of Agent Skills</title>
+<meta name="description" content="A small, curated collection of Agent Skills for AI coding agents. Portable instruction bundles your agent can execute — copy-paste or install straight from the repo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236cc79a' stroke-width='2'%3E%3Cpath d='M4 20V8a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v12'/%3E%3Cpath d='M4 20h16M9 20v-5h6v5'/%3E%3Ccircle cx='9' cy='9' r='1'/%3E%3Ccircle cx='15' cy='9' r='1'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="./">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M4 20V8a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v12"/>
+        <path d="M4 20h16M9 20v-5h6v5"/>
+        <circle cx="9" cy="9" r="1"/><circle cx="15" cy="9" r="1"/>
+      </svg>
+      <span class="brand-name">skills-zoo</span>
+    </a>
+    <span class="header-spacer"></span>
+    <a class="header-link" href="https://github.com/palol/skills-zoo">GitHub</a>
+    <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme"></button>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="hero">
+    <p class="eyebrow">Agent Skills · by palol</p>
+    <h1>A menagerie of Agent&nbsp;Skills.</h1>
+    <p class="lede">Small, self-contained instruction bundles that teach an AI coding agent to do one thing well. Copy-paste the code yourself, or hand a skill to your agent and let it do the work.</p>
+    <div class="install-hint">
+      <span class="prompt">$</span>
+      <code>git clone https://github.com/palol/skills-zoo.git</code>
+    </div>
+  </section>
+
+  <section id="skills">
+    <p class="section-label">Skills in the zoo</p>
+    <div class="skill-grid">
+
+      <a class="skill-card" href="./skills/dg-floating-tray/">
+        <div class="sc-head">
+          <h3>dg-floating-tray</h3>
+          <span class="sc-ver">v1.3</span>
+          <span class="risk-pill">L1 · low risk</span>
+        </div>
+        <p>Add a bottom floating dock + expandable tray to an Obsidian Digital Garden (Eleventy) site — theme toggle, search, random, and a grid of secondary links. Upstream-safe, no core edits.</p>
+        <div class="tags">
+          <span class="tag">digital-garden</span>
+          <span class="tag">eleventy</span>
+          <span class="tag">navigation</span>
+          <span class="tag">accessible</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <section id="what">
+    <p class="section-label">What's an Agent Skill?</p>
+    <p>An <a href="https://agentskills.io">Agent Skill</a> is a folder with a <code>SKILL.md</code> file (plus optional <code>assets/</code> and <code>references/</code>). The frontmatter <code>description</code> tells your agent <em>when</em> to use it; the body tells it <em>how</em>. Your agent reads only what it needs, when it needs it — so skills stay cheap to keep around.</p>
+    <p>Every skill here is MIT-licensed, reversible, and honest about what it touches (see the risk pill on each card).</p>
+  </section>
+
+  <section id="use">
+    <p class="section-label">How to use a skill</p>
+    <div class="steps">
+      <div class="step">
+        <span class="num">1</span>
+        <div class="body">
+          <h4>Get the skill</h4>
+          <p>Clone this repo, or copy a single skill folder into your agent's skills directory — <code>~/.claude/skills/</code> or <code>~/.agents/skills/</code>.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="num">2</span>
+        <div class="body">
+          <h4>Ask your agent</h4>
+          <p>In your project, tell your agent what you want (e.g. <em>"use the dg-floating-tray skill to add a bottom dock"</em>). It matches the skill by its description and follows the steps.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="num">3</span>
+        <div class="body">
+          <h4>Or serve it over MCP</h4>
+          <p>Point <a href="https://www.skillsovermcp.com/">Skills Over MCP</a> at this repo and your agent picks up every skill with one config line — auto-updating on each push.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="num">4</span>
+        <div class="body">
+          <h4>Prefer to do it yourself?</h4>
+          <p>Each skill page shows the full source and copy-paste instructions. No agent required.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span class="foot-mono">skills-zoo · MIT</span>
+    <span class="header-spacer"></span>
+    <a href="https://github.com/palol/skills-zoo">Source</a>
+    <a href="https://agentskills.io">Spec</a>
+    <a href="https://github.com/palol/digital-garden">digital-garden</a>
+  </div>
+</footer>
+
+<script src="./theme.js"></script>
+</body>
+</html>

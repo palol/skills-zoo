@@ -4,6 +4,8 @@ A small menagerie of [Agent Skills](https://agentskills.io) — portable `SKILL.
 teach an AI coding agent (Claude Code, Cursor, etc.) to do a specific task. Clone one, hand it to
 your agent, done.
 
+📖 **Docs site:** https://palol.github.io/skills-zoo/
+
 ## Skills
 
 | Skill | What it does | Risk |
