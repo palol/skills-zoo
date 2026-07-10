@@ -1,0 +1,212 @@
+<script>
+(function initDgGraphHelpers() {
+  if (window.DgGraphHelpers) return;
+
+  const cache = {
+    graphPromise: null,
+    backlinkIndexPromise: null
+  };
+
+  function normalizePath(input) {
+    if (!input) return '/';
+    let normalized = String(input).trim();
+    normalized = normalized.replace(/^https?:\/\/[^/]+/i, '');
+    normalized = normalized.split('#')[0].split('?')[0];
+    if (!normalized.startsWith('/')) normalized = '/' + normalized;
+    if (normalized.length > 1) normalized = normalized.replace(/\/+$/, '');
+    try {
+      normalized = decodeURI(normalized);
+    } catch (error) {
+      // Keep raw path if URI decoding fails.
+    }
+    return normalized.toLowerCase();
+  }
+
+  function slugFromUrl(url) {
+    const normalized = normalizePath(url);
+    if (normalized === '/' || normalized === '/home') return 'home';
+    const parts = normalized.split('/').filter(Boolean);
+    return parts.length ? parts[parts.length - 1] : 'home';
+  }
+
+  function loadJson(url) {
+    return fetch(url).then(function onResponse(response) {
+      if (!response.ok) {
+        throw new Error('Failed to load ' + url + ' (' + response.status + ')');
+      }
+      return response.json();
+    });
+  }
+
+  function loadGraphData() {
+    if (!cache.graphPromise) {
+      cache.graphPromise = loadJson('/graph.json').catch(function onError() {
+        return null;
+      });
+    }
+    return cache.graphPromise;
+  }
+
+  function loadBacklinkIndex() {
+    if (!cache.backlinkIndexPromise) {
+      cache.backlinkIndexPromise = loadJson('/data/backlink-map-index.json').catch(function onError() {
+        return null;
+      });
+    }
+    return cache.backlinkIndexPromise;
+  }
+
+  function getNodeLookup(graphData) {
+    const lookup = new Map();
+    if (!graphData || !graphData.nodes) return lookup;
+    Object.entries(graphData.nodes).forEach(function eachNode(entry) {
+      const key = entry[0];
+      const node = entry[1];
+      if (!node) return;
+      lookup.set(normalizePath(key), node);
+      if (node.url) lookup.set(normalizePath(node.url), node);
+    });
+    return lookup;
+  }
+
+  function getCurrentNode(graphData, currentPath) {
+    if (!graphData || !graphData.nodes) return null;
+    const lookup = getNodeLookup(graphData);
+    const normalizedCurrent = normalizePath(currentPath);
+    const direct = lookup.get(normalizedCurrent);
+    if (direct) return direct;
+    const homeAlias = normalizePath(graphData.homeAlias || '/');
+    return lookup.get(homeAlias) || lookup.get('/') || null;
+  }
+
+  function getBacklinkEntry(indexData, currentPath) {
+    if (!indexData || !indexData.pages) return null;
+    const normalized = normalizePath(currentPath);
+    return indexData.pages[normalized] || indexData.pages['/'] || indexData.pages['/home'] || null;
+  }
+
+  function getBacklinkUrlsFromGraph(graphData, currentPath) {
+    const currentNode = getCurrentNode(graphData, currentPath);
+    if (!currentNode || !Array.isArray(currentNode.backLinks)) return [];
+    return currentNode.backLinks.map(function eachLink(item) {
+      return normalizePath(item);
+    });
+  }
+
+  function getOutboundUrlsFromGraph(graphData, currentPath) {
+    const currentNode = getCurrentNode(graphData, currentPath);
+    if (!currentNode || !Array.isArray(currentNode.outBound)) return [];
+    return currentNode.outBound.map(function eachLink(item) {
+      return normalizePath(item);
+    });
+  }
+
+  function getNeighborUrlsFromGraph(graphData, currentPath) {
+    const currentNode = getCurrentNode(graphData, currentPath);
+    if (!currentNode || !Array.isArray(currentNode.neighbors)) return [];
+    return currentNode.neighbors.map(function eachNeighbor(item) {
+      return normalizePath(item);
+    });
+  }
+
+  function uniqueByNormalizedUrl(items) {
+    const seen = new Set();
+    const out = [];
+    items.forEach(function eachItem(item) {
+      if (!item || !item.url) return;
+      const normalized = normalizePath(item.url);
+      if (seen.has(normalized)) return;
+      seen.add(normalized);
+      out.push(item);
+    });
+    return out;
+  }
+
+  function buildLocalNeighborhood(graphData, currentPath, maxDepth, maxNodes) {
+    if (!graphData || !graphData.nodes) return { nodes: [], links: [], currentPath: normalizePath(currentPath) };
+    const depthLimit = Number.isFinite(maxDepth) ? maxDepth : 1;
+    const nodeLimit = Number.isFinite(maxNodes) ? maxNodes : 26;
+    const nodeLookup = getNodeLookup(graphData);
+    const currentNode = getCurrentNode(graphData, currentPath);
+    const normalizedCurrent = normalizePath(currentNode && currentNode.url ? currentNode.url : currentPath);
+    if (!currentNode) return { nodes: [], links: [], currentPath: normalizedCurrent };
+
+    const visited = new Set([normalizedCurrent]);
+    const depthMap = new Map([[normalizedCurrent, 0]]);
+    const queue = [normalizedCurrent];
+
+    while (queue.length > 0 && visited.size < nodeLimit) {
+      const activePath = queue.shift();
+      const depth = depthMap.get(activePath) || 0;
+      if (depth >= depthLimit) continue;
+      const activeNode = nodeLookup.get(activePath);
+      if (!activeNode || !Array.isArray(activeNode.neighbors)) continue;
+
+      for (const neighborRaw of activeNode.neighbors) {
+        const neighborPath = normalizePath(neighborRaw);
+        if (visited.has(neighborPath)) continue;
+        const neighborNode = nodeLookup.get(neighborPath);
+        if (!neighborNode || neighborNode.hide) continue;
+        visited.add(neighborPath);
+        depthMap.set(neighborPath, depth + 1);
+        queue.push(neighborPath);
+        if (visited.size >= nodeLimit) break;
+      }
+    }
+
+    const nodes = [];
+    visited.forEach(function eachVisited(pathKey) {
+      const node = nodeLookup.get(pathKey);
+      if (!node) return;
+      nodes.push({
+        id: pathKey,
+        url: node.url || pathKey,
+        title: node.title || node.url || pathKey,
+        noteIcon: node.noteIcon || null,
+        isCurrent: pathKey === normalizedCurrent,
+        depth: depthMap.get(pathKey) || 0
+      });
+    });
+
+    const nodeSet = new Set(nodes.map(function nodeId(node) { return node.id; }));
+    const linkKeys = new Set();
+    const links = [];
+
+    nodes.forEach(function eachNode(node) {
+      const source = nodeLookup.get(node.id);
+      if (!source || !Array.isArray(source.neighbors)) return;
+      source.neighbors.forEach(function eachNeighbor(neighborRaw) {
+        const neighborPath = normalizePath(neighborRaw);
+        if (!nodeSet.has(neighborPath)) return;
+        const key = node.id < neighborPath
+          ? node.id + '|' + neighborPath
+          : neighborPath + '|' + node.id;
+        if (linkKeys.has(key)) return;
+        linkKeys.add(key);
+        links.push({ source: node.id, target: neighborPath });
+      });
+    });
+
+    return {
+      currentPath: normalizedCurrent,
+      nodes: nodes,
+      links: links
+    };
+  }
+
+  window.DgGraphHelpers = {
+    normalizePath: normalizePath,
+    slugFromUrl: slugFromUrl,
+    loadGraphData: loadGraphData,
+    loadBacklinkIndex: loadBacklinkIndex,
+    getNodeLookup: getNodeLookup,
+    getCurrentNode: getCurrentNode,
+    getBacklinkEntry: getBacklinkEntry,
+    getBacklinkUrlsFromGraph: getBacklinkUrlsFromGraph,
+    getOutboundUrlsFromGraph: getOutboundUrlsFromGraph,
+    getNeighborUrlsFromGraph: getNeighborUrlsFromGraph,
+    uniqueByNormalizedUrl: uniqueByNormalizedUrl,
+    buildLocalNeighborhood: buildLocalNeighborhood
+  };
+})();
+</script>

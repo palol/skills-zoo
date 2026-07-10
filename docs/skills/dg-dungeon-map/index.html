@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>dg-dungeon-map — skills-zoo</title>
+<meta name="description" content="Add an interactive hex-grid dungeon map to an Obsidian Digital Garden site — a pi-driven spiral of your notes, a you-are-here marker, and backlink/mention overlays from graph.json.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236cc79a' stroke-width='2'%3E%3Cpath d='M4 20V8a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v12'/%3E%3Cpath d='M4 20h16M9 20v-5h6v5'/%3E%3Ccircle cx='9' cy='9' r='1'/%3E%3Ccircle cx='15' cy='9' r='1'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../../">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M4 20V8a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v12"/>
+        <path d="M4 20h16M9 20v-5h6v5"/>
+        <circle cx="9" cy="9" r="1"/><circle cx="15" cy="9" r="1"/>
+      </svg>
+      <span class="brand-name">skills-zoo</span>
+    </a>
+    <span class="header-spacer"></span>
+    <a class="header-link" href="https://github.com/palol/skills-zoo/tree/main/skills/dg-dungeon-map">Source</a>
+    <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme"></button>
+  </div>
+</header>
+
+<main class="wrap prose">
+
+  <a class="backlink" href="../../">← all skills</a>
+
+  <h1>dg-dungeon-map</h1>
+  <p class="sub">An interactive hex-grid map of your garden, in the note header.</p>
+
+  <div class="meta-row">
+    <span class="risk-pill risk-pill--l2">L2 · build step</span>
+    <span class="tag">v1.0</span>
+    <span class="tag">MIT</span>
+    <span class="tag">digital-garden</span>
+    <span class="tag">eleventy</span>
+    <span class="tag">svg</span>
+  </div>
+
+  <p>Turns every published note into a hexagon on a spiral, rendered as a clickable map in your note header. The current page gets a <strong>“you are here”</strong> marker, and an optional overlay draws lines to that note's <strong>backlinks and mentions</strong> — all pulled from your Digital Garden's <code>graph.json</code>.</p>
+
+  <div class="callout">
+    <strong>The path follows π.</strong> Notes are laid out oldest-first along an axial hex spiral; the digits of π decide how many content hexes then how many empty “ambient” hexes to place, so the rhythm of the walk is literally pi. Inspired by <a href="https://brad.quest/">brad.quest</a>'s dungeon and <a href="https://hermitage.utsob.me/">Hermitage</a>'s forest.
+  </div>
+
+  <h2>How it works</h2>
+  <p>A post-build script reads your notes (via the sitemap or the notes folder), sorts them by date, builds the π virtual-tile list, and places each on a spiral. It writes a static <code>dungeon-map.svg</code> plus a <code>dungeon-data.json</code>. At runtime, three autoloaded components render the SVG, mark the current hex from the page URL, and draw the graph overlays.</p>
+  <pre><code>notes → eleventy build → postbuild (π spiral + SVG)
+      → dungeon-map.svg + dungeon-data.json
+      → header component renders it + marks "you are here"
+      → footer script draws backlink / mention overlays</code></pre>
+
+  <h2>How to use it</h2>
+  <p>Copy the skill folder into your agent's skills directory, then in your Digital Garden repo ask:</p>
+  <pre><code>git clone https://github.com/palol/skills-zoo.git
+cp -r skills-zoo/skills/dg-dungeon-map ~/.claude/skills/</code></pre>
+  <p style="margin-top:-.75rem;color:var(--text-muted);font-size:var(--text-sm)">(or <code>~/.agents/skills/</code>)</p>
+  <blockquote><p>Use the <strong>dg-dungeon-map</strong> skill to add the interactive dungeon map to my digital garden. Verify prerequisites first, install the components and build scripts into user-owned paths, wire the postbuild hook, then build and walk me through verification.</p></blockquote>
+
+  <h2>What it touches</h2>
+  <ul>
+    <li><strong>Components</strong> (autoloaded, no layout edits): a header slot for the map, a head-slot graph helper, a footer-slot controller.</li>
+    <li><strong>Styles</strong>: appended to <code>custom-style.scss</code>; hex &amp; overlay colors inherit your DG theme tokens, so light/dark just work.</li>
+    <li><strong>Build scripts</strong>: two Node scripts in <code>scripts/</code> + a hex-spiral helper, run at build time via a <code>postbuild</code> hook.</li>
+  </ul>
+
+  <div class="callout">
+    <strong>Why L2, not L1.</strong> Unlike a pure component skill, this adds Node build scripts that <em>execute at build time</em> and <em>read your notes and sitemap</em> to generate the map. No secrets, no network calls — output is static files — but review <code>assets/*.js</code> before wiring the hook. Fully reversible via git.
+  </div>
+
+  <h2>What's in the box</h2>
+  <ul class="filelist" role="list">
+    <li><span class="fname">SKILL.md</span> — install workflow, prerequisites, design points, risk</li>
+    <li><span class="fname">assets/generate-dungeon-data.js</span> — enumerate notes, date-sort, π tile list</li>
+    <li><span class="fname">assets/generate-static-dungeon.js</span> — build the SVG (hexes, path, icons)</li>
+    <li><span class="fname">assets/hex-spiral.js</span> — axial-coordinate ring-walking spiral</li>
+    <li><span class="fname">assets/dungeon.njk</span> — header slot: map container + overlay controls</li>
+    <li><span class="fname">assets/aa-graph-helpers.njk</span> — head slot: shared graph.json lookups</li>
+    <li><span class="fname">assets/zz-dungeon-map-init.njk</span> — footer slot: current hex + overlays</li>
+    <li><span class="fname">assets/dungeon-map.scss</span> — styles (TUNING KNOBS on top)</li>
+    <li><span class="fname">references/architecture.md</span> — annotated pipeline + data shapes</li>
+    <li><span class="fname">references/tuning.md</span> — every adjustable knob</li>
+    <li><span class="fname">references/verify.md</span> — post-build QA checklist</li>
+  </ul>
+
+  <h2>Prerequisites</h2>
+  <ul>
+    <li>An Obsidian Digital Garden (oleeskild plugin + Eleventy) repo with user-component autoloading.</li>
+    <li><code>graph.json</code> emitted at the site root with <code>backLinks</code> / <code>outBound</code> / <code>neighbors</code> (overlays degrade gracefully if absent).</li>
+    <li>Icons in <code>src/site/img/</code> and a <code>noteIcon</code> on notes you want mapped.</li>
+  </ul>
+  <p><em>Scope is Digital Garden only</em> — the autoloader, theme tokens, and graph.json shape are DG-specific.</p>
+
+  <p style="margin-top:2.5rem">
+    <a href="https://github.com/palol/skills-zoo/tree/main/skills/dg-dungeon-map">Browse the full source on GitHub →</a>
+  </p>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span class="foot-mono">skills-zoo · MIT</span>
+    <span class="header-spacer"></span>
+    <a href="../../">All skills</a>
+    <a href="https://github.com/palol/skills-zoo">Source</a>
+    <a href="https://agentskills.io">Spec</a>
+  </div>
+</footer>
+
+<script src="../../theme.js"></script>
+</body>
+</html>

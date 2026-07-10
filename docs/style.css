@@ -166,6 +166,10 @@ section { padding-block:2rem; }
   padding:.18rem .5rem; border-radius:var(--radius-sm);
   background:var(--accent-soft); color:var(--accent);
 }
+.risk-pill--l2 {
+  background:color-mix(in srgb, #d98a1f 18%, transparent);
+  color:#d98a1f;
+}
 
 /* ---------- how-it-works steps ---------- */
 .steps { display:grid; gap:.9rem; counter-reset:step; }

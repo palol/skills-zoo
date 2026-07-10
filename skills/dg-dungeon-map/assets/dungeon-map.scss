@@ -1,0 +1,504 @@
+/* ============================================================
+   Dungeon map styles
+   Blocks: core map + overlay controls, footer variant, map-page guards
+   ============================================================ */
+
+/* >>> TUNING KNOBS <<<  (safe to edit; colors inherit DG theme tokens) */
+:root {
+  --dungeon-map-max-width: 500px;   /* max render width of the map block   */
+  --dungeon-btn-radius: 6px;        /* overlay toggle button corner radius */
+  --dungeon-hint-size: 0.78rem;     /* backlink/mention hint text size     */
+}
+/* Note: hex fills, ambient tones, overlay line/node colors and the
+   "current note" outline are driven by DG theme tokens + JS config
+   (DUNGEON_CURRENT_NOTE_COLOR in zz-dungeon-map-init.njk) — not knobs here. */
+
+  /* Static Dungeon Map + per-note overlay controls */
+  .dungeon-map-root {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    max-width: var(--dungeon-map-max-width, 500px);
+    margin: 0 auto;
+    padding-bottom: 4px;
+  }
+
+  .dungeon-map-root .dungeon-map-tools {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .dungeon-map-root .dungeon-map-toolbar-controls {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .dungeon-map-root .dungeon-overlay-controls {
+    margin: 0;
+    padding: 4px;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 999px;
+    background: var(--background-secondary);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .dungeon-map-root .dungeon-overlay-btn {
+    min-height: 44px;
+    min-width: 44px;
+    border: 0;
+    border-radius: 999px;
+    font-size: 0.88rem;
+    line-height: 1;
+    padding: 0.45rem 0.85rem;
+    margin: 0;
+  }
+
+  .dungeon-map-root .dungeon-overlay-btn {
+    background: transparent;
+    color: var(--text-muted);
+    box-shadow: none;
+  }
+
+  .dungeon-map-root .dungeon-overlay-btn.is-active {
+    background: var(--interactive-accent);
+    color: var(--text-on-accent);
+    box-shadow: var(--input-shadow);
+  }
+
+  .dungeon-map-root .dungeon-overlay-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .dungeon-map-root .dungeon-overlay-hint {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-left: auto;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.35rem;
+  }
+
+  .dungeon-map-root .dungeon-overlay-hint.is-empty {
+    color: var(--text-muted);
+  }
+
+  .dungeon-map-root .dungeon-overlay-hint-item {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.14rem;
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+  }
+
+  .dungeon-map-root .dungeon-overlay-hint-ratio {
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+
+  .dungeon-map-root .dungeon-overlay-hint-item--backlinks {
+    color: rgba(45, 212, 191, 0.95);
+  }
+
+  .dungeon-map-root .dungeon-overlay-hint-item--mentions {
+    color: rgba(129, 140, 248, 0.95);
+  }
+
+  .dungeon-map-root .dungeon-overlay-hint-separator {
+    color: var(--text-faint);
+  }
+
+  .dungeon-static-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: auto;
+    max-width: 100vw;
+    margin: 0 auto;
+    background: var(--background-secondary) !important;
+    border-radius: 12px;
+    border: 4px dashed var(--background-primary);
+    padding: 12px 0 6px;
+  }
+
+  .dungeon-map-root .dungeon-svg-inline svg {
+    display: block;
+    margin: 0 auto;
+    height: auto;
+    max-width: 100%;
+  }
+
+  .dungeon-map-root .dungeon-svg-inline .dungeon-svg-fallback {
+    display: block;
+    margin: 0 auto;
+    height: auto;
+    max-width: 100%;
+  }
+
+  .dungeon-highlight-layer {
+    pointer-events: none;
+  }
+
+  .dungeon-map-root .dungeon-svg-inline .dungeon-connected-layer {
+    pointer-events: none;
+  }
+
+  .dungeon-map-root .dungeon-svg-inline .dungeon-connected-highlight polygon {
+    stroke: rgba(36, 207, 196, 0.95) !important;
+    stroke-width: 3px !important;
+    fill-opacity: 0.38 !important;
+    filter: drop-shadow(0 0 6px rgba(36, 207, 196, 0.62));
+  }
+
+  .dungeon-map-root .dungeon-svg-inline .dungeon-outgoing-highlight polygon {
+    stroke: rgba(109, 125, 255, 0.95) !important;
+    stroke-width: 3px !important;
+    fill-opacity: 0.34 !important;
+    filter: drop-shadow(0 0 6px rgba(109, 125, 255, 0.58));
+  }
+
+  .dungeon-map-root .dungeon-svg-inline .dungeon-graph-overlay {
+    pointer-events: none;
+  }
+
+  .dungeon-map-root .dungeon-svg-inline .dungeon-backlink-link {
+    stroke: rgba(36, 207, 196, 0.55);
+    stroke-width: 1.8;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .dungeon-map-root .dungeon-svg-inline .dungeon-outgoing-link {
+    stroke: rgba(109, 125, 255, 0.55);
+    stroke-width: 1.8;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .dungeon-map-root .dungeon-svg-inline .dungeon-backlink-node {
+    fill: rgba(36, 207, 196, 0.82);
+    stroke: rgba(10, 10, 14, 0.85);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .dungeon-map-root .dungeon-svg-inline .dungeon-outgoing-node {
+    fill: rgba(109, 125, 255, 0.82);
+    stroke: rgba(10, 10, 14, 0.85);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .dungeon-map-root .dungeon-svg-inline .dungeon-backlink-node.is-current {
+    fill: #f7d44a;
+    stroke: rgba(10, 10, 14, 0.95);
+  }
+
+  /* Hex icons shown by default; legends appear when Icons toggle is off */
+  .dungeon-map-root .dungeon-svg-inline .dungeon-hex-icon {
+    visibility: visible;
+    transition: opacity 0.15s ease;
+  }
+
+  .dungeon-map-root.icons-hidden .dungeon-svg-inline .dungeon-hex-icon {
+    visibility: hidden;
+  }
+
+  .dungeon-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+    --background-primary: var(--background-primary);
+    --background-secondary: var(--background-secondary);
+    --background-modifier-border: var(--background-modifier-border);
+    --text-muted: var(--text-muted);
+    --text-faint: var(--text-faint);
+  }
+
+  .dungeon-static-container {
+    &:hover .dungeon-svg {
+      filter: brightness(1.05);
+      transition: filter 0.3s ease;
+    }
+  }
+
+  /* Legends hidden by default; reveal when Icons toggle is off */
+  .dungeon-legends {
+    display: none;
+    gap: 10px;
+    width: 100%;
+    max-width: 500px;
+    justify-content: center;
+    flex-wrap: wrap;
+    font-size: 0.7em;
+    color: var(--text-muted);
+    margin: 0 auto;
+    padding: 0 1rem;
+    margin-top: 10px;
+
+    .dungeon-legend {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+    }
+
+    img {
+      height: 1.2em;
+      width: auto;
+      flex-shrink: 0;
+    }
+  }
+
+  .dungeon-map-root.icons-hidden .dungeon-legends {
+    display: flex;
+  }
+
+  @media (max-width: 900px) {
+    .dungeon-map-root {
+      margin: 0 1rem;
+      max-width: calc(100% - 2rem);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .dungeon-map-root .dungeon-map-tools {
+      align-items: stretch;
+      gap: 0.45rem;
+    }
+
+    .dungeon-map-root .dungeon-map-toolbar-controls {
+      width: 100%;
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .dungeon-map-root .dungeon-overlay-controls {
+      width: 100%;
+      justify-content: space-between;
+      gap: 3px;
+    }
+
+    .dungeon-map-root .dungeon-overlay-btn {
+      flex: 1 1 0;
+      padding: 0.45rem 0.55rem;
+    }
+
+    .dungeon-map-root .dungeon-overlay-hint {
+      width: 100%;
+      margin-left: 0;
+      font-size: 0.78rem;
+      text-align: center;
+      justify-content: center;
+      white-space: normal;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dungeon-map-root .dungeon-svg-inline .dungeon-graph-overlay *,
+    .dungeon-static-container,
+    .dungeon-legends,
+    .dungeon-map-root .dungeon-svg-inline .dungeon-connected-highlight polygon {
+      transition: none !important;
+    }
+  }
+}
+
+.align-icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* ---- footer variant + map-page backlinks ---- */
+/* Search overlay above floating dock; hide dock while search is open */
+.search-container.active {
+  z-index: 10000;
+}
+
+body.search-active #floating-control {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+@media (max-width: 380px) {
+  :root {
+    --dg-floating-tray-column-count: 3;
+    --dg-floating-tray-row-count: 3;
+  }
+}
+
+
+.footer-graph-container {
+    max-width: 700px;
+    min-width: 0;
+    margin: 0 auto;
+    padding: 14px 16px;
+    background-color: var(--background-primary);
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+.footer-hybrid-container {
+    .footer-hybrid-header {
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.65rem;
+        margin-bottom: 0.35rem;
+    }
+
+    .dungeon-map-root--footer {
+        max-width: none;
+        padding-bottom: 0;
+        margin-top: 0.15rem;
+
+        .dungeon-map-tools {
+            gap: 0.4rem;
+            margin-bottom: 0.45rem;
+        }
+
+        .dungeon-overlay-controls {
+            padding: 3px;
+            gap: 3px;
+        }
+
+        .dungeon-overlay-btn {
+            font-size: 0.82rem;
+            padding: 0.38rem 0.72rem;
+        }
+
+        .dungeon-overlay-hint {
+            font-size: 0.78rem;
+        }
+
+        .dungeon-static-container {
+            width: 100%;
+            max-width: none;
+            padding-bottom: 4px;
+        }
+    }
+}
+
+.footer-backlinks-container {
+    max-width: 700px;
+    min-width: 0;
+    margin: 0 auto;
+    padding: 14px 16px;
+    background-color: var(--background-primary);
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 10px;
+    box-sizing: border-box;
+
+    .backlinks {
+        margin-top: 0;
+        flex: none;
+        background-color: transparent;
+    }
+
+    .backlink-title {
+        font-size: 0.95rem !important;
+        font-weight: var(--font-medium);
+        color: var(--text-muted);
+    }
+
+    .backlinks-header-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+    }
+
+    .backlink-list {
+        max-height: 220px;
+        overflow-y: auto;
+        padding-right: 0.2rem;
+    }
+
+    .backlink-card,
+    .backlink {
+        font-size: 0.95rem;
+    }
+}
+
+.footer-backlinks-companion .backlink-reference-line {
+    margin: 4px 0 0.35rem;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+}
+
+.footer-backlinks-companion[data-page-mode="map"] .backlink-list {
+    margin-top: 0;
+    max-height: 190px;
+}
+
+@media (max-width: 900px) {
+    .footer-graph-container,
+    .footer-backlinks-container {
+        max-width: none;
+        width: 100%;
+        margin: 0;
+        padding: 12px 14px;
+    }
+
+    .footer-hybrid-container .dungeon-map-root--footer {
+        margin-inline: 0;
+    }
+}
+
+// Graph toolbar: accessible targets + focus (buttons replace spans in graphScript.njk)
+.graph .ctrl-right {
+    gap: 4px;
+}
+
+.graph-toolbar-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0;
+
+/* ---- map-page spacing + leak guards ---- */
+  /* Hex montage gets breathing room on map pages */
+  #dungeon-map-static.dungeon-map-root {
+    margin: 1.25rem auto 1rem;
+  }
+}
+
+/* Vault accent line: mirrors porch's header stroke so map pages visibly carry
+   the purple accent even when no porch-nav pill is in .active state. */
+html[data-mode="map"] main.content > header::before,
+html[data-mode="map"] main.content article > header::before {
+  content: "";
+  display: block;
+  height: 3px;
+  background: linear-gradient(90deg, var(--interactive-accent), transparent);
+  margin-bottom: 0.75rem;
+}
+
+/* ---- Note-default pages -------------------------------------------
+   No body class change needed beyond mode-note; keep existing chrome.
+   Guard against dungeon leaking in via dynamics slot (belt-and-suspenders
+   on top of the njk-level pageMode gate). */
+html[data-mode="note"] body #dungeon-map-static,
+html[data-mode="porch"] body #dungeon-map-static {
+  display: none !important;
+}
+
+/* ---- About + resume mobile readability -------------------------------- */
+@media (max-width: 600px) {
+  html[data-mode="porch"] article[data-page-url="/about/"] .note-content {
+    > .callout[data-callout="success"] {

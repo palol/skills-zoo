@@ -1,0 +1,577 @@
+<script>
+// ---------------------------------------------------------------------------
+// CONFIG (generalize here)
+//   HIDDEN_PREFIXES: URL path prefixes whose backlinks/mentions are hidden in
+//   overlays unless you are already on such a page. Set to [] to disable, or
+//   list your own high-volume section(s) e.g. ['/logs/', '/daily/'].
+//   CURRENT_NOTE_COLOR: the "current note" outline color (magenta by default).
+// ---------------------------------------------------------------------------
+const DUNGEON_HIDDEN_PREFIXES = ['/logs/'];
+const DUNGEON_CURRENT_NOTE_COLOR = '#E255FF';
+
+async function initDungeonMapRoot(mapRoot) {
+  if (!mapRoot || mapRoot.dataset.initialized === 'true') return;
+  mapRoot.dataset.initialized = 'true';
+
+  const helpers = window.DgGraphHelpers || {};
+  const currentPageUrl = mapRoot.getAttribute('data-page-url') || window.location.pathname;
+  const svgContainer = mapRoot.querySelector('.dungeon-svg-inline');
+  const toggleButtons = Array.from(mapRoot.querySelectorAll('.dungeon-overlay-btn[data-map-toggle]'));
+  const overlayHint = mapRoot.querySelector('.dungeon-overlay-hint');
+  if (!svgContainer) return;
+
+  function normalizePath(value) {
+    if (helpers.normalizePath) return helpers.normalizePath(value);
+    if (!value) return '/';
+    let normalized = String(value).trim();
+    normalized = normalized.replace(/^https?:\/\/[^/]+/i, '');
+    normalized = normalized.split('#')[0].split('?')[0];
+    if (!normalized.startsWith('/')) normalized = '/' + normalized;
+    if (normalized.length > 1) normalized = normalized.replace(/\/+$/, '');
+    try {
+      normalized = decodeURI(normalized);
+    } catch (error) {
+      // Keep raw path if URI decoding fails.
+    }
+    return normalized.toLowerCase();
+  }
+
+  async function loadGraphData() {
+    if (helpers.loadGraphData) return helpers.loadGraphData();
+    try {
+      const response = await fetch('/graph.json');
+      if (!response.ok) return null;
+      return await response.json();
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async function loadBacklinkIndex() {
+    if (helpers.loadBacklinkIndex) return helpers.loadBacklinkIndex();
+    try {
+      const response = await fetch('/data/backlink-map-index.json');
+      if (!response.ok) return null;
+      return await response.json();
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function getBacklinkEntry(indexData, currentPath) {
+    if (helpers.getBacklinkEntry) return helpers.getBacklinkEntry(indexData, currentPath);
+    if (!indexData || !indexData.pages) return null;
+    const normalized = normalizePath(currentPath);
+    return indexData.pages[normalized] || indexData.pages['/'] || indexData.pages['/home'] || null;
+  }
+
+  function getBacklinkUrlsFromGraph(graphData, currentPath) {
+    if (helpers.getBacklinkUrlsFromGraph) return helpers.getBacklinkUrlsFromGraph(graphData, currentPath);
+    if (!graphData || !graphData.nodes) return [];
+    const lookup = graphData.nodes;
+    const normalized = normalizePath(currentPath);
+    const node = lookup[normalized] || Object.values(lookup).find((candidate) => normalizePath(candidate.url) === normalized);
+    if (!node || !Array.isArray(node.backLinks)) return [];
+    return node.backLinks.map((url) => normalizePath(url));
+  }
+
+  function getOutboundUrlsFromGraph(graphData, currentPath) {
+    if (helpers.getOutboundUrlsFromGraph) return helpers.getOutboundUrlsFromGraph(graphData, currentPath);
+    if (!graphData || !graphData.nodes) return [];
+    const lookup = graphData.nodes;
+    const normalized = normalizePath(currentPath);
+    const node = lookup[normalized] || Object.values(lookup).find((candidate) => normalizePath(candidate.url) === normalized);
+    if (!node || !Array.isArray(node.outBound)) return [];
+    return node.outBound.map((url) => normalizePath(url));
+  }
+
+  function createSvgElement(tagName, attributes) {
+    const element = document.createElementNS('http://www.w3.org/2000/svg', tagName);
+    Object.entries(attributes).forEach(([key, value]) => {
+      if (value === undefined || value === null) return;
+      element.setAttribute(key, String(value));
+    });
+    return element;
+  }
+
+  function buildSvgPositionLookup(svg) {
+    const positions = new Map();
+    const HEX_HALF_WIDTH = 14;
+    const HEX_HALF_HEIGHT = 12;
+
+    let inverseMatrix = null;
+    try {
+      const screenMatrix = typeof svg.getScreenCTM === 'function' ? svg.getScreenCTM() : null;
+      inverseMatrix = screenMatrix ? screenMatrix.inverse() : null;
+    } catch (error) {
+      inverseMatrix = null;
+    }
+
+    function renderedCenter(element) {
+      if (!inverseMatrix) return null;
+      const rect = element.getBoundingClientRect();
+      if (rect.width === 0 && rect.height === 0) return null;
+      const point = svg.createSVGPoint();
+      point.x = rect.left + (rect.width / 2);
+      point.y = rect.top + (rect.height / 2);
+      const svgPoint = point.matrixTransform(inverseMatrix);
+      if (!Number.isFinite(svgPoint.x) || !Number.isFinite(svgPoint.y)) return null;
+      return { x: svgPoint.x, y: svgPoint.y };
+    }
+
+    function translateCenter(element) {
+      const group = element.tagName && element.tagName.toLowerCase() === 'g'
+        ? element
+        : (element.closest ? element.closest('g') : null);
+      if (!group || !group.transform || !group.transform.baseVal) return null;
+      const items = group.transform.baseVal;
+      const consolidated = typeof items.consolidate === 'function' ? items.consolidate() : null;
+      if (consolidated && consolidated.matrix) {
+        const matrix = consolidated.matrix;
+        if (Number.isFinite(matrix.e) && Number.isFinite(matrix.f)) {
+          return {
+            x: matrix.e + HEX_HALF_WIDTH,
+            y: matrix.f + HEX_HALF_HEIGHT
+          };
+        }
+      }
+      for (let i = 0; i < items.numberOfItems; i++) {
+        const item = items.getItem(i);
+        const matrix = item && item.matrix;
+        if (matrix && Number.isFinite(matrix.e) && Number.isFinite(matrix.f)) {
+          return {
+            x: matrix.e + HEX_HALF_WIDTH,
+            y: matrix.f + HEX_HALF_HEIGHT
+          };
+        }
+      }
+      return null;
+    }
+
+    svg.querySelectorAll('a[href]').forEach((link) => {
+      const href = link.getAttribute('href');
+      if (!href) return;
+      const candidate = link.querySelector('g') || link.querySelector('polygon') || link;
+      let position = null;
+      try {
+        position = renderedCenter(candidate) || translateCenter(candidate);
+      } catch (error) {
+        // Ignore malformed or detached SVG nodes.
+      }
+      if (!position) return;
+      const key = normalizePath(href);
+      positions.set(key, position);
+      if (key === '/home' && !positions.has('/')) positions.set('/', position);
+      if (key === '/' && !positions.has('/home')) positions.set('/home', position);
+    });
+    return positions;
+  }
+
+  function getViewCenter(svg) {
+    const viewBox = svg.viewBox && svg.viewBox.baseVal;
+    if (viewBox && Number.isFinite(viewBox.width) && Number.isFinite(viewBox.height)) {
+      return {
+        x: viewBox.x + (viewBox.width / 2),
+        y: viewBox.y + (viewBox.height / 2)
+      };
+    }
+    return { x: 0, y: 0 };
+  }
+
+  function markConnectedRooms(svg, targetPaths, connectedLayer, highlightClass) {
+    if (!connectedLayer) return;
+    connectedLayer.replaceChildren();
+    if (!targetPaths || targetPaths.size === 0) return;
+
+    svg.querySelectorAll('a[href]').forEach((link) => {
+      const href = normalizePath(link.getAttribute('href'));
+      if (!targetPaths.has(href)) return;
+      const polygon = link.querySelector('polygon');
+      if (!polygon) return;
+      const hexagonGroup = polygon.closest('g');
+      if (!hexagonGroup) return;
+      const clone = hexagonGroup.cloneNode(true);
+      clone.setAttribute('class', highlightClass);
+      clone.style.pointerEvents = 'none';
+      connectedLayer.appendChild(clone);
+    });
+  }
+
+  function setConnectedLayerVisible(layer, visible) {
+    if (!layer) return;
+    layer.style.display = visible ? '' : 'none';
+  }
+
+  function buildDirectionalOverlayModel(state, targetPaths) {
+    if (!targetPaths || targetPaths.size === 0) return null;
+    const currentPosition = state.positionLookup.get(state.currentPath) || state.viewCenter;
+    if (!currentPosition) return null;
+
+    const nodes = [];
+    const edges = [];
+
+    targetPaths.forEach((path) => {
+      const position = state.positionLookup.get(path);
+      if (!position) return;
+      nodes.push({
+        path,
+        title: path,
+        x: position.x,
+        y: position.y,
+        isCurrent: false
+      });
+      edges.push({
+        source: state.currentPath,
+        target: path
+      });
+    });
+
+    return { nodes, edges };
+  }
+
+  function renderDirectionalOverlay(model, overlayLayer, linkClass, nodeClass, currentPosition) {
+    if (!overlayLayer) return;
+    overlayLayer.replaceChildren();
+    if (!model || !model.nodes.length) return;
+
+    const nodesByPath = new Map(model.nodes.map((node) => [node.path, node]));
+    model.edges.forEach((edge) => {
+      const target = nodesByPath.get(edge.target);
+      if (!target || !currentPosition) return;
+      overlayLayer.appendChild(createSvgElement('line', {
+        x1: currentPosition.x,
+        y1: currentPosition.y,
+        x2: target.x,
+        y2: target.y,
+        class: linkClass
+      }));
+    });
+
+    model.nodes.forEach((node) => {
+      overlayLayer.appendChild(createSvgElement('circle', {
+        cx: node.x,
+        cy: node.y,
+        r: 4.6,
+        class: nodeClass
+      }));
+    });
+  }
+
+  function renderCurrentOverlayNode(state) {
+    if (!state.currentOverlayLayer) return;
+    state.currentOverlayLayer.replaceChildren();
+    const currentPosition = state.positionLookup.get(state.currentPath) || state.viewCenter;
+    if (!currentPosition) return;
+    state.currentOverlayLayer.appendChild(createSvgElement('circle', {
+      cx: currentPosition.x,
+      cy: currentPosition.y,
+      r: 6.8,
+      class: 'dungeon-backlink-node is-current'
+    }));
+  }
+
+  function renderAllOverlays(state) {
+    const currentPosition = state.positionLookup.get(state.currentPath) || state.viewCenter;
+    renderDirectionalOverlay(
+      buildDirectionalOverlayModel(state, state.mentionPaths),
+      state.mentionsOverlayLayer,
+      'dungeon-outgoing-link',
+      'dungeon-outgoing-node',
+      currentPosition
+    );
+    renderDirectionalOverlay(
+      buildDirectionalOverlayModel(state, state.backlinkPaths),
+      state.backlinksOverlayLayer,
+      'dungeon-backlink-link',
+      'dungeon-backlink-node',
+      currentPosition
+    );
+    renderCurrentOverlayNode(state);
+  }
+
+  function updateOverlayHint(state) {
+    if (!overlayHint) return;
+    overlayHint.classList.remove('is-empty');
+    const items = [];
+    if (state.totalBackLinks > 0 || state.mappedBackLinks > 0) {
+      const backlinkItem = document.createElement('span');
+      backlinkItem.className = 'dungeon-overlay-hint-item dungeon-overlay-hint-item--backlinks';
+      const backlinkRatio = document.createElement('span');
+      backlinkRatio.className = 'dungeon-overlay-hint-ratio';
+      backlinkRatio.textContent = `${state.mappedBackLinks}/${state.totalBackLinks}`;
+      backlinkItem.appendChild(backlinkRatio);
+      backlinkItem.appendChild(document.createTextNode(' backlinks'));
+      items.push(backlinkItem);
+    }
+    if (state.totalMentions > 0 || state.mappedMentions > 0) {
+      const mentionItem = document.createElement('span');
+      mentionItem.className = 'dungeon-overlay-hint-item dungeon-overlay-hint-item--mentions';
+      const mentionRatio = document.createElement('span');
+      mentionRatio.className = 'dungeon-overlay-hint-ratio';
+      mentionRatio.textContent = `${state.mappedMentions}/${state.totalMentions}`;
+      mentionItem.appendChild(mentionRatio);
+      mentionItem.appendChild(document.createTextNode(' mentions'));
+      items.push(mentionItem);
+    }
+    if (items.length === 0) {
+      overlayHint.classList.add('is-empty');
+      overlayHint.textContent = 'No backlinks/mentions yet';
+      return;
+    }
+    overlayHint.replaceChildren();
+    const fragment = document.createDocumentFragment();
+    items.forEach((item, index) => {
+      if (index > 0) {
+        const separator = document.createElement('span');
+        separator.className = 'dungeon-overlay-hint-separator';
+        separator.setAttribute('aria-hidden', 'true');
+        separator.textContent = '·';
+        fragment.appendChild(separator);
+      }
+      fragment.appendChild(item);
+    });
+    overlayHint.appendChild(fragment);
+  }
+
+  function setBacklinksToggle(active, state) {
+    state.backlinksOn = active;
+    const button = toggleButtons.find((candidate) => candidate.dataset.mapToggle === 'backlinks');
+    if (button) {
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-pressed', String(active));
+    }
+
+    const showLayers = state.overlayEnabled && active;
+    setConnectedLayerVisible(state.mentionsConnectedLayer, showLayers);
+    setConnectedLayerVisible(state.backlinksConnectedLayer, showLayers);
+    setConnectedLayerVisible(state.mentionsOverlayLayer, showLayers);
+    setConnectedLayerVisible(state.backlinksOverlayLayer, showLayers);
+
+    // Current-note markers indicate "you are here" and are independent of
+    // the backlinks/mentions overlay data, so they stay visible regardless
+    // of this toggle.
+    setConnectedLayerVisible(state.currentOverlayLayer, true);
+    if (state.currentHighlightLayer) {
+      state.currentHighlightLayer.style.display = '';
+    }
+
+    if (!showLayers) {
+      [state.mentionsOverlayLayer, state.backlinksOverlayLayer].forEach((layer) => {
+        if (layer) layer.replaceChildren();
+      });
+      renderCurrentOverlayNode(state);
+      return;
+    }
+
+    renderAllOverlays(state);
+  }
+
+  function setIconsToggle(active) {
+    const button = toggleButtons.find((candidate) => candidate.dataset.mapToggle === 'icons');
+    if (button) {
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-pressed', String(active));
+    }
+    mapRoot.classList.toggle('icons-hidden', !active);
+  }
+
+  async function loadMapSvg() {
+    try {
+      const svgRes = await fetch('/img/dungeon-map.svg');
+      if (!svgRes.ok) throw new Error('Failed to fetch SVG');
+      const svgText = await svgRes.text();
+      svgContainer.innerHTML = svgText;
+      return svgContainer.querySelector('svg');
+    } catch (error) {
+      console.warn('Could not load dungeon SVG:', error);
+      return null;
+    }
+  }
+
+  const svg = await loadMapSvg();
+  if (!svg) {
+    toggleButtons.forEach((button) => {
+      if (button.dataset.mapToggle === 'backlinks') button.disabled = true;
+    });
+    setIconsToggle(true);
+    return;
+  }
+
+  const state = {
+    backlinksOn: false,
+    overlayEnabled: false,
+    currentPath: normalizePath(currentPageUrl),
+    backlinkEntry: null,
+    backlinkIndex: null,
+    backlinkPaths: new Set(),
+    mentionPaths: new Set(),
+    totalBackLinks: 0,
+    mappedBackLinks: 0,
+    totalMentions: 0,
+    mappedMentions: 0,
+    positionLookup: buildSvgPositionLookup(svg),
+    viewCenter: getViewCenter(svg),
+    currentHighlightLayer: null,
+    mentionsConnectedLayer: createSvgElement('g', { class: 'dungeon-connected-layer dungeon-connected-layer--mentions', 'aria-hidden': 'true' }),
+    backlinksConnectedLayer: createSvgElement('g', { class: 'dungeon-connected-layer dungeon-connected-layer--backlinks', 'aria-hidden': 'true' }),
+    mentionsOverlayLayer: createSvgElement('g', { class: 'dungeon-graph-overlay dungeon-graph-overlay--mentions', 'aria-hidden': 'true' }),
+    backlinksOverlayLayer: createSvgElement('g', { class: 'dungeon-graph-overlay dungeon-graph-overlay--backlinks', 'aria-hidden': 'true' }),
+    currentOverlayLayer: createSvgElement('g', { class: 'dungeon-graph-overlay dungeon-graph-overlay--current', 'aria-hidden': 'true' })
+  };
+
+  try {
+    const anchorLinks = Array.from(svg.querySelectorAll('a[href]'));
+    let hexLink = anchorLinks.find((link) => normalizePath(link.getAttribute('href')) === state.currentPath);
+    if (!hexLink && state.currentPath === '/') {
+      hexLink = anchorLinks.find((link) => normalizePath(link.getAttribute('href')) === '/home');
+    }
+    if (hexLink) {
+      const hexPolygon = hexLink.querySelector('polygon');
+      if (hexPolygon) {
+        const hexagonGroup = hexPolygon.closest('g');
+        if (hexagonGroup) {
+          const clone = hexagonGroup.cloneNode(true);
+          clone.setAttribute('class', 'dungeon-highlight-layer');
+          clone.style.pointerEvents = 'none';
+          state.currentHighlightLayer = clone;
+          const clonePolygon = clone.querySelector('polygon');
+          if (clonePolygon) {
+            clonePolygon.style.stroke = DUNGEON_CURRENT_NOTE_COLOR;
+            clonePolygon.style.strokeWidth = '4px';
+            clonePolygon.style.filter = 'drop-shadow(0 0 8px ' + DUNGEON_CURRENT_NOTE_COLOR + ')';
+          }
+        }
+      }
+    }
+  } catch (error) {
+    console.warn('Could not highlight current hex:', error);
+  }
+
+  const [backlinkIndex, graphData] = await Promise.all([loadBacklinkIndex(), loadGraphData()]);
+  state.backlinkEntry = getBacklinkEntry(backlinkIndex, state.currentPath);
+
+  let drawableBacklinkUrls = [];
+  if (state.backlinkEntry && Array.isArray(state.backlinkEntry.drawableBackLinks)) {
+    drawableBacklinkUrls = state.backlinkEntry.drawableBackLinks.map((item) => normalizePath(item.url || item.normalizedUrl));
+  }
+  if (drawableBacklinkUrls.length === 0 && graphData) {
+    drawableBacklinkUrls = getBacklinkUrlsFromGraph(graphData, state.currentPath);
+  }
+
+  let drawableMentionUrls = [];
+  if (graphData) {
+    drawableMentionUrls = getOutboundUrlsFromGraph(graphData, state.currentPath);
+  }
+
+  const onHiddenSection = DUNGEON_HIDDEN_PREFIXES.some((prefix) => state.currentPath.startsWith(prefix));
+  if (!onHiddenSection && DUNGEON_HIDDEN_PREFIXES.length > 0) {
+    const isHidden = (path) => DUNGEON_HIDDEN_PREFIXES.some((prefix) => path.startsWith(prefix));
+    drawableBacklinkUrls = drawableBacklinkUrls.filter((path) => !isHidden(path));
+    drawableMentionUrls = drawableMentionUrls.filter((path) => !isHidden(path));
+  }
+
+  state.totalBackLinks = state.backlinkEntry && state.backlinkEntry.counts && onHiddenSection
+    ? Number(state.backlinkEntry.counts.total || 0)
+    : drawableBacklinkUrls.length;
+
+  drawableBacklinkUrls.forEach((path) => {
+    if (!path || path === state.currentPath) return;
+    state.backlinkPaths.add(path);
+  });
+
+  drawableMentionUrls.forEach((path) => {
+    if (!path || path === state.currentPath) return;
+    if (state.backlinkPaths.has(path)) return;
+    state.mentionPaths.add(path);
+  });
+
+  state.totalMentions = state.mentionPaths.size;
+
+  state.mappedBackLinks = 0;
+  state.backlinkPaths.forEach((path) => {
+    if (state.positionLookup.has(path)) state.mappedBackLinks += 1;
+  });
+
+  state.mappedMentions = 0;
+  state.mentionPaths.forEach((path) => {
+    if (state.positionLookup.has(path)) state.mappedMentions += 1;
+  });
+
+  state.overlayEnabled = (state.mappedBackLinks > 0 || state.mappedMentions > 0) && state.positionLookup.size > 0;
+
+  markConnectedRooms(svg, state.mentionPaths, state.mentionsConnectedLayer, 'dungeon-outgoing-highlight');
+  markConnectedRooms(svg, state.backlinkPaths, state.backlinksConnectedLayer, 'dungeon-connected-highlight');
+
+  svg.appendChild(state.mentionsConnectedLayer);
+  svg.appendChild(state.backlinksConnectedLayer);
+  svg.appendChild(state.mentionsOverlayLayer);
+  svg.appendChild(state.backlinksOverlayLayer);
+  svg.appendChild(state.currentOverlayLayer);
+  if (state.currentHighlightLayer) {
+    svg.appendChild(state.currentHighlightLayer);
+  }
+  updateOverlayHint(state);
+
+  toggleButtons.forEach((button) => {
+    const toggleKind = button.dataset.mapToggle;
+    if (toggleKind === 'backlinks' && !state.overlayEnabled) {
+      button.disabled = true;
+    }
+    button.addEventListener('click', () => {
+      if (button.disabled) return;
+      const isActive = button.classList.contains('is-active');
+      if (toggleKind === 'backlinks') {
+        setBacklinksToggle(!isActive, state);
+      } else if (toggleKind === 'icons') {
+        setIconsToggle(!isActive);
+      }
+    });
+  });
+  // Backlinks overlay defaults to off on load (opt-in) even when data
+  // exists, to keep first paint uncluttered. Icons default on.
+  setBacklinksToggle(false, state);
+  setIconsToggle(true);
+
+  const legendsContainer = mapRoot.querySelector('.dungeon-legends');
+  if (!legendsContainer) return;
+
+  try {
+    const response = await fetch('/data/dungeon-data.json');
+    if (!response.ok) {
+      legendsContainer.innerHTML = '<span style="color:red">Failed to fetch dungeon-data.json</span>';
+      console.error('Failed to fetch /data/dungeon-data.json:', response.status, response.statusText);
+      return;
+    }
+    const dungeonData = await response.json();
+    if (dungeonData && Array.isArray(dungeonData.legends) && dungeonData.legends.length > 0) {
+      const total = dungeonData.legends.reduce((sum, legend) => sum + (legend.count || 0), 0);
+      legendsContainer.innerHTML =
+        dungeonData.legends.map((legend) => `
+          <div class="dungeon-legend">
+            <span>${legend.count}
+            <img src="/img/${legend.icon}.svg" alt="${legend.label}" /></span>
+          </div>
+        `).join(' + ') +
+        `<div class="dungeon-legend-total"> = ${total}</div>`;
+    } else {
+      legendsContainer.innerHTML = '<span style="color:orange">No legends found in dungeon-data.json</span>';
+      console.warn('No legends found in dungeonData:', dungeonData);
+    }
+  } catch (error) {
+    legendsContainer.innerHTML = '<span style="color:red">Error loading legends. See console for details.</span>';
+    console.error('Could not load dungeon legends:', error);
+  }
+}
+
+function initAllDungeonMaps() {
+  document.querySelectorAll('.dungeon-map-root').forEach((mapRoot) => {
+    initDungeonMapRoot(mapRoot);
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initAllDungeonMaps, { once: true });
+} else {
+  initAllDungeonMaps();
+}
+</script>

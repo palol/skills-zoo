@@ -1,0 +1,56 @@
+{# ---------------------------------------------------------------------------
+   Dungeon map header component (per-note overlay).
+   GATE: renders only where you want the map. Default: map pages
+   (pageMode == "map", i.e. /maps/* or a layout/map tag). To show it on ALL
+   notes, change the condition below to `{% if true %}`. To show it on the
+   home/porch only, gate on your own page-mode value.
+   --------------------------------------------------------------------------- #}
+{% if pageMode == "map" %}
+{%- set currentNode = graph.nodes[page.url] or graph.nodes[graph.homeAlias] -%}
+{%- set relatedCount = 0 -%}
+{%- set mentionCount = 0 -%}
+{%- if currentNode -%}
+  {%- set relatedCount = currentNode.backLinks.length -%}
+  {%- set mentionCount = currentNode.outBound.length -%}
+{%- endif -%}
+<div id="dungeon-map-static" class="dungeon-map-root" data-page-url="{{ page.url | url }}">
+  <div class="dungeon-map-tools">
+    <div class="dungeon-map-toolbar-controls">
+      <fieldset class="dungeon-overlay-controls" aria-label="Map display options">
+        <legend class="sr-only">Map display options</legend>
+        <button type="button" class="dungeon-overlay-btn" data-map-toggle="backlinks" aria-pressed="false">Backlinks</button>
+        <button type="button" class="dungeon-overlay-btn is-active" data-map-toggle="icons" aria-pressed="true">Icons</button>
+      </fieldset>
+    </div>
+    <div class="dungeon-overlay-hint" aria-live="polite">
+      {%- if relatedCount > 0 or mentionCount > 0 -%}
+        {%- if relatedCount > 0 -%}
+          <span class="dungeon-overlay-hint-item dungeon-overlay-hint-item--backlinks"><span class="dungeon-overlay-hint-ratio">{{ relatedCount }}/{{ relatedCount }}</span> backlinks</span>
+        {%- endif -%}
+        {%- if relatedCount > 0 and mentionCount > 0 -%}
+          <span class="dungeon-overlay-hint-separator" aria-hidden="true">·</span>
+        {%- endif -%}
+        {%- if mentionCount > 0 -%}
+          <span class="dungeon-overlay-hint-item dungeon-overlay-hint-item--mentions"><span class="dungeon-overlay-hint-ratio">{{ mentionCount }}/{{ mentionCount }}</span> mentions</span>
+        {%- endif -%}
+      {%- else -%}
+        No backlinks/mentions yet
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="dungeon-static-container" style="background:transparent; position:relative;">
+    <div class="dungeon-svg-inline" style="width:100%;height:auto;display:block;">
+      <img
+        class="dungeon-svg-fallback"
+        src="/img/dungeon-map.svg"
+        alt="Dungeon map"
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+  </div>
+
+  <div class="dungeon-legends"></div>
+</div>
+{% endif %}
