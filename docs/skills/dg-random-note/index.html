@@ -10,6 +10,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../style.css">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236cc79a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='3' width='18' height='18' rx='2'/%3E%3Cpath d='M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5'/%3E%3C/svg%3E">
+<meta property="og:type" content="article">
+<meta property="og:title" content="dg-random-note — skills-zoo">
+<meta property="og:description" content="Add a /random route to an Obsidian Digital Garden site that redirects visitors to a randomly chosen published note. One self-contained page, no build scripts, no core edits.">
+<meta property="og:image" content="https://palol.github.io/skills-zoo/skills/dg-random-note/preview-dark.png">
+<meta property="og:url" content="https://palol.github.io/skills-zoo/skills/dg-random-note/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://palol.github.io/skills-zoo/skills/dg-random-note/preview-dark.png">
 </head>
 <body>
 
@@ -45,7 +52,10 @@
     <span class="tag">navigation</span>
   </div>
 
-  <p>Adds a <code>/random</code> route to your Digital Garden. Visiting <code>/random/</code> redirects the visitor to a randomly chosen <strong>published</strong> note. The whole feature is <strong>one file</strong> — no build scripts, no dependencies, no plugin-core edits.</p>
+  
+  <img class="skill-shot skill-shot--dark" src="./preview-dark.png" alt="dg-random-note example screenshot" loading="lazy" width="900" height="560">
+  <img class="skill-shot skill-shot--light" src="./preview-light.png" alt="dg-random-note example screenshot" loading="lazy" width="900" height="560">
+<p>Adds a <code>/random</code> route to your Digital Garden. Visiting <code>/random/</code> redirects the visitor to a randomly chosen <strong>published</strong> note. The whole feature is <strong>one file</strong> — no build scripts, no dependencies, no plugin-core edits.</p>
 
   <div class="callout">
     <strong>Destination, not button.</strong> This installs the route only. If you also want a floating shuffle <em>button</em>, that lives in <a href="../dg-floating-tray/">dg-floating-tray</a> — its &ldquo;random&rdquo; action already links to <code>/random</code>. This is what that button points at.

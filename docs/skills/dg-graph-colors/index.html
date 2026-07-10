@@ -10,6 +10,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../style.css">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236cc79a' stroke-width='2'%3E%3Ccircle cx='6' cy='6' r='2.5'/%3E%3Ccircle cx='18' cy='7' r='2.5'/%3E%3Ccircle cx='12' cy='18' r='2.5'/%3E%3Cpath d='M8 7.5l7.5 .5M7.5 8l3.5 8M16.5 9l-3.5 7'/%3E%3C/svg%3E">
+<meta property="og:type" content="article">
+<meta property="og:title" content="dg-graph-colors — skills-zoo">
+<meta property="og:description" content="Color an Obsidian Digital Garden's graph nodes and links by top-level folder. The stock Pixi renderer already honors node.color — this populates it via a one-line wrap in the _data graph hook, plus an optional footer legend. No plugin-core edits.">
+<meta property="og:image" content="https://palol.github.io/skills-zoo/skills/dg-graph-colors/preview-dark.png">
+<meta property="og:url" content="https://palol.github.io/skills-zoo/skills/dg-graph-colors/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://palol.github.io/skills-zoo/skills/dg-graph-colors/preview-dark.png">
 </head>
 <body>
 
@@ -45,7 +52,10 @@
     <span class="tag">color</span>
   </div>
 
-  <p>Gives every graph node a <code>color</code> derived from its top-level folder (<code>Maps</code>, <code>Notes</code>, <code>Log</code>, root, …) instead of one flat theme color; links inherit their source node's color. Applies to both the per-note local graph and the full <code>/graph/</code> view. Original work — a cleaner, lower-risk rebuild of the "colored obsidian graph" feature.</p>
+  
+  <img class="skill-shot skill-shot--dark" src="./preview-dark.png" alt="dg-graph-colors example screenshot" loading="lazy" width="900" height="560">
+  <img class="skill-shot skill-shot--light" src="./preview-light.png" alt="dg-graph-colors example screenshot" loading="lazy" width="900" height="560">
+<p>Gives every graph node a <code>color</code> derived from its top-level folder (<code>Maps</code>, <code>Notes</code>, <code>Log</code>, root, …) instead of one flat theme color; links inherit their source node's color. Applies to both the per-note local graph and the full <code>/graph/</code> view. Original work — a cleaner, lower-risk rebuild of the "colored obsidian graph" feature.</p>
 
   <div class="callout">
     <strong>The renderer already supports this.</strong> The stock DG Pixi graph (<code>graphScript.njk</code>) already draws <code>node.color</code> and colors links by their source node — it just has no color to draw until you add one. So this skill only <em>populates</em> <code>node.color</code> at build time and changes <strong>nothing</strong> in the renderer.

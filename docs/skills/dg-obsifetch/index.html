@@ -10,6 +10,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../style.css">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236cc79a' stroke-width='2'%3E%3Cpath d='M12 3C7 3 4 6 4 10c0 2 1 3 8 3s8-1 8-3c0-4-3-7-8-7z'/%3E%3Cpath d='M12 13v8M9 21h6'/%3E%3C/svg%3E">
+<meta property="og:type" content="article">
+<meta property="og:title" content="dg-obsifetch — skills-zoo">
+<meta property="og:description" content="A neofetch-style vault stats readout for an Obsidian Digital Garden — a tribute to tabibyte/obsifetch. Build-time analytics, a curl-able /neofetch.txt route, and a footer card with ASCII art and live theme-color swatches. Upstream-safe, read-only scan.">
+<meta property="og:image" content="https://palol.github.io/skills-zoo/skills/dg-obsifetch/preview-dark.png">
+<meta property="og:url" content="https://palol.github.io/skills-zoo/skills/dg-obsifetch/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://palol.github.io/skills-zoo/skills/dg-obsifetch/preview-dark.png">
 </head>
 <body>
 
@@ -45,7 +52,10 @@
     <span class="tag">stats</span>
   </div>
 
-  <p>Renders a <a href="https://github.com/dylanaraps/neofetch">neofetch</a>-style readout of your Digital Garden — file counts and sizes, orphan files, internal links, and theme — computed at build time. It ships two surfaces from one data source: a <code>curl</code>-able <code>/neofetch.txt</code> plain-text route, and a styled footer card with ASCII art and live theme-color swatches. A tribute to the <a href="https://github.com/tabibyte/obsifetch"><strong>tabibyte/obsifetch</strong></a> Obsidian plugin, which does this inside the app.</p>
+  
+  <img class="skill-shot skill-shot--dark" src="./preview-dark.png" alt="dg-obsifetch example screenshot" loading="lazy" width="900" height="560">
+  <img class="skill-shot skill-shot--light" src="./preview-light.png" alt="dg-obsifetch example screenshot" loading="lazy" width="900" height="560">
+<p>Renders a <a href="https://github.com/dylanaraps/neofetch">neofetch</a>-style readout of your Digital Garden — file counts and sizes, orphan files, internal links, and theme — computed at build time. It ships two surfaces from one data source: a <code>curl</code>-able <code>/neofetch.txt</code> plain-text route, and a styled footer card with ASCII art and live theme-color swatches. A tribute to the <a href="https://github.com/tabibyte/obsifetch"><strong>tabibyte/obsifetch</strong></a> Obsidian plugin, which does this inside the app.</p>
 
   <div class="callout">
     <strong>Finishes the classic half-done embed.</strong> The usual state is a working <code>/neofetch.txt</code> but no visual embed (or a fragile fetch-into-<code>&lt;pre&gt;</code>). This ships a proper <em>inline</em> card — no client fetch, no loading flash, JS-off safe — and keeps the <code>tabibyte/obsifetch</code> tribute credit on both surfaces.

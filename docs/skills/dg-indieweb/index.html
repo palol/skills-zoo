@@ -10,6 +10,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../style.css">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236cc79a' stroke-width='2'%3E%3Ccircle cx='12' cy='12' r='2'/%3E%3Cpath d='M12 3a9 9 0 0 1 0 18M12 3a9 9 0 0 0 0 18'/%3E%3Cpath d='M3 12h18'/%3E%3C/svg%3E">
+<meta property="og:type" content="article">
+<meta property="og:title" content="dg-indieweb — skills-zoo">
+<meta property="og:description" content="Make an Obsidian Digital Garden a first-class IndieWeb citizen: h-card + runtime h-entry microformats, webmention discovery + rel-me, a build-time /webmentions/ display page, and GitHub Actions to fetch received and send outgoing mentions. Upstream-safe, no secrets in code.">
+<meta property="og:image" content="https://palol.github.io/skills-zoo/skills/dg-indieweb/preview-dark.png">
+<meta property="og:url" content="https://palol.github.io/skills-zoo/skills/dg-indieweb/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://palol.github.io/skills-zoo/skills/dg-indieweb/preview-dark.png">
 </head>
 <body>
 
@@ -45,7 +52,10 @@
     <span class="tag">webmentions</span>
   </div>
 
-  <p>Makes your Digital Garden a first-class <a href="https://indieweb.org/"><strong>IndieWeb</strong></a> citizen. It exposes valid <code>h-card</code> and <code>h-entry</code> microformats, advertises webmention + IndieAuth discovery and <code>rel="me"</code> identity, fetches the mentions your pages receive and shows them on a <code>/webmentions/</code> page (plus optional per-note facepiles), and ships two GitHub Actions to fetch received and send outgoing webmentions.</p>
+  
+  <img class="skill-shot skill-shot--dark" src="./preview-dark.png" alt="dg-indieweb example screenshot" loading="lazy" width="900" height="560">
+  <img class="skill-shot skill-shot--light" src="./preview-light.png" alt="dg-indieweb example screenshot" loading="lazy" width="900" height="560">
+<p>Makes your Digital Garden a first-class <a href="https://indieweb.org/"><strong>IndieWeb</strong></a> citizen. It exposes valid <code>h-card</code> and <code>h-entry</code> microformats, advertises webmention + IndieAuth discovery and <code>rel="me"</code> identity, fetches the mentions your pages receive and shows them on a <code>/webmentions/</code> page (plus optional per-note facepiles), and ships two GitHub Actions to fetch received and send outgoing webmentions.</p>
 
   <div class="callout">
     <strong>Fixes the classic half-done setup.</strong> Most DG IndieWeb attempts stall at "h-card + a data fetcher" with no display page, no real h-entry, dead npm scripts, or — worst — a webmention.io token hardcoded into a public repo. This kit adds the missing <code>/webmentions/</code> page, real h-entry <em>without editing plugin core</em>, and reads the token from the environment only.

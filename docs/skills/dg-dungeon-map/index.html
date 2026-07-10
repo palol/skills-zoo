@@ -10,6 +10,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../style.css">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236cc79a' stroke-width='2'%3E%3Cpath d='M4 20V8a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v12'/%3E%3Cpath d='M4 20h16M9 20v-5h6v5'/%3E%3Ccircle cx='9' cy='9' r='1'/%3E%3Ccircle cx='15' cy='9' r='1'/%3E%3C/svg%3E">
+<meta property="og:type" content="article">
+<meta property="og:title" content="dg-dungeon-map — skills-zoo">
+<meta property="og:description" content="Add an interactive hex-grid dungeon map to an Obsidian Digital Garden site — a pi-driven spiral of your notes, a you-are-here marker, and backlink/mention overlays from graph.json.">
+<meta property="og:image" content="https://palol.github.io/skills-zoo/skills/dg-dungeon-map/preview-dark.png">
+<meta property="og:url" content="https://palol.github.io/skills-zoo/skills/dg-dungeon-map/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://palol.github.io/skills-zoo/skills/dg-dungeon-map/preview-dark.png">
 </head>
 <body>
 
@@ -45,7 +52,10 @@
     <span class="tag">svg</span>
   </div>
 
-  <p>Turns every published note into a hexagon on a spiral, rendered as a clickable map in your note header. The current page gets a <strong>“you are here”</strong> marker, and an optional overlay draws lines to that note's <strong>backlinks and mentions</strong> — all pulled from your Digital Garden's <code>graph.json</code>.</p>
+  
+  <img class="skill-shot skill-shot--dark" src="./preview-dark.png" alt="dg-dungeon-map example screenshot" loading="lazy" width="900" height="560">
+  <img class="skill-shot skill-shot--light" src="./preview-light.png" alt="dg-dungeon-map example screenshot" loading="lazy" width="900" height="560">
+<p>Turns every published note into a hexagon on a spiral, rendered as a clickable map in your note header. The current page gets a <strong>“you are here”</strong> marker, and an optional overlay draws lines to that note's <strong>backlinks and mentions</strong> — all pulled from your Digital Garden's <code>graph.json</code>.</p>
 
   <div class="callout">
     <strong>The path follows π.</strong> Notes are laid out oldest-first along an axial hex spiral; the digits of π decide how many content hexes then how many empty “ambient” hexes to place, so the rhythm of the walk is literally pi. Inspired by <a href="https://brad.quest/">brad.quest</a>'s dungeon and <a href="https://hermitage.utsob.me/">Hermitage</a>'s forest.
