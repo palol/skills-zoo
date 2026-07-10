@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>dg-skill-authoring — skills-zoo</title>
+<meta name="description" content="A meta-skill that teaches an AI agent how to author a new upstream-safe Agent Skill for an Obsidian Digital Garden site — the pattern behind this zoo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236cc79a' stroke-width='2'%3E%3Cpath d='M4 20V8a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v12'/%3E%3Cpath d='M4 20h16M9 20v-5h6v5'/%3E%3Ccircle cx='9' cy='9' r='1'/%3E%3Ccircle cx='15' cy='9' r='1'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../../">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M4 20V8a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v12"/>
+        <path d="M4 20h16M9 20v-5h6v5"/>
+        <circle cx="9" cy="9" r="1"/><circle cx="15" cy="9" r="1"/>
+      </svg>
+      <span class="brand-name">skills-zoo</span>
+    </a>
+    <span class="header-spacer"></span>
+    <a class="header-link" href="https://github.com/palol/skills-zoo/tree/main/skills/dg-skill-authoring">Source</a>
+    <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme"></button>
+  </div>
+</header>
+
+<main class="wrap prose">
+
+  <a class="backlink" href="../../">← all skills</a>
+
+  <h1>dg-skill-authoring</h1>
+  <p class="sub">A meta-skill: how to build a new Digital Garden skill.</p>
+
+  <div class="meta-row">
+    <span class="risk-pill">L1 · low risk</span>
+    <span class="tag">v1.0</span>
+    <span class="tag">MIT</span>
+    <span class="tag">meta-skill</span>
+    <span class="tag">digital-garden</span>
+  </div>
+
+  <p>This one doesn't add a feature to your site — it teaches your agent how to <strong>author another skill</strong> that does. Hand it a Digital Garden customization (a component, widget, style, layout tweak) and it produces a spec-compliant, upstream-safe <code>SKILL.md</code> package that any other DG user's agent can install — following the exact pattern behind this zoo.</p>
+
+  <div class="callout">
+    <strong>It's the pattern, packaged.</strong> Everything learned building <a href="../dg-floating-tray/">dg-floating-tray</a> — user-owned paths, autoloading, theme tokens, accessibility, consolidated tuning knobs — encoded as reusable authoring guidance.
+  </div>
+
+  <h2>How to use it</h2>
+  <p>Copy the skill folder into your agent's skills directory, then in your skills repo ask:</p>
+  <pre><code>git clone https://github.com/palol/skills-zoo.git
+cp -r skills-zoo/skills/dg-skill-authoring ~/.claude/skills/</code></pre>
+  <p style="margin-top:-.75rem;color:var(--text-muted);font-size:var(--text-sm)">(or <code>~/.agents/skills/</code>)</p>
+  <blockquote><p>Use the <strong>dg-skill-authoring</strong> skill to turn this custom callout box into a reusable Digital Garden skill. Scope it, scaffold the folder, write spec-compliant frontmatter, and validate it.</p></blockquote>
+  <p>It walks through scoping → scaffolding → frontmatter → body → assets/references → risk label → <code>agentskills validate</code> → publishing to the zoo.</p>
+
+  <h2>The five DG invariants</h2>
+  <p>Every skill it produces must satisfy these — the real product of the meta-skill:</p>
+  <ol>
+    <li><strong>User-owned paths only.</strong> Write into <code>components/user/common/&lt;slot&gt;/</code>, <code>styles/custom-style.scss</code>, <code>helpers/userUtils.js</code>, <code>notes/</code> — never core layouts. Survives upstream <code>git pull</code>.</li>
+    <li><strong>Autoload, don't wire.</strong> DG's <code>dynamics.js</code> globs the slot folder and sorts alphabetically; a filename prefix (<code>zzz-</code>/<code>aaa-</code>) controls render order. No layout edit.</li>
+    <li><strong>Theme via tokens.</strong> Style with DG variables (<code>--background-secondary</code>, <code>--text-accent</code>, …) so light/dark work automatically. Colors are never a knob.</li>
+    <li><strong>Accessibility is not optional.</strong> Real text in <code>aria-label</code>, icons <code>aria-hidden</code>, keyboard-operable controls, visible focus, reduced-motion respected.</li>
+    <li><strong>Consolidate tunables.</strong> One <code>&gt;&gt;&gt; TUNING KNOBS &lt;&lt;&lt;</code> <code>:root</code> block; derive everything from it.</li>
+  </ol>
+  <p>If a feature can't respect invariants 1–2 (needs a core/layout edit), the skill scopes it down or stops — it won't ship something that breaks on update.</p>
+
+  <h2>Spec correctness, baked in</h2>
+  <p>It enforces the <a href="https://agentskills.io">agentskills.io</a> rules that informal examples get wrong:</p>
+  <ul>
+    <li>Only <code>name</code>, <code>description</code>, <code>license</code>, <code>compatibility</code>, <code>metadata</code>, <code>allowed-tools</code> validate at top level — <code>version</code>/<code>author</code>/<code>risk-level</code> nest under <code>metadata:</code>.</li>
+    <li><code>description</code> written as a <em>trigger condition</em> (what it does + "Use when…" + literal trigger phrases) — it's the only field the agent reads to activate.</li>
+    <li>Progressive disclosure: lean <code>SKILL.md</code> body, verbose detail in <code>references/</code>, drop-in files in <code>assets/</code>.</li>
+    <li>Validate with <code>agentskills validate &lt;dir&gt;/</code>; package bundled skills as a zip of the whole directory.</li>
+  </ul>
+
+  <h2>What's in the box</h2>
+  <ul class="filelist" role="list">
+    <li><span class="fname">SKILL.md</span> — the meta-skill: invariants + 8-step authoring workflow</li>
+    <li><span class="fname">assets/SKILL.template.md</span> — starter frontmatter + body skeleton</li>
+    <li><span class="fname">references/dg-mechanics.md</span> — DG plugin internals + verified spec rules</li>
+    <li><span class="fname">references/authoring-workflow.md</span> — annotated walkthrough + ship-gate checklist</li>
+  </ul>
+
+  <h2>Prerequisites</h2>
+  <ul>
+    <li>An agent that supports the <a href="https://agentskills.io">Agent Skills</a> format and can run <code>agentskills validate</code>.</li>
+    <li>A target Digital Garden repo (oleeskild plugin + Eleventy) the produced skill will apply to.</li>
+  </ul>
+  <p><em>Scope is Digital Garden only</em> — the invariants encode DG conventions (autoloader, theme tokens, user-owned paths), not Quartz/Astro/plain-Eleventy.</p>
+
+  <p style="margin-top:2.5rem">
+    <a href="https://github.com/palol/skills-zoo/tree/main/skills/dg-skill-authoring">Browse the full source on GitHub →</a>
+  </p>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span class="foot-mono">skills-zoo · MIT</span>
+    <span class="header-spacer"></span>
+    <a href="../../">All skills</a>
+    <a href="https://github.com/palol/skills-zoo">Source</a>
+    <a href="https://agentskills.io">Spec</a>
+  </div>
+</footer>
+
+<script src="../../theme.js"></script>
+</body>
+</html>

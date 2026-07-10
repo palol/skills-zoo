@@ -11,6 +11,7 @@ your agent, done.
 | Skill | What it does | Risk |
 |---|---|---|
 | [`dg-floating-tray`](skills/dg-floating-tray/) | Adds a bottom floating dock + expandable tray (nav, theme toggle, search, social) to an Obsidian Digital Garden (Eleventy) site. Upstream-safe, no core edits. | L1 (writes 2 files, reversible) |
+| [`dg-skill-authoring`](skills/dg-skill-authoring/) | Meta-skill: teaches an agent how to author a new upstream-safe Digital Garden skill — spec-compliant frontmatter, progressive disclosure, the five DG invariants, validate & package. | L1 (scaffolds skill files, reversible) |
 
 ## Install a skill
 
