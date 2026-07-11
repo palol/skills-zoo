@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#121311">
 <title>dg-summon-cats — skills-zoo</title>
 <meta name="description" content="Summon Greta and Nigel, two Neko pixel cats that visitors direct around an Obsidian Digital Garden by tapping or clicking.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,6 +22,8 @@
 </head>
 <body>
 
+<a class="skip-link" href="#main">Skip to content</a>
+
 <header class="site-header">
   <div class="wrap">
     <a class="brand" href="../../">
@@ -37,7 +40,7 @@
   </div>
 </header>
 
-<main class="wrap prose">
+<main id="main" class="wrap prose">
   <a class="backlink" href="../../">← all skills</a>
 
   <h1>dg-summon-cats</h1>
@@ -63,7 +66,7 @@
   <h2>Install with an agent</h2>
   <pre><code>git clone https://github.com/palol/skills-zoo.git
 cp -r skills-zoo/skills/dg-summon-cats ~/.claude/skills/</code></pre>
-  <p style="margin-top:-.75rem;color:var(--text-muted);font-size:var(--text-sm)">(or <code>~/.agents/skills/</code>)</p>
+  <p class="aside-note">(or <code>~/.agents/skills/</code>)</p>
   <blockquote><p>Use <strong>dg-summon-cats</strong> to add Greta and Nigel to this Digital Garden. Install the footer component, styles, and local sprite sheets; build it; then verify pointer and reduced-motion behavior.</p></blockquote>
 
   <h2>What it installs</h2>
@@ -102,7 +105,7 @@ cp -r skills-zoo/skills/dg-summon-cats ~/.claude/skills/</code></pre>
     <li><code>src/site/img</code> passed through to the built <code>/img</code> route.</li>
   </ul>
 
-  <p style="margin-top:2.5rem">
+  <p class="source-cta">
     <a href="https://github.com/palol/skills-zoo/tree/main/skills/dg-summon-cats">Browse the full source on GitHub →</a>
   </p>
 </main>

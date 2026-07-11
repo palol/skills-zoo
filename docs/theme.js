@@ -1,10 +1,17 @@
 (function () {
   var r = document.documentElement;
   var key = 'skills-zoo-theme';
+  var colors = { dark: '#121311', light: '#f6f5f1' };
   var saved = null;
   try { saved = localStorage.getItem(key); } catch (e) {}
   var d = saved || (matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light');
-  r.setAttribute('data-theme', d);
+
+  function apply() {
+    r.setAttribute('data-theme', d);
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', colors[d]);
+  }
+  apply();
 
   var sun = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
   var moon = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg>';
@@ -19,7 +26,7 @@
       paint(btn);
       btn.addEventListener('click', function () {
         d = d === 'dark' ? 'light' : 'dark';
-        r.setAttribute('data-theme', d);
+        apply();
         try { localStorage.setItem(key, d); } catch (e) {}
         paint(btn);
       });

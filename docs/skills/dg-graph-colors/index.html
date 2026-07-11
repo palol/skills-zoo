@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#121311">
 <title>dg-graph-colors — skills-zoo</title>
 <meta name="description" content="Color an Obsidian Digital Garden's graph nodes and links by top-level folder. The stock Pixi renderer already honors node.color — this populates it via a one-line wrap in the _data graph hook, plus an optional footer legend. No plugin-core edits.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,6 +22,8 @@
 </head>
 <body>
 
+<a class="skip-link" href="#main">Skip to content</a>
+
 <header class="site-header">
   <div class="wrap">
     <a class="brand" href="../../">
@@ -37,7 +40,7 @@
   </div>
 </header>
 
-<main class="wrap prose">
+<main id="main" class="wrap prose">
 
   <a class="backlink" href="../../">← all skills</a>
 
@@ -73,7 +76,7 @@
   <p>Copy the skill folder into your agent's skills directory, then in your Digital Garden repo ask:</p>
   <pre><code>git clone https://github.com/palol/skills-zoo.git
 cp -r skills-zoo/skills/dg-graph-colors ~/.claude/skills/</code></pre>
-  <p style="margin-top:-.75rem;color:var(--text-muted);font-size:var(--text-sm)">(or <code>~/.agents/skills/</code>)</p>
+  <p class="aside-note">(or <code>~/.agents/skills/</code>)</p>
   <blockquote><p>Use the <strong>dg-graph-colors</strong> skill to color my digital garden's graph by folder. Drop in the two helpers, set my folder→color map, apply the one-line wrap to the graph data hook, add the optional legend, then build and walk me through verification.</p></blockquote>
 
   <h2>What it touches</h2>
@@ -109,7 +112,7 @@ cp -r skills-zoo/skills/dg-graph-colors ~/.claude/skills/</code></pre>
   </ul>
   <p><em>Scope is Digital Garden only</em> — this is the published-site graph, not Obsidian's in-app graph, and not Quartz.</p>
 
-  <p style="margin-top:2.5rem">
+  <p class="source-cta">
     <a href="https://github.com/palol/skills-zoo/tree/main/skills/dg-graph-colors">Browse the full source on GitHub →</a>
   </p>
 

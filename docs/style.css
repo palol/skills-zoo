@@ -3,6 +3,7 @@
    ============================================================ */
 
 :root, [data-theme="light"] {
+  color-scheme: light;
   --bg:            #f6f5f1;
   --surface:       #fbfaf7;
   --surface-2:     #efece5;
@@ -36,6 +37,7 @@
 }
 
 [data-theme="dark"] {
+  color-scheme: dark;
   --bg:            #121311;
   --surface:       #191b18;
   --surface-2:     #20231f;
@@ -55,6 +57,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
+    color-scheme: dark;
     --bg:#121311; --surface:#191b18; --surface-2:#20231f; --border:#2c302a;
     --divider:#23261f; --text:#d6d4cc; --text-muted:#8b8a80; --text-faint:#5c5b53;
     --accent:#6cc79a; --accent-hover:#85d6ae; --accent-soft:#1e2a23;
@@ -92,6 +95,15 @@ p { text-wrap:pretty; max-width:68ch; }
 }
 
 a,button { transition:color .18s ease, background .18s ease, border-color .18s ease, transform .18s ease, box-shadow .18s ease; }
+
+/* ---------- skip link ---------- */
+.skip-link {
+  position:absolute; left:1rem; top:-3rem; z-index:100;
+  font-family:var(--font-mono); font-size:var(--text-sm);
+  background:var(--accent); color:var(--bg); padding:.5rem .9rem;
+  border-radius:var(--radius-sm); transition:top .15s ease;
+}
+.skip-link:focus { top:1rem; color:var(--bg); text-decoration:none; }
 
 /* ---------- layout ---------- */
 .wrap { max-width:var(--maxw); margin-inline:auto; padding-inline:1.5rem; }
@@ -242,6 +254,10 @@ section { padding-block:2.25rem; }
   background:color-mix(in srgb, #d98a1f 18%, transparent);
   color:#d98a1f;
 }
+[data-theme="dark"] .risk-pill--l2 {
+  background:color-mix(in srgb, #e0a04a 18%, transparent);
+  color:#e0a04a;
+}
 
 /* ---------- how-it-works steps ---------- */
 .steps { display:grid; gap:.9rem; counter-reset:step; }
@@ -301,6 +317,8 @@ section { padding-block:2.25rem; }
 .backlink:hover { color:var(--accent); text-decoration:none; }
 
 .meta-row { display:flex; gap:.5rem; flex-wrap:wrap; align-items:center; margin-bottom:1.5rem; }
+.aside-note { margin-top:-.75rem; color:var(--text-muted); font-size:var(--text-sm); }
+.source-cta { margin-top:2.5rem; }
 .filelist { list-style:none; margin:0; padding:0; display:grid; gap:.5rem; }
 .filelist li {
   font-family:var(--font-mono); font-size:var(--text-sm); color:var(--text-muted);
@@ -333,6 +351,7 @@ section { padding-block:2.25rem; }
   .hero { padding-block:3rem 1.75rem; }
   .hero .lede { line-height:1.6; }
   .hero .install-hint { margin-top:1.75rem; padding-left:.9rem; gap:.6rem; }
+  .install-hint code { white-space:normal; overflow-wrap:anywhere; }
   section { padding-block:1.75rem; }
   .skill-index { margin-bottom:1.25rem; }
   .skill-index-pills { gap:.35rem; }

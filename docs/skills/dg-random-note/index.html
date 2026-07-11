@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#121311">
 <title>dg-random-note — skills-zoo</title>
 <meta name="description" content="Add a /random route to an Obsidian Digital Garden site that redirects visitors to a randomly chosen published note. One self-contained page, no build scripts, no core edits.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,6 +22,8 @@
 </head>
 <body>
 
+<a class="skip-link" href="#main">Skip to content</a>
+
 <header class="site-header">
   <div class="wrap">
     <a class="brand" href="../../">
@@ -37,7 +40,7 @@
   </div>
 </header>
 
-<main class="wrap prose">
+<main id="main" class="wrap prose">
 
   <a class="backlink" href="../../">← all skills</a>
 
@@ -72,7 +75,7 @@ empty pool → redirect to FALLBACK_URL (default "/")</code></pre>
   <p>Copy the skill folder into your agent's skills directory, then in your Digital Garden repo ask:</p>
   <pre><code>git clone https://github.com/palol/skills-zoo.git
 cp -r skills-zoo/skills/dg-random-note ~/.claude/skills/</code></pre>
-  <p style="margin-top:-.75rem;color:var(--text-muted);font-size:var(--text-sm)">(or <code>~/.agents/skills/</code>)</p>
+  <p class="aside-note">(or <code>~/.agents/skills/</code>)</p>
   <blockquote><p>Use the <strong>dg-random-note</strong> skill to add a <code>/random</code> route to my digital garden that redirects to a random published note. Install the one page file, then build and walk me through verification.</p></blockquote>
 
   <h2>What it touches</h2>
@@ -101,7 +104,7 @@ cp -r skills-zoo/skills/dg-random-note ~/.claude/skills/</code></pre>
   </ul>
   <p><em>Scope is Digital Garden only</em> — <code>collections.note</code> and the <code>dg-publish</code> flag are DG-specific.</p>
 
-  <p style="margin-top:2.5rem">
+  <p class="source-cta">
     <a href="https://github.com/palol/skills-zoo/tree/main/skills/dg-random-note">Browse the full source on GitHub →</a>
   </p>
 
