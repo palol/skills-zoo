@@ -95,8 +95,16 @@ resources ⇒ ship the zip; SKILL.md-only ⇒ ship the `.md`.
    one-line description).
 3. `docs/skills/dg-<feature>/index.html` — copy an existing detail page as a template; update
    title, description, install steps, tuning, a11y, file manifest, prerequisites.
-4. `README.md` — add a row to the skills table.
-5. Commit + push. The Pages workflow (`.github/workflows/pages.yml`) auto-deploys on `docs/**`.
+4. Build the target Digital Garden and complete the feature's `references/verify.md` checks.
+   Capture the actual rendered feature in dark and light themes at 900×560, then save the pair as
+   `docs/skills/dg-<feature>/preview-dark.png` and `preview-light.png`. The index card and detail
+   page must reference these files. Use real content and real feature state: do not use generated
+   art, reconstructed UI, invented data, or hand-built mockups.
+5. Inspect both captures before publishing: the feature is legible, the two files genuinely show
+   their respective themes, and every visible label, count, icon, and control came from the built
+   site.
+6. `README.md` — add a row to the skills table.
+7. Commit + push. The Pages workflow (`.github/workflows/pages.yml`) auto-deploys on `docs/**`.
 
 ## Checklist (ship gate)
 
@@ -108,4 +116,5 @@ resources ⇒ ship the zip; SKILL.md-only ⇒ ship the `.md`.
 - [ ] Frontmatter spec-valid (`agentskills validate` passes); description is a trigger.
 - [ ] Risk level labeled in description + body.
 - [ ] references/ + assets/ complete; SKILL.md <500 lines.
-- [ ] Added to zoo README + docs site (card + detail page).
+- [ ] Real 900×560 dark/light feature captures added; no generated or reconstructed product UI.
+- [ ] Added to zoo README + docs site (card + detail page + paired previews).

@@ -129,8 +129,12 @@ If publishing to `skills-zoo`:
 1. Drop the folder in `skills/dg-<feature>/`.
 2. Add a `<a class="skill-card">` block to `docs/index.html` and a
    `docs/skills/dg-<feature>/index.html` detail page (copy an existing one as a template).
-3. Add a row to the README skills table.
-4. Commit + push — the Pages workflow auto-deploys `docs/**`.
+3. Build the target Digital Garden and capture the feature's real rendered output in both themes.
+   Save 900×560 screenshots as `docs/skills/dg-<feature>/preview-dark.png` and
+   `preview-light.png`; reference them from both pages. Never substitute generated art or a
+   hand-built mockup for product output.
+4. Add a row to the README skills table.
+5. Commit + push — the Pages workflow auto-deploys `docs/**`.
 
 ## Key Design Points
 
