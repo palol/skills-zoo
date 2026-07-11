@@ -190,3 +190,10 @@ postbuild hook. Fully reversible via git (remove the files + the postbuild line)
 - `assets/aa-graph-helpers.njk` — head slot: shared `graph.json` lookups (`window.DgGraphHelpers`).
 - `assets/zz-dungeon-map-init.njk` — footer slot: fetch SVG, mark current hex, draw overlays.
 - `assets/dungeon-map.scss` — styles (TUNING KNOBS on top; colors inherit theme).
+
+## Validate & Package
+
+```bash
+npx skills-ref validate skills/dg-dungeon-map/
+zip -rq dg-dungeon-map.zip dg-dungeon-map
+```

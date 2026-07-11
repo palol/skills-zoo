@@ -147,7 +147,7 @@ build`) is the site's own build. Review the two assets before committing.
 Before sharing an edited version:
 
 ```bash
-agentskills validate dg-floating-tray/     # pass the directory, not a file
+npx skills-ref validate skills/dg-floating-tray/     # pass the directory, not a file
 cd .. && zip -r dg-floating-tray.zip dg-floating-tray   # bundled resources => zip the whole dir
 ```
 

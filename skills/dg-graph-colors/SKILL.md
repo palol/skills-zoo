@@ -1,14 +1,14 @@
 ---
 name: dg-graph-colors
-description: "Color an Obsidian Digital Garden's graph nodes and links by their top-level folder. Use when the user wants the oleeskild/Eleventy Digital Garden graph view (local + full) to distinguish content areas by color instead of one flat theme color. Ships a build-time color injector plus optional footer legend, driven by a single folder->color map. No plugin-core edits: the stock Pixi renderer already honors node.color, so this only populates it via a one-line wrap in the user-owned _data graph hook."
+description: "Color an Obsidian Digital Garden's graph nodes and links by their top-level folder. Use when the user wants the oleeskild/Eleventy Digital Garden graph view (local + full) to distinguish content areas by color instead of one flat theme color. Ships a build-time color injector plus optional footer legend, driven by a single folder->color map. No plugin-core edits: the stock Pixi renderer already honors node.color, so this only populates it via a one-line wrap in the user-owned _data graph hook. Trigger on: colored graph, graph colors, folder colors, color graph by folder, graph legend, digital garden graph colors."
 license: MIT
 metadata:
-  author: Paolo Gabriel
-  version: "1.0"
-  risk-level: L2
+  author: palol
+  version: '1.0'
+  risk-level: "L2 — two additive drop-in helpers plus one wrapping edit to a user-owned _data graph hook. Build-time, read-only transform on the graph object; no network, no plugin-core edits. Fully reversible via git."
 ---
 
-# dg-graph-colors
+# Digital Garden Graph Colors
 
 Color the Digital Garden graph by folder. Each node gets a `color` from its
 top-level folder (`Maps`, `Notes`, `Log`, root, …); links inherit their source
@@ -37,7 +37,7 @@ and colors links by source-node color — it just has no color to draw until you
 add one, so this skill injects `color` per node at build time and changes
 nothing in the renderer. Full data flow in `references/architecture.md`.
 
-## Prerequisites
+## Prerequisites (verify first)
 
 - oleeskild DG fork (Eleventy) with the Pixi graph (`graphScript.njk` present).
 - The graph global built via `linkUtils.getGraph` — stock DG wires this in
@@ -67,7 +67,7 @@ nothing in the renderer. Full data flow in `references/architecture.md`.
    +  graph: async (data) => addGraphColors(await getGraph(data)),
    ```
    If your fork builds the graph elsewhere, apply the same wrap there — see
-   `assets/eleventyComputed.graph-hook.md`.
+   `references/eleventyComputed.graph-hook.md`.
 
 4. **(Optional) legend.** Copy `assets/zz-graph-legend.njk` →
    `src/site/_includes/components/user/common/footer/zz-graph-legend.njk` and
@@ -98,13 +98,23 @@ a color field — build-time and read-only. Reversible via git. Rated above L1
 because it inserts a step into the graph build pipeline; kept below L3 by
 avoiding any edit to shared build helpers or the renderer.
 
-## References & Assets
+## Reference Files
 
-- `assets/folderColors.js` — the folder→color map (edit this).
-- `assets/graphColors.js` — build-time color injector (`addGraphColors`).
-- `assets/eleventyComputed.graph-hook.md` — the exact one-line wrap + fallback.
-- `assets/zz-graph-legend.njk` — optional footer legend (autoloaded).
-- `assets/graph-colors.scss` — optional legend styles (TUNING KNOBS on top).
 - `references/architecture.md` — renderer support, data flow, why L2 not L3.
 - `references/tuning.md` — palette, color-by-something-else, legend knobs.
 - `references/verify.md` — post-install checks and gotchas.
+- `references/eleventyComputed.graph-hook.md` — the exact one-line wrap + fallback.
+
+## Assets
+
+- `assets/folderColors.js` — the folder→color map (edit this).
+- `assets/graphColors.js` — build-time color injector (`addGraphColors`).
+- `assets/zz-graph-legend.njk` — optional footer legend (autoloaded).
+- `assets/graph-colors.scss` — optional legend styles (TUNING KNOBS on top).
+
+## Validate & Package
+
+```bash
+npx skills-ref validate skills/dg-graph-colors/
+zip -rq dg-graph-colors.zip dg-graph-colors
+```

@@ -58,7 +58,7 @@ markup shape, autoloader slots, and theme tokens are DG-specific.
 Abort with a plain explanation if the target isn't DG+Eleventy with the
 autoloader.
 
-## Install workflow
+## Instructions
 
 Pick the pieces you need (all optional except where noted). Full kit:
 
@@ -88,7 +88,7 @@ Pick the pieces you need (all optional except where noted). Full kit:
    [indiewebify.me](https://indiewebify.me/) and functionality at
    [webmention.rocks](https://webmention.rocks/).
 
-## Key design points
+## Key Design Points
 
 - **Fixes the classic half-done setup.** Adds the missing `/webmentions/` page,
   real h-entry (no core edit), and removes any hardcoded token — the three
@@ -106,7 +106,7 @@ two GitHub Actions that execute Node scripts, read your notes/sitemap, and make
 env-gated network calls to webmention.io. No secrets in code; no plugin-core
 edits; reversible via git. Review `scripts/*.js` before enabling the workflows.
 
-## Reference files
+## Reference Files
 
 - `references/architecture.md` — the three layers, why runtime h-entry, both
   receive paths, and the full config surface.
@@ -120,3 +120,10 @@ edits; reversible via git. Review `scripts/*.js` before enabling the workflows.
 `webmentions.njk`, `zz-note-webmentions.njk`, `indieweb.scss`,
 `fetch-webmentions.js`, `send-webmentions.js`, `fetch-webmentions.yml`,
 `send-webmentions.yml`.
+
+## Validate & Package
+
+```bash
+npx skills-ref validate skills/dg-indieweb/
+zip -rq dg-indieweb.zip dg-indieweb
+```

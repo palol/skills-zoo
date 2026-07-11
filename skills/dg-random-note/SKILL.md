@@ -5,7 +5,7 @@ license: MIT
 metadata:
   author: palol
   version: '1.0'
-  risk-level: "L1 — adds a single new page file (src/site/random.njk). No build scripts, no code execution beyond the local `agentskills validate` check, no secrets, no network calls, no core/layout edits. Fully reversible: delete the one file."
+  risk-level: "L1 — adds a single new page file (src/site/random.njk). No build scripts, no code execution beyond the local `skills-ref validate` check, no secrets, no network calls, no core/layout edits. Fully reversible: delete the one file."
 ---
 
 # Digital Garden — Random Note Route
@@ -43,9 +43,15 @@ the `collections.note` collection and `dg-publish` flag are DG-specific.
 5. **One config knob.** `FALLBACK_URL` (inline, top of the `<script>`) — where to send visitors if
    no published notes exist. Nothing else to tune.
 
-## Install workflow
+## Prerequisites (verify first)
 
-1. **Confirm prerequisites** (see below). Abort with a plain explanation if the target isn't a DG
+- An Obsidian Digital Garden (oleeskild plugin + Eleventy) repo with a working `collections.note`
+  collection and the standard `components/pageheader.njk` include.
+- Notes use the `dg-publish` frontmatter flag (the DG default). The random pool = published notes.
+
+## Instructions
+
+1. **Confirm prerequisites** (above). Abort with a plain explanation if the target isn't a DG
    repo.
 2. **Copy the route file** into the site root:
    ```
@@ -61,23 +67,24 @@ the `collections.note` collection and `dg-publish` flag are DG-specific.
    If `dg-floating-tray` is installed, its shuffle button already targets `/random` — no change
    needed.
 
-## Prerequisites
+## Reference Files
 
-- An Obsidian Digital Garden (oleeskild plugin + Eleventy) repo with a working `collections.note`
-  collection and the standard `components/pageheader.njk` include.
-- Notes use the `dg-publish` frontmatter flag (the DG default). The random pool = published notes.
-
-## What's in the box
-
-- `assets/random.njk` — the single self-contained route (build-time list + runtime redirect).
 - `references/architecture.md` — how the build-time loop + runtime pick work, and why a root page
   is upstream-safe.
 - `references/verify.md` — post-build QA checklist (route, pool correctness, back-button, fallback).
 
-## Validate & package
+## Assets
 
-From the skills directory:
-```
-agentskills validate dg-random-note/
+- `assets/random.njk` — the single self-contained route (build-time list + runtime redirect).
+
+## Risk Level
+
+**L1 (low).** Adds a single new page file (`src/site/random.njk`). No build scripts, no secrets,
+no network calls, no core/layout edits. Fully reversible: delete the one file.
+
+## Validate & Package
+
+```bash
+npx skills-ref validate skills/dg-random-note/
 zip -rq dg-random-note.zip dg-random-note
 ```

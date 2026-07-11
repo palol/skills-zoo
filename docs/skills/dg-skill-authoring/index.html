@@ -66,7 +66,7 @@
 cp -r skills-zoo/skills/dg-skill-authoring ~/.claude/skills/</code></pre>
   <p style="margin-top:-.75rem;color:var(--text-muted);font-size:var(--text-sm)">(or <code>~/.agents/skills/</code>)</p>
   <blockquote><p>Use the <strong>dg-skill-authoring</strong> skill to turn this custom callout box into a reusable Digital Garden skill. Scope it, scaffold the folder, write spec-compliant frontmatter, and validate it.</p></blockquote>
-  <p>It walks through scoping → scaffolding → frontmatter → body → assets/references → risk label → <code>agentskills validate</code> → publishing to the zoo.</p>
+  <p>It walks through scoping → scaffolding → frontmatter → body → assets/references → risk label → <code>skills-ref validate</code> → publishing to the zoo.</p>
 
   <h2>The five DG invariants</h2>
   <p>Every skill it produces must satisfy these — the real product of the meta-skill:</p>
@@ -85,7 +85,7 @@ cp -r skills-zoo/skills/dg-skill-authoring ~/.claude/skills/</code></pre>
     <li>Only <code>name</code>, <code>description</code>, <code>license</code>, <code>compatibility</code>, <code>metadata</code>, <code>allowed-tools</code> validate at top level — <code>version</code>/<code>author</code>/<code>risk-level</code> nest under <code>metadata:</code>.</li>
     <li><code>description</code> written as a <em>trigger condition</em> (what it does + "Use when…" + literal trigger phrases) — it's the only field the agent reads to activate.</li>
     <li>Progressive disclosure: lean <code>SKILL.md</code> body, verbose detail in <code>references/</code>, drop-in files in <code>assets/</code>.</li>
-    <li>Validate with <code>agentskills validate &lt;dir&gt;/</code>; package bundled skills as a zip of the whole directory.</li>
+    <li>Validate with <code>npx skills-ref validate &lt;dir&gt;/</code>; package bundled skills as a zip of the whole directory.</li>
   </ul>
 
   <h2>What's in the box</h2>
@@ -98,7 +98,7 @@ cp -r skills-zoo/skills/dg-skill-authoring ~/.claude/skills/</code></pre>
 
   <h2>Prerequisites</h2>
   <ul>
-    <li>An agent that supports the <a href="https://agentskills.io">Agent Skills</a> format and can run <code>agentskills validate</code>.</li>
+    <li>An agent that supports the <a href="https://agentskills.io">Agent Skills</a> format and can run <code>skills-ref validate</code>.</li>
     <li>A target Digital Garden repo (oleeskild plugin + Eleventy) the produced skill will apply to.</li>
   </ul>
   <p><em>Scope is Digital Garden only</em> — the invariants encode DG conventions (autoloader, theme tokens, user-owned paths), not Quartz/Astro/plain-Eleventy.</p>

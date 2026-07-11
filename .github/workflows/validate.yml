@@ -1,0 +1,44 @@
+name: Validate skills
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'skills/**'
+      - 'docs/**'
+      - 'README.md'
+      - 'scripts/**'
+      - '.github/workflows/validate.yml'
+  pull_request:
+    paths:
+      - 'skills/**'
+      - 'docs/**'
+      - 'README.md'
+      - 'scripts/**'
+      - '.github/workflows/validate.yml'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install skills-ref CLI
+        run: npm install -g skills-ref
+
+      - name: Validate every skill package
+        run: |
+          set -euo pipefail
+          for dir in skills/*/; do
+            echo "::group::skills-ref validate $dir"
+            skills-ref validate "$dir"
+            echo "::endgroup::"
+          done
+
+      - name: Check previews, catalog, and metadata drift
+        run: node scripts/check-zoo.mjs

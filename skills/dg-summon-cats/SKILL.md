@@ -117,10 +117,10 @@ The script listens for pointer and resize events and runs local animation frames
 It sends no data, makes no network requests, reads no secrets, and is removed by deleting those
 three installed files plus the appended style block.
 
-## Validate and Package
+## Validate & Package
 
 ```bash
-agentskills validate dg-summon-cats/
+npx skills-ref validate skills/dg-summon-cats/
 cd .. && zip -r dg-summon-cats.zip dg-summon-cats
 ```
 

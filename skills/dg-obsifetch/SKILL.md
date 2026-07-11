@@ -55,7 +55,7 @@ layout, theme env vars, and theme tokens are DG-specific.
 Abort with a plain explanation if the target isn't DG + Eleventy with the
 autoloader.
 
-## Install workflow
+## Instructions
 
 1. **Data engine.** Copy `assets/vaultStats.js` →
    `src/site/_data/vaultStats.js`. Set `SITE_DOMAIN` (env) or edit the fallback
@@ -73,7 +73,7 @@ autoloader.
 
 Trims (text-only, card-only, hide swatches) are in `references/tuning.md`.
 
-## Key design points
+## Key Design Points
 
 - **One data source, two surfaces.** `vaultStats.js` computes once at build;
   both the text route and the card read `vaultStats`. Stats always agree.
@@ -93,7 +93,7 @@ recursively **reads** your `notes`/`files`/`img` trees to compute stats. It is
 read-only — no network, no writes, no plugin-core edits — and fully reversible
 via git. Review `assets/vaultStats.js` before adding it.
 
-## Reference files
+## Reference Files
 
 - `references/architecture.md` — data engine, the two surfaces, swatch mapping,
   config surface.
@@ -104,3 +104,10 @@ via git. Review `assets/vaultStats.js` before adding it.
 ## Assets
 
 `vaultStats.js`, `neofetch.txt.njk`, `zz-obsifetch.njk`, `obsifetch.scss`.
+
+## Validate & Package
+
+```bash
+npx skills-ref validate skills/dg-obsifetch/
+zip -rq dg-obsifetch.zip dg-obsifetch
+```

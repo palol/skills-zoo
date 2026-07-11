@@ -72,7 +72,7 @@ Source: the open [agentskills.io](https://agentskills.io) spec.
 | `allowed-tools` | optional (experimental) |
 
 **Common mistake:** `version`, `author`, `tags`, `risk-level` are **not** top-level fields.
-Putting them at top level fails `agentskills validate`. Nest them under `metadata:`.
+Putting them at top level fails `skills-ref validate`. Nest them under `metadata:`.
 
 **`description` is the only field the agent reads to decide activation.** Write it as a trigger
 condition: what it does, then "Use when [X]" + concrete trigger phrases + a "Trigger on: …" list.
@@ -91,7 +91,7 @@ auto-loaded into context.
 
 ### Validate & package
 
-- `agentskills validate <skill-dir>/` — pass the **directory**, not a single file.
+- `skills-ref validate <skill-dir>/` — pass the **directory**, not a single file.
 - SKILL.md-only → ship the bare `.md`. Any bundled files → **zip the whole directory**
   (`.zip`, not tar). Keep ≤100 files / ≤70 MB. Never ship secrets or `node_modules`.
 

@@ -54,6 +54,6 @@ plugin-core file was ever modified.
   or nested folders.
 - **No `color` in graph.json** → the wrap line wasn't applied, or your fork
   builds the graph in a different `_data` file. Run `grep -rn "getGraph(" src/`
-  and wrap the real site (see `assets/eleventyComputed.graph-hook.md`).
+  and wrap the real site (see `references/eleventyComputed.graph-hook.md`).
 - **Legend drifts from graph** → the legend's inline map is separate from
   `folderColors.js`; update both.

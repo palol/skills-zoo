@@ -81,7 +81,7 @@ description AND a `Risk Level` section, listing exactly which files it writes.
 ## 7. Validate & package
 
 ```bash
-agentskills validate dg-<feature>/
+skills-ref validate dg-<feature>/
 cd .. && zip -r dg-<feature>.zip dg-<feature>
 ```
 
@@ -113,7 +113,7 @@ resources ⇒ ship the zip; SKILL.md-only ⇒ ship the `.md`.
 - [ ] Styles use DG theme tokens; colors not knobs.
 - [ ] A11y: aria-label/aria-hidden, keyboard-operable, focus-visible, reduced-motion.
 - [ ] Tunables consolidated in one knobs block; SCSS compiles clean.
-- [ ] Frontmatter spec-valid (`agentskills validate` passes); description is a trigger.
+- [ ] Frontmatter spec-valid (`skills-ref validate` passes); description is a trigger.
 - [ ] Risk level labeled in description + body.
 - [ ] references/ + assets/ complete; SKILL.md <500 lines.
 - [ ] Real 900×560 dark/light feature captures added; no generated or reconstructed product UI.

@@ -1,11 +1,11 @@
 ---
 name: dg-skill-authoring
-description: "Author a new Agent Skill that adds a feature to an Obsidian Digital Garden (oleeskild digital-garden plugin + Eleventy) site. Use when a user wants to package a Digital Garden customization — a component, widget, layout tweak, or style — as a reusable, upstream-safe SKILL.md that another DG user's agent can install. Produces a spec-compliant skill (frontmatter, progressive disclosure, references, assets), verifies it with agentskills validate, and follows the user-owned-paths convention so upstream git pull never clobbers it. Trigger on: make a digital garden skill, package this DG customization, write a skill for my digital garden, meta-skill, skill authoring, turn this into a skill."
+description: "Author a new Agent Skill that adds a feature to an Obsidian Digital Garden (oleeskild digital-garden plugin + Eleventy) site. Use when a user wants to package a Digital Garden customization — a component, widget, layout tweak, or style — as a reusable, upstream-safe SKILL.md that another DG user's agent can install. Produces a spec-compliant skill (frontmatter, progressive disclosure, references, assets), verifies it with skills-ref validate, and follows the user-owned-paths convention so upstream git pull never clobbers it. Trigger on: make a digital garden skill, package this DG customization, write a skill for my digital garden, meta-skill, skill authoring, turn this into a skill."
 license: MIT
 metadata:
   author: palol
   version: '1.0'
-  risk-level: "L1 — scaffolds and writes skill files (SKILL.md, references, assets) into a skills directory. No code execution beyond the local `agentskills validate` check, no secrets, no network calls. Fully reversible via git."
+  risk-level: "L1 — scaffolds and writes skill files (SKILL.md, references, assets) into a skills directory. No code execution beyond the local `skills-ref validate` check, no secrets, no network calls. Fully reversible via git."
 ---
 
 # Digital Garden Skill Authoring
@@ -15,7 +15,7 @@ Obsidian [Digital Garden](https://github.com/oleeskild/digital-garden) (Eleventy
 the upstream-safe, progressively-disclosed pattern proven by `dg-floating-tray`.
 
 The output is a spec-compliant skill folder (`SKILL.md` + `assets/` + `references/`), validated
-with `agentskills validate`, ready to drop into a skills repo or serve over MCP.
+with `skills-ref validate`, ready to drop into a skills repo or serve over MCP.
 
 ## When to Use This Skill
 
@@ -83,7 +83,7 @@ Copy `assets/SKILL.template.md` to `dg-<feature>/SKILL.md` and fill it in.
 
 Only these top-level keys validate: `name`, `description`, `license`, `compatibility`,
 `metadata`, `allowed-tools`. **Nest `author`, `version`, `risk-level`, `tags` under `metadata:`**
-— top-level `version`/`author` fail `agentskills validate`. See `references/dg-mechanics.md`.
+— top-level `version`/`author` fail `skills-ref validate`. See `references/dg-mechanics.md`.
 
 `description` is the **only field the agent reads to decide activation** — write it as a trigger:
 first clause = what it does, then "Use when [X]" with concrete trigger phrases, plus a "Trigger
@@ -116,7 +116,7 @@ installers can trust it.
 ### 7. Validate & package
 
 ```bash
-agentskills validate dg-<feature>/          # pass the directory, not a file
+npx skills-ref validate skills/dg-<feature>/          # pass the directory, not a file
 cd .. && zip -r dg-<feature>.zip dg-<feature>   # bundled resources => zip the whole dir
 ```
 
@@ -147,7 +147,7 @@ If publishing to `skills-zoo`:
 ## Risk Level
 
 **L1 (low).** Scaffolds and writes skill files into a skills directory and runs the local
-`agentskills validate` check. No other code execution, no secrets, no network calls. Reversible
+`skills-ref validate` check. No other code execution, no secrets, no network calls. Reversible
 via git. The skills it *produces* carry their own risk labels — enforce step 6.
 
 ## Reference Files
@@ -159,3 +159,10 @@ via git. The skills it *produces* carry their own risk labels — enforce step 6
 ## Assets
 
 - `assets/SKILL.template.md` — starter frontmatter + body skeleton for a new DG feature skill.
+
+## Validate & Package
+
+```bash
+npx skills-ref validate skills/dg-skill-authoring/
+zip -rq dg-skill-authoring.zip dg-skill-authoring
+```
