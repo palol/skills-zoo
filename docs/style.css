@@ -223,8 +223,15 @@ section { padding-block:2.25rem; }
 .skill-card { scroll-margin-top:1.5rem; }
 .skill-card--meta {
   border-style:dashed;
+  background:transparent;
+  box-shadow:none;
 }
-.skill-card--meta:hover { border-style:dashed; }
+.skill-card--meta h3 { color:var(--text-muted); }
+/* muted preview; the later .skill-card:hover .sc-thumb rule restores it on hover */
+.skill-card--meta .sc-thumb { filter:saturate(.4); opacity:.8; }
+.skill-card--meta:hover { border-style:dashed; background:var(--surface); }
+.skill-card--meta:hover h3 { color:var(--text); }
+.skill-card--meta:hover .sc-thumb { opacity:1; }
 /* card thumbnail preview */
 .sc-thumb {
   display:block; width:calc(100% + 3rem); margin:-1.4rem -1.5rem 1.1rem;
