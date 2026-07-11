@@ -3,12 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#121311">
 <title>dg-summon-cats — skills-zoo</title>
 <meta name="description" content="Summon Greta and Nigel, two Neko pixel cats that visitors direct around an Obsidian Digital Garden by tapping or clicking.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../style.css">
+<script src="../../theme.js"></script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236cc79a' stroke-width='2'%3E%3Cpath d='M4 20V8a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v12'/%3E%3Cpath d='M4 20h16M9 20v-5h6v5'/%3E%3Ccircle cx='9' cy='9' r='1'/%3E%3Ccircle cx='15' cy='9' r='1'/%3E%3C/svg%3E">
 <meta property="og:type" content="article">
 <meta property="og:title" content="dg-summon-cats — skills-zoo">
@@ -19,6 +21,8 @@
 <meta name="twitter:image" content="https://palol.github.io/skills-zoo/skills/dg-summon-cats/preview-dark.png">
 </head>
 <body>
+
+<a class="skip-link" href="#main">Skip to content</a>
 
 <header class="site-header">
   <div class="wrap">
@@ -36,7 +40,7 @@
   </div>
 </header>
 
-<main class="wrap prose">
+<main id="main" class="wrap prose">
   <a class="backlink" href="../../">← all skills</a>
 
   <h1>dg-summon-cats</h1>
@@ -53,6 +57,11 @@
   <img class="skill-shot skill-shot--dark" src="./preview-dark.png" alt="Greta and Nigel summoned in a dark Digital Garden" loading="lazy" width="900" height="560">
   <img class="skill-shot skill-shot--light" src="./preview-light.png" alt="Greta and Nigel summoned in a light Digital Garden" loading="lazy" width="900" height="560">
 
+  <aside class="responsibility-note" aria-label="Responsible use">
+    <strong class="note-title">Plan first, review always.</strong>
+    Agent Skills are instructions, not guarantees. Use your agent&apos;s <strong>Plan tool</strong> (or planning mode) before it changes files, and review the proposed approach. Check commands, permissions, changed files, and the final diff yourself before accepting or running anything. Risk labels are guidance, not a substitute for your review. Treat each skill as a <strong>starting template</strong>, then customize it for your project. The fun is in understanding and adapting it—not blindly copying it.
+  </aside>
+
   <p>Two bonded Neko cats roam above your garden. Tap or click anywhere and Greta and Nigel walk toward that point, then settle into idle, sleeping, or scratching animations. Greta is the cream spirit cat; Nigel is the faster gray cat.</p>
 
   <div class="callout">
@@ -62,7 +71,7 @@
   <h2>Install with an agent</h2>
   <pre><code>git clone https://github.com/palol/skills-zoo.git
 cp -r skills-zoo/skills/dg-summon-cats ~/.claude/skills/</code></pre>
-  <p style="margin-top:-.75rem;color:var(--text-muted);font-size:var(--text-sm)">(or <code>~/.agents/skills/</code>)</p>
+  <p class="aside-note">(or <code>~/.agents/skills/</code>)</p>
   <blockquote><p>Use <strong>dg-summon-cats</strong> to add Greta and Nigel to this Digital Garden. Install the footer component, styles, and local sprite sheets; build it; then verify pointer and reduced-motion behavior.</p></blockquote>
 
   <h2>What it installs</h2>
@@ -101,7 +110,7 @@ cp -r skills-zoo/skills/dg-summon-cats ~/.claude/skills/</code></pre>
     <li><code>src/site/img</code> passed through to the built <code>/img</code> route.</li>
   </ul>
 
-  <p style="margin-top:2.5rem">
+  <p class="source-cta">
     <a href="https://github.com/palol/skills-zoo/tree/main/skills/dg-summon-cats">Browse the full source on GitHub →</a>
   </p>
 </main>
@@ -116,6 +125,5 @@ cp -r skills-zoo/skills/dg-summon-cats ~/.claude/skills/</code></pre>
   </div>
 </footer>
 
-<script src="../../theme.js"></script>
 </body>
 </html>

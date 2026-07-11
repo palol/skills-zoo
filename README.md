@@ -21,6 +21,13 @@ your agent, done.
 
 ## Install a skill
 
+> **Plan first, review always.** Agent Skills are instructions, not guarantees. Use your agent's
+> **Plan tool** (or planning mode) before it changes files, and review the proposed approach.
+> Check commands, permissions, changed files, and the final diff yourself before accepting or
+> running anything. Risk labels are guidance, not a substitute for your review. Treat each skill
+> as a **starting template**, then customize it for your project. The fun is in understanding and
+> adapting it—not blindly copying it.
+
 ### Option A — hand it to your agent (no coding)
 
 1. Clone this repo (or download a skill folder).

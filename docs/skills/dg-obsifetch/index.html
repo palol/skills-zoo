@@ -3,12 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#121311">
 <title>dg-obsifetch — skills-zoo</title>
 <meta name="description" content="A neofetch-style vault stats readout for an Obsidian Digital Garden — a tribute to tabibyte/obsifetch. Build-time analytics, a curl-able /neofetch.txt route, and a footer card with ASCII art and live theme-color swatches. Upstream-safe, read-only scan.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../style.css">
+<script src="../../theme.js"></script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236cc79a' stroke-width='2'%3E%3Cpath d='M12 3C7 3 4 6 4 10c0 2 1 3 8 3s8-1 8-3c0-4-3-7-8-7z'/%3E%3Cpath d='M12 13v8M9 21h6'/%3E%3C/svg%3E">
 <meta property="og:type" content="article">
 <meta property="og:title" content="dg-obsifetch — skills-zoo">
@@ -19,6 +21,8 @@
 <meta name="twitter:image" content="https://palol.github.io/skills-zoo/skills/dg-obsifetch/preview-dark.png">
 </head>
 <body>
+
+<a class="skip-link" href="#main">Skip to content</a>
 
 <header class="site-header">
   <div class="wrap">
@@ -36,7 +40,7 @@
   </div>
 </header>
 
-<main class="wrap prose">
+<main id="main" class="wrap prose">
 
   <a class="backlink" href="../../">← all skills</a>
 
@@ -55,6 +59,11 @@
   
   <img class="skill-shot skill-shot--dark" src="./preview-dark.png" alt="dg-obsifetch example screenshot" loading="lazy" width="900" height="560">
   <img class="skill-shot skill-shot--light" src="./preview-light.png" alt="dg-obsifetch example screenshot" loading="lazy" width="900" height="560">
+
+  <aside class="responsibility-note" aria-label="Responsible use">
+    <strong class="note-title">Plan first, review always.</strong>
+    Agent Skills are instructions, not guarantees. Use your agent&apos;s <strong>Plan tool</strong> (or planning mode) before it changes files, and review the proposed approach. Check commands, permissions, changed files, and the final diff yourself before accepting or running anything. Risk labels are guidance, not a substitute for your review. Treat each skill as a <strong>starting template</strong>, then customize it for your project. The fun is in understanding and adapting it—not blindly copying it.
+  </aside>
 <p>Renders a <a href="https://github.com/dylanaraps/neofetch">neofetch</a>-style readout of your Digital Garden — file counts and sizes, orphan files, internal links, and theme — computed at build time. It ships two surfaces from one data source: a <code>curl</code>-able <code>/neofetch.txt</code> plain-text route, and a styled footer card with ASCII art and live theme-color swatches. A tribute to the <a href="https://github.com/tabibyte/obsifetch"><strong>tabibyte/obsifetch</strong></a> Obsidian plugin, which does this inside the app.</p>
 
   <div class="callout">
@@ -71,7 +80,7 @@
   <p>Copy the skill folder into your agent's skills directory, then in your Digital Garden repo ask:</p>
   <pre><code>git clone https://github.com/palol/skills-zoo.git
 cp -r skills-zoo/skills/dg-obsifetch ~/.claude/skills/</code></pre>
-  <p style="margin-top:-.75rem;color:var(--text-muted);font-size:var(--text-sm)">(or <code>~/.agents/skills/</code>)</p>
+  <p class="aside-note">(or <code>~/.agents/skills/</code>)</p>
   <blockquote><p>Use the <strong>dg-obsifetch</strong> skill to add a neofetch-style vault-stats readout to my digital garden. Verify prerequisites first, install the data engine, the <code>/neofetch.txt</code> route, and the footer card into user-owned paths, set my domain, then build and walk me through verification.</p></blockquote>
 
   <h2>What it touches</h2>
@@ -106,7 +115,7 @@ cp -r skills-zoo/skills/dg-obsifetch ~/.claude/skills/</code></pre>
   </ul>
   <p><em>Scope is Digital Garden only</em> — the notes layout, theme env vars, and theme tokens are DG-specific.</p>
 
-  <p style="margin-top:2.5rem">
+  <p class="source-cta">
     <a href="https://github.com/palol/skills-zoo/tree/main/skills/dg-obsifetch">Browse the full source on GitHub →</a>
   </p>
 
@@ -122,6 +131,5 @@ cp -r skills-zoo/skills/dg-obsifetch ~/.claude/skills/</code></pre>
   </div>
 </footer>
 
-<script src="../../theme.js"></script>
 </body>
 </html>
