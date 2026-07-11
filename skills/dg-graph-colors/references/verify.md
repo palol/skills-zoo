@@ -1,4 +1,4 @@
-# Verify — colored graph
+# Verify - colored graph
 
 Run after installing. Build first: `npx eleventy` (or your DG build script).
 
@@ -15,12 +15,12 @@ Expect both files present and the wrap line matching:
 ## 2. Colors reached graph.json
 
 ```bash
-# after build — graph.json is emitted to the output dir (e.g. dist/ or _site/)
+# after build - graph.json is emitted to the output dir (e.g. dist/ or _site/)
 grep -o '"color":"#[0-9A-Fa-f]*"' _site/graph.json | sort | uniq -c
 ```
 
 Expect several distinct hex values (one per mapped folder + default), not a
-single color. If every node is the same color, group detection failed — open
+single color. If every node is the same color, group detection failed - open
 `/graph.json` and check a node's `url`/`group` fields against your
 `folderColors` keys.
 
@@ -30,7 +30,7 @@ single color. If every node is the same color, group detection failed — open
   flat theme color.
 - Hover a node → connected links should take the source node's folder color;
   unrelated links go muted.
-- The current page's node stays the theme's main color (expected — core forces
+- The current page's node stays the theme's main color (expected - core forces
   it).
 - Open the full `/graph/` view → same coloring across the whole vault.
 
@@ -44,7 +44,7 @@ single color. If every node is the same color, group detection failed — open
 
 To fully remove: revert the one wrap line in `eleventyComputed.js`, delete
 `folderColors.js`, `graphColors.js`, and (if used) `zz-graph-legend.njk` +
-the appended SCSS. Rebuild — nodes return to the single theme color. No
+the appended SCSS. Rebuild - nodes return to the single theme color. No
 plugin-core file was ever modified.
 
 ## Gotchas

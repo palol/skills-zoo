@@ -1,19 +1,19 @@
 ---
 name: dg-indieweb
-description: "Add IndieWeb support to an Obsidian Digital Garden (oleeskild digital-garden plugin + Eleventy) site: h-card + h-entry microformats2, webmention discovery + IndieAuth/rel-me links, build-time webmention fetch with a /webmentions/ display page and per-note facepiles, and GitHub Actions that fetch received mentions and send outgoing ones. Upstream-safe — user-owned paths + runtime microformat decoration, no plugin-core edits. Use when a user wants to make their digital garden part of the IndieWeb, add webmentions, microformats, h-card/h-entry, rel-me identity, or finish a half-done IndieWeb setup. Trigger on: indieweb, webmention, webmentions, microformats, h-card, h-entry, rel-me, indieauth, POSSE, add webmentions to my digital garden, finish my indieweb setup."
+description: "Add IndieWeb support to an Obsidian Digital Garden (oleeskild digital-garden plugin + Eleventy) site: h-card + h-entry microformats2, webmention discovery + IndieAuth/rel-me links, build-time webmention fetch with a /webmentions/ display page and per-note facepiles, and GitHub Actions that fetch received mentions and send outgoing ones. Upstream-safe - user-owned paths + runtime microformat decoration, no plugin-core edits. Use when a user wants to make their digital garden part of the IndieWeb, add webmentions, microformats, h-card/h-entry, rel-me identity, or finish a half-done IndieWeb setup. Trigger on: indieweb, webmention, webmentions, microformats, h-card, h-entry, rel-me, indieauth, POSSE, add webmentions to my digital garden, finish my indieweb setup."
 license: MIT
 metadata:
   author: palol
   version: '1.0'
-  risk-level: "L2 — adds build-time data fetching and two GitHub Actions that execute Node scripts, read your notes/sitemap, and make env-gated network calls to webmention.io. No secrets in code (token read from env only). No plugin-core edits. Reversible via git."
+  risk-level: "L2 - adds build-time data fetching and two GitHub Actions that execute Node scripts, read your notes/sitemap, and make env-gated network calls to webmention.io. No secrets in code (token read from env only). No plugin-core edits. Reversible via git."
 ---
 
-# Digital Garden — IndieWeb Kit
+# Digital Garden - IndieWeb Kit
 
 Makes an Obsidian [Digital Garden](https://github.com/oleeskild/digital-garden)
 (Eleventy) site a first-class [IndieWeb](https://indieweb.org/) citizen:
 microformats2 identity + content markup, webmention send/receive, and a
-`/webmentions/` display page — all without editing plugin core.
+`/webmentions/` display page - all without editing plugin core.
 
 ## When to Use This Skill
 
@@ -23,7 +23,7 @@ receive), **microformats** (`h-card`, `h-entry`), **discovery** links,
 state: h-card + data fetcher present, but no display page, no h-entry, dead npm
 scripts, or a token accidentally hardcoded).
 
-Do **not** use on non-DG stacks (Quartz, Astro, plain Eleventy) — the note
+Do **not** use on non-DG stacks (Quartz, Astro, plain Eleventy) - the note
 markup shape, autoloader slots, and theme tokens are DG-specific.
 
 ## DG invariants respected
@@ -32,7 +32,7 @@ markup shape, autoloader slots, and theme tokens are DG-specific.
    territory: `components/user/**`, `_data/webmentions.mjs`, root page
    `webmentions.njk`, `scripts/**`, `.github/workflows/**`, and appended
    `custom-style.scss`. h-entry needs classes on core-rendered elements, so a
-   `notes/head` script adds them at runtime — **no `note.njk`/layout edit**.
+   `notes/head` script adds them at runtime - **no `note.njk`/layout edit**.
    See `references/architecture.md` §1.
 2. **Autoload, don't wire.** Components use slot + filename-prefix
    (`aa-` head first, `zz-` footer/afterContent late). No layout edit.
@@ -41,7 +41,7 @@ markup shape, autoloader slots, and theme tokens are DG-specific.
 4. **Accessibility / graceful degradation.** JS-off pages stay valid HTML;
    real `alt`/labels on faces; `prefers-reduced-motion` respected.
 5. **No secrets in code.** The webmention.io token is read from
-   `process.env.WEBMENTION_IO_TOKEN` only — never hardcoded. (The reference
+   `process.env.WEBMENTION_IO_TOKEN` only - never hardcoded. (The reference
    implementation this was derived from had the token hardcoded; this skill
    fixes that. If you copied that pattern, rotate the exposed token.)
 
@@ -91,11 +91,11 @@ Pick the pieces you need (all optional except where noted). Full kit:
 ## Key Design Points
 
 - **Fixes the classic half-done setup.** Adds the missing `/webmentions/` page,
-  real h-entry (no core edit), and removes any hardcoded token — the three
+  real h-entry (no core edit), and removes any hardcoded token - the three
   things most DG IndieWeb attempts get wrong.
 - **Two receive paths.** Build-time (`webmentions.mjs`, live but needs token in
   build env) and committed-JSON archive (`fetch-webmentions.js` + workflow, lands
-  on a `webmentions` branch). Use either or both — see `references/architecture.md`.
+  on a `webmentions` branch). Use either or both - see `references/architecture.md`.
 - **Send is sitemap-driven with backoff.** Dedupe log avoids re-pinging; min 7
   days between sends, re-send on update, 30-day refresh.
 
@@ -108,10 +108,10 @@ edits; reversible via git. Review `scripts/*.js` before enabling the workflows.
 
 ## Reference Files
 
-- `references/architecture.md` — the three layers, why runtime h-entry, both
+- `references/architecture.md` - the three layers, why runtime h-entry, both
   receive paths, and the full config surface.
-- `references/tuning.md` — every SCSS/template/env knob.
-- `references/verify.md` — mf2, discovery, receive, send, security, and
+- `references/tuning.md` - every SCSS/template/env knob.
+- `references/verify.md` - mf2, discovery, receive, send, security, and
   upstream-safety checks.
 
 ## Assets

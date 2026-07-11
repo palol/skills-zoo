@@ -37,7 +37,7 @@ eleventyExcludeFromCollections: true
         {% if likes.length or reposts.length %}
         <section class="wm-facepile" aria-label="Likes and reposts">
           {% for m in likes.concat(reposts) %}
-            <a class="wm-face" href="{{ m.author.url or m.url }}" title="{{ m.author.name or 'Someone' }} — {{ m['wm-property'] }}">
+            <a class="wm-face" href="{{ m.author.url or m.url }}" title="{{ m.author.name or 'Someone' }} - {{ m['wm-property'] }}">
               {% if m.author.photo %}<img src="{{ m.author.photo }}" alt="{{ m.author.name or 'Someone' }}" loading="lazy">
               {% else %}<span class="wm-face-fallback" aria-hidden="true">{{ (m.author.name or '?')[0] }}</span>{% endif %}
             </a>
@@ -61,7 +61,7 @@ eleventyExcludeFromCollections: true
           {% endfor %}
         </ul>
         {% else %}
-        <p class="wm-empty">No webmentions yet. Be the first — link to a page here and send one below.</p>
+        <p class="wm-empty">No webmentions yet. Be the first - link to a page here and send one below.</p>
         {% endif %}
 
         <section class="wm-send">

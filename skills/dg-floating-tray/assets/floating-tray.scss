@@ -28,7 +28,7 @@
   --dg-ft-tray-radius:      16px;   /* expandable tray corner radius */
   --dg-ft-z:                9990;   /* stacking order (search sits above at 10000) */
 
-  /* Grid caps — JS clamps computed columns within these.
+  /* Grid caps - JS clamps computed columns within these.
      Column count is otherwise auto-derived from how many items you add. */
   --dg-ft-cols-desktop-max: 6;      /* mirror in the .njk JS: Math.min(6, ...) */
   --dg-ft-cols-desktop-min: 2;      /* mirror in the .njk JS: Math.max(2, ...) */

@@ -1,4 +1,4 @@
-# Dungeon Map — Post-Build Verification
+# Dungeon Map - Post-Build Verification
 
 Run after `npm run build`. Each item should pass before committing.
 
@@ -40,5 +40,5 @@ Run after `npm run build`. Each item should pass before committing.
 - [ ] The SVG fallback `<img>` has alt text; no console errors.
 
 ## Upstream safety
-- [ ] No edits to `layouts/*.njk` or plugin-core `components/*` — only user-owned paths + scripts.
+- [ ] No edits to `layouts/*.njk` or plugin-core `components/*` - only user-owned paths + scripts.
 - [ ] A simulated upstream `git pull` (or reading the diff) touches none of the installed files.

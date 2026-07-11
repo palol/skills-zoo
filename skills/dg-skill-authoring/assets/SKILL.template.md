@@ -5,7 +5,7 @@ license: MIT
 metadata:
   author: YOUR_HANDLE
   version: '1.0'
-  risk-level: "L1 — writes N files into the user's repo (LIST). No code execution, no secrets, no network calls. Fully reversible via git."
+  risk-level: "L1 - writes N files into the user's repo (LIST). No code execution, no secrets, no network calls. Fully reversible via git."
 ---
 
 # TITLE
@@ -21,7 +21,7 @@ asset pack). Distinguish inspiration from code/asset provenance. If you first en
 source via another site, label that as discovery only. Do **not** cite private or personal
 provenance.
 
-- [SOURCE_NAME](https://example.com/) — WHAT_IT_INSPIRED_OR_SUPPLIED.
+- [SOURCE_NAME](https://example.com/) - WHAT_IT_INSPIRED_OR_SUPPLIED.
 
 ## When to Use This Skill
 
@@ -30,7 +30,7 @@ Use when a Digital Garden (oleeskild `digital-garden` plugin + Eleventy) user wa
 - BULLET_1
 - BULLET_2
 
-Do **not** use for Quartz, Astro, or non-DG sites — the auto-include mechanism and theme tokens
+Do **not** use for Quartz, Astro, or non-DG sites - the auto-include mechanism and theme tokens
 are DG-specific.
 
 ## Quick Install (agent-driven, for non-technical users)
@@ -51,7 +51,7 @@ Hands-off flow, light explanations:
 2. User-component autoloading exists: `src/site/_data/dynamics.js` globs
    `components/user/common/<slot>/*.njk`, sorts alphabetically, injects into layout slots.
    Confirm the `SLOT` slot is iterated (`{% for imp in dynamics.common.SLOT %}`).
-3. A user stylesheet is compiled — typically `src/site/styles/custom-style.scss`. (if styled)
+3. A user stylesheet is compiled - typically `src/site/styles/custom-style.scss`. (if styled)
 4. DG theme tokens available: `--background-secondary`, `--background-modifier-border`,
    `--text-muted`, `--text-accent`, `--link-color`.
 
@@ -78,10 +78,10 @@ Run `references/verify.md`.
 
 ## Key Design Points
 
-- **No layout / core edits** — autoload via `common/SLOT`; survives upstream updates.
-- **Theme-token styling** — light/dark automatic via DG CSS variables.
-- **A11y** — real text in `aria-label`, icons `aria-hidden`, keyboard-operable controls.
-- **Tunables consolidated** — one `:root` knobs block; colors inherit theme (not knobs).
+- **No layout / core edits** - autoload via `common/SLOT`; survives upstream updates.
+- **Theme-token styling** - light/dark automatic via DG CSS variables.
+- **A11y** - real text in `aria-label`, icons `aria-hidden`, keyboard-operable controls.
+- **Tunables consolidated** - one `:root` knobs block; colors inherit theme (not knobs).
 
 ## Risk Level
 
@@ -90,12 +90,12 @@ reversible via git. Review the assets before committing.
 
 ## Reference Files
 
-- `references/component.md` — annotated markup + scripts.
-- `references/styles.md` — annotated SCSS. (if styled)
-- `references/tuning.md` — every adjustable knob.
-- `references/verify.md` — post-build QA checklist.
+- `references/component.md` - annotated markup + scripts.
+- `references/styles.md` - annotated SCSS. (if styled)
+- `references/tuning.md` - every adjustable knob.
+- `references/verify.md` - post-build QA checklist.
 
 ## Assets
 
-- `assets/SOURCE` — drop-in component (generic placeholders to customize).
-- `assets/STYLES.scss` — drop-in styles. (if styled)
+- `assets/SOURCE` - drop-in component (generic placeholders to customize).
+- `assets/STYLES.scss` - drop-in styles. (if styled)

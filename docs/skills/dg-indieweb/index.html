@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#121311">
-<title>dg-indieweb — skills-zoo</title>
+<title>dg-indieweb - skills-zoo</title>
 <meta name="description" content="Make an Obsidian Digital Garden a first-class IndieWeb citizen: h-card + runtime h-entry microformats, webmention discovery + rel-me, a build-time /webmentions/ display page, and GitHub Actions to fetch received and send outgoing mentions. Upstream-safe, no secrets in code.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,7 +13,7 @@
 <script src="../../theme.js"></script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236cc79a' stroke-width='2'%3E%3Ccircle cx='12' cy='12' r='2'/%3E%3Cpath d='M12 3a9 9 0 0 1 0 18M12 3a9 9 0 0 0 0 18'/%3E%3Cpath d='M3 12h18'/%3E%3C/svg%3E">
 <meta property="og:type" content="article">
-<meta property="og:title" content="dg-indieweb — skills-zoo">
+<meta property="og:title" content="dg-indieweb - skills-zoo">
 <meta property="og:description" content="Make an Obsidian Digital Garden a first-class IndieWeb citizen: h-card + runtime h-entry microformats, webmention discovery + rel-me, a build-time /webmentions/ display page, and GitHub Actions to fetch received and send outgoing mentions. Upstream-safe, no secrets in code.">
 <meta property="og:image" content="https://palol.github.io/skills-zoo/skills/dg-indieweb/preview-dark.png">
 <meta property="og:url" content="https://palol.github.io/skills-zoo/skills/dg-indieweb/">
@@ -45,7 +45,7 @@
   <a class="backlink" href="../../">← all skills</a>
 
   <h1>dg-indieweb</h1>
-  <p class="sub">Join the IndieWeb — microformats, webmentions, and rel-me identity for your garden.</p>
+  <p class="sub">Join the IndieWeb - microformats, webmentions, and rel-me identity for your garden.</p>
 
   <div class="meta-row">
     <span class="risk-pill risk-pill--l2">L2 · fetch + actions</span>
@@ -62,16 +62,16 @@
 
   <aside class="responsibility-note" aria-label="Responsible use">
     <strong class="note-title">Plan first, review always.</strong>
-    Agent Skills are instructions, not guarantees. Use your agent&apos;s <strong>Plan tool</strong> (or planning mode) before it changes files, and review the proposed approach. Check commands, permissions, changed files, and the final diff yourself before accepting or running anything. Risk labels are guidance, not a substitute for your review. Treat each skill as a <strong>starting template</strong>, then customize it for your project. The fun is in understanding and adapting it—not blindly copying it.
+    Agent Skills are instructions, not guarantees. Use your agent&apos;s <strong>Plan tool</strong> (or planning mode) before it changes files, and review the proposed approach. Check commands, permissions, changed files, and the final diff yourself before accepting or running anything. Risk labels are guidance, not a substitute for your review. Treat each skill as a <strong>starting template</strong>, then customize it for your project. The fun is in understanding and adapting it, not blindly copying it.
   </aside>
 <p>Makes your Digital Garden a first-class <a href="https://indieweb.org/"><strong>IndieWeb</strong></a> citizen. It exposes valid <code>h-card</code> and <code>h-entry</code> microformats, advertises webmention + IndieAuth discovery and <code>rel="me"</code> identity, fetches the mentions your pages receive and shows them on a <code>/webmentions/</code> page (plus optional per-note facepiles), and ships two GitHub Actions to fetch received and send outgoing webmentions.</p>
 
   <div class="callout">
-    <strong>Fixes the classic half-done setup.</strong> Most DG IndieWeb attempts stall at "h-card + a data fetcher" with no display page, no real h-entry, dead npm scripts, or — worst — a webmention.io token hardcoded into a public repo. This kit adds the missing <code>/webmentions/</code> page, real h-entry <em>without editing plugin core</em>, and reads the token from the environment only.
+    <strong>Fixes the classic half-done setup.</strong> Most DG IndieWeb attempts stall at "h-card + a data fetcher" with no display page, no real h-entry, dead npm scripts, or - worst - a webmention.io token hardcoded into a public repo. This kit adds the missing <code>/webmentions/</code> page, real h-entry <em>without editing plugin core</em>, and reads the token from the environment only.
   </div>
 
   <h2>How it works</h2>
-  <p>Three upstream-safe layers. Identity + microformats are components in user slots plus a tiny <code>notes/head</code> script that decorates the core note markup into a valid h-entry at runtime (core ships neither <code>h-entry</code> nor <code>e-content</code>, and a slot can't add a class to an ancestor it renders inside — so the classes are applied client-side, no <code>note.njk</code> edit). Receiving is a build-time fetch with a 1-hour cache feeding a display page; an optional Action archives mentions to a <code>webmentions</code> branch. Sending is sitemap-driven with a dedupe log and backoff.</p>
+  <p>Three upstream-safe layers. Identity + microformats are components in user slots plus a tiny <code>notes/head</code> script that decorates the core note markup into a valid h-entry at runtime (core ships neither <code>h-entry</code> nor <code>e-content</code>, and a slot can't add a class to an ancestor it renders inside - so the classes are applied client-side, no <code>note.njk</code> edit). Receiving is a build-time fetch with a 1-hour cache feeding a display page; an optional Action archives mentions to a <code>webmentions</code> branch. Sending is sitemap-driven with a dedupe log and backoff.</p>
   <pre><code>notes → build → webmentions.mjs (env-gated fetch, 1h cache)
       → /webmentions/ page + per-note facepiles
 notes/head script → decorate &lt;article&gt; into valid h-entry at runtime
@@ -93,25 +93,25 @@ cp -r skills-zoo/skills/dg-indieweb ~/.claude/skills/</code></pre>
   </ul>
 
   <div class="callout">
-    <strong>Why L2, not L1.</strong> Beyond writing user-owned files, this adds a build-time data fetch and two GitHub Actions that <em>execute Node scripts</em>, read your notes/sitemap, and make <em>env-gated network calls</em> to webmention.io. The token is read from the environment only — never hardcoded. No plugin-core edits; fully reversible via git. Review <code>assets/*.js</code> before enabling the workflows.
+    <strong>Why L2, not L1.</strong> Beyond writing user-owned files, this adds a build-time data fetch and two GitHub Actions that <em>execute Node scripts</em>, read your notes/sitemap, and make <em>env-gated network calls</em> to webmention.io. The token is read from the environment only - never hardcoded. No plugin-core edits; fully reversible via git. Review <code>assets/*.js</code> before enabling the workflows.
   </div>
 
   <h2>What's in the box</h2>
   <ul class="filelist" role="list">
-    <li><span class="fname">SKILL.md</span> — invariants, install workflow, prerequisites, risk</li>
-    <li><span class="fname">assets/zz-hcard-footer.njk</span> — footer slot: owner h-card</li>
-    <li><span class="fname">assets/aa-microformats.njk</span> — head slot: discovery links, rel-me, runtime h-entry</li>
-    <li><span class="fname">assets/webmentions.mjs</span> — build-time fetch (env token, 1h cache)</li>
-    <li><span class="fname">assets/webmentions.njk</span> — the <code>/webmentions/</code> display page + send form</li>
-    <li><span class="fname">assets/zz-note-webmentions.njk</span> — per-note facepile (optional)</li>
-    <li><span class="fname">assets/indieweb.scss</span> — styles (TUNING KNOBS on top)</li>
-    <li><span class="fname">assets/fetch-webmentions.js</span> — archive received mentions to JSON</li>
-    <li><span class="fname">assets/send-webmentions.js</span> — sitemap-driven send with backoff</li>
-    <li><span class="fname">assets/fetch-webmentions.yml</span> — weekly fetch Action</li>
-    <li><span class="fname">assets/send-webmentions.yml</span> — monthly send Action</li>
-    <li><span class="fname">references/architecture.md</span> — the three layers + config surface</li>
-    <li><span class="fname">references/tuning.md</span> — every adjustable knob</li>
-    <li><span class="fname">references/verify.md</span> — mf2 / receive / send / security QA</li>
+    <li><span class="fname">SKILL.md</span> - invariants, install workflow, prerequisites, risk</li>
+    <li><span class="fname">assets/zz-hcard-footer.njk</span> - footer slot: owner h-card</li>
+    <li><span class="fname">assets/aa-microformats.njk</span> - head slot: discovery links, rel-me, runtime h-entry</li>
+    <li><span class="fname">assets/webmentions.mjs</span> - build-time fetch (env token, 1h cache)</li>
+    <li><span class="fname">assets/webmentions.njk</span> - the <code>/webmentions/</code> display page + send form</li>
+    <li><span class="fname">assets/zz-note-webmentions.njk</span> - per-note facepile (optional)</li>
+    <li><span class="fname">assets/indieweb.scss</span> - styles (TUNING KNOBS on top)</li>
+    <li><span class="fname">assets/fetch-webmentions.js</span> - archive received mentions to JSON</li>
+    <li><span class="fname">assets/send-webmentions.js</span> - sitemap-driven send with backoff</li>
+    <li><span class="fname">assets/fetch-webmentions.yml</span> - weekly fetch Action</li>
+    <li><span class="fname">assets/send-webmentions.yml</span> - monthly send Action</li>
+    <li><span class="fname">references/architecture.md</span> - the three layers + config surface</li>
+    <li><span class="fname">references/tuning.md</span> - every adjustable knob</li>
+    <li><span class="fname">references/verify.md</span> - mf2 / receive / send / security QA</li>
   </ul>
 
   <h2>Prerequisites</h2>
@@ -120,7 +120,7 @@ cp -r skills-zoo/skills/dg-indieweb ~/.claude/skills/</code></pre>
     <li><code>@11ty/eleventy-fetch</code> available for the build-time fetch.</li>
     <li>A <a href="https://webmention.io/">webmention.io</a> account + token to <em>receive</em> mentions (sending works without it), and your identity domain(s).</li>
   </ul>
-  <p><em>Scope is Digital Garden only</em> — the note markup shape, autoloader slots, and theme tokens are DG-specific.</p>
+  <p><em>Scope is Digital Garden only</em> - the note markup shape, autoloader slots, and theme tokens are DG-specific.</p>
 
   <p class="source-cta">
     <a href="https://github.com/palol/skills-zoo/tree/main/skills/dg-indieweb">Browse the full source on GitHub →</a>

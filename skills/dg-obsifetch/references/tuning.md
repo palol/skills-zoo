@@ -6,7 +6,7 @@
 |---|---|---|
 | `--ob-max-width` | `640px` | Card max width. |
 | `--ob-gap` | `1.5rem` | Gap between ASCII art and the stats column. |
-| `--ob-ascii-size` | `0.72rem` | ASCII art font size — shrink if the mushroom wraps. |
+| `--ob-ascii-size` | `0.72rem` | ASCII art font size - shrink if the mushroom wraps. |
 | `--ob-stat-size` | `0.85rem` | Stat text size. |
 | `--ob-swatch` | `16px` | Color swatch side length. |
 | `--ob-radius` | `8px` | Card corner radius. |
@@ -41,9 +41,9 @@ Override any of them to curate an exact 8-color palette.
 
 ## Optional trims
 
-- **Text route only** — install just `vaultStats.js` + `neofetch.txt.njk`; skip
+- **Text route only** - install just `vaultStats.js` + `neofetch.txt.njk`; skip
   the card component and SCSS.
-- **Card only** — install `vaultStats.js` + `zz-obsifetch.njk` + SCSS; skip the
+- **Card only** - install `vaultStats.js` + `zz-obsifetch.njk` + SCSS; skip the
   txt route (drop the `raw` link from the card credit line).
-- **Hide swatches** — delete `.obsifetch-swatches` block from the component, or
+- **Hide swatches** - delete `.obsifetch-swatches` block from the component, or
   `display:none` it in SCSS.

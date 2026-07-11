@@ -1,4 +1,4 @@
-# Architecture — folder-based graph coloring
+# Architecture - folder-based graph coloring
 
 ## The insight
 
@@ -15,7 +15,7 @@ function resolveNodeColor(n) {
 // links: linkColor = active ? srcNode._nodeColor : mutedColor
 ```
 
-So the graph nodes are already "colorable" — they just have no `color` field
+So the graph nodes are already "colorable" - they just have no `color` field
 until you add one. **This skill never touches the renderer.** All it does is
 populate `node.color` at build time.
 
@@ -25,7 +25,7 @@ populate `node.color` at build time.
 src/site/_data/eleventyComputed.js
     graph: async (data) => addGraphColors(await getGraph(data))
                            └────────────┬───────────────────┘
-                                        │  (ONLY edit — user-owned _data path)
+                                        │  (ONLY edit - user-owned _data path)
                                         ▼
 src/helpers/graphColors.js   addGraphColors(graph)
     for each node: node.color ??= getFolderColorFromUrl(node.url)
@@ -43,7 +43,7 @@ graphScript.njk (PLUGIN CORE, unedited)  reads node.color → Pixi fill + link c
 
 ## Why this is L2, not L3
 
-The original site achieved coloring by editing `src/helpers/linkUtils.js` — a
+The original site achieved coloring by editing `src/helpers/linkUtils.js` - a
 shared build helper that generates the graph (two edits: fix group detection,
 add `color:`). Editing that file works but is fragile: it is closer to core and
 any DG update that ships a new `linkUtils.js` would clobber the change.
@@ -52,10 +52,10 @@ This skill instead **wraps** `getGraph`'s output in a user-owned `_data` file
 and does the color injection in a **new, additive** helper (`graphColors.js`).
 Result:
 
-- `linkUtils.js` — untouched
-- `graphScript.njk` (renderer) — untouched
-- one-line wrap in `_data/eleventyComputed.js` — user-owned, safe
-- two new drop-in files — additive, no overwrite
+- `linkUtils.js` - untouched
+- `graphScript.njk` (renderer) - untouched
+- one-line wrap in `_data/eleventyComputed.js` - user-owned, safe
+- two new drop-in files - additive, no overwrite
 
 Fully reversible: revert the one wrap line and delete the two new files.
 

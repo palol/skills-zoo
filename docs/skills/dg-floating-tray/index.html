@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#121311">
-<title>dg-floating-tray — skills-zoo</title>
+<title>dg-floating-tray - skills-zoo</title>
 <meta name="description" content="Add a bottom floating dock + expandable tray to an Obsidian Digital Garden (Eleventy) site. Theme-aware, accessible, upstream-safe. Copy-paste or install as an Agent Skill.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,7 +13,7 @@
 <script src="../../theme.js"></script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236cc79a' stroke-width='2'%3E%3Cpath d='M4 20V8a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v12'/%3E%3Cpath d='M4 20h16M9 20v-5h6v5'/%3E%3Ccircle cx='9' cy='9' r='1'/%3E%3Ccircle cx='15' cy='9' r='1'/%3E%3C/svg%3E">
 <meta property="og:type" content="article">
-<meta property="og:title" content="dg-floating-tray — skills-zoo">
+<meta property="og:title" content="dg-floating-tray - skills-zoo">
 <meta property="og:description" content="Add a bottom floating dock + expandable tray to an Obsidian Digital Garden (Eleventy) site. Theme-aware, accessible, upstream-safe. Copy-paste or install as an Agent Skill.">
 <meta property="og:image" content="https://palol.github.io/skills-zoo/skills/dg-floating-tray/preview-dark.png">
 <meta property="og:url" content="https://palol.github.io/skills-zoo/skills/dg-floating-tray/">
@@ -61,9 +61,9 @@
 
   <aside class="responsibility-note" aria-label="Responsible use">
     <strong class="note-title">Plan first, review always.</strong>
-    Agent Skills are instructions, not guarantees. Use your agent&apos;s <strong>Plan tool</strong> (or planning mode) before it changes files, and review the proposed approach. Check commands, permissions, changed files, and the final diff yourself before accepting or running anything. Risk labels are guidance, not a substitute for your review. Treat each skill as a <strong>starting template</strong>, then customize it for your project. The fun is in understanding and adapting it—not blindly copying it.
+    Agent Skills are instructions, not guarantees. Use your agent&apos;s <strong>Plan tool</strong> (or planning mode) before it changes files, and review the proposed approach. Check commands, permissions, changed files, and the final diff yourself before accepting or running anything. Risk labels are guidance, not a substitute for your review. Treat each skill as a <strong>starting template</strong>, then customize it for your project. The fun is in understanding and adapting it, not blindly copying it.
   </aside>
-<p>Adds a fixed bottom <strong>floating control</strong> to an Obsidian <a href="https://github.com/oleeskild/digital-garden">Digital Garden</a> (Eleventy) site: an always-visible <strong>primary dock</strong> (random page, light/dark toggle, search, a <strong>•••</strong> button) that expands into a <strong>tray</strong> of secondary links — maps, logs, RSS, social, a QR. Keyboard- and screen-reader-accessible, theme-aware, and responsive (a centered pill on desktop, a full-width rail on phones).</p>
+<p>Adds a fixed bottom <strong>floating control</strong> to an Obsidian <a href="https://github.com/oleeskild/digital-garden">Digital Garden</a> (Eleventy) site: an always-visible <strong>primary dock</strong> (random page, light/dark toggle, search, a <strong>•••</strong> button) that expands into a <strong>tray</strong> of secondary links - maps, logs, RSS, social, a QR. Keyboard- and screen-reader-accessible, theme-aware, and responsive (a centered pill on desktop, a full-width rail on phones).</p>
 
   <div class="callout">
     <strong>Upstream-safe.</strong> Everything drops into <em>user-owned</em> paths, so pulling updates from the DG plugin never clobbers it. No plugin-core or layout edits.
@@ -72,19 +72,19 @@
   <h2>Two ways to install</h2>
   <p>Hand it to your AI agent (no coding), or copy the two files yourself.</p>
 
-  <h3>Option A — let your agent do it</h3>
+  <h3>Option A - let your agent do it</h3>
   <p>Copy the skill folder into your agent's skills directory, then ask it in your site's repo:</p>
   <pre><code>git clone https://github.com/palol/skills-zoo.git
 cp -r skills-zoo/skills/dg-floating-tray ~/.claude/skills/</code></pre>
   <p class="aside-note">(or <code>~/.agents/skills/</code>)</p>
   <blockquote><p>Use the <strong>dg-floating-tray</strong> skill to add a floating dock + tray to this Digital Garden site. Copy the component into the user footer components folder, append the styles to my user stylesheet, then ask me which links I want. Don't touch plugin core or layout files.</p></blockquote>
-  <p>It installs the two files, pauses to ask for your links, builds, and walks you through the checks. Afterwards you change things conversationally — <em>"make the icons bigger"</em>, <em>"add a Guestbook link"</em>, <em>"less round corners"</em>.</p>
+  <p>It installs the two files, pauses to ask for your links, builds, and walks you through the checks. Afterwards you change things conversationally - <em>"make the icons bigger"</em>, <em>"add a Guestbook link"</em>, <em>"less round corners"</em>.</p>
 
-  <h3>Option B — copy-paste</h3>
+  <h3>Option B - copy-paste</h3>
   <p>Two files, that's the whole thing:</p>
   <ol>
     <li><strong>Component</strong> → <code>src/site/_includes/components/user/common/footer/zzz-floating-dock.njk</code><br>
-      The <code>zzz-</code> prefix matters: DG auto-discovers footer partials and sorts alphabetically, so it renders last — no layout edit.</li>
+      The <code>zzz-</code> prefix matters: DG auto-discovers footer partials and sorts alphabetically, so it renders last - no layout edit.</li>
     <li><strong>Styles</strong> → append to <code>src/site/styles/custom-style.scss</code>.<br>
       Colors come from DG theme tokens, so light/dark Just Works.</li>
   </ol>
@@ -95,7 +95,7 @@ cp -r skills-zoo/skills/dg-floating-tray ~/.claude/skills/</code></pre>
   </p>
 
   <h2>Tuning it</h2>
-  <p>All the tweakable numbers live in one block at the top of the SCSS — edit these, everything else derives from them:</p>
+  <p>All the tweakable numbers live in one block at the top of the SCSS - edit these, everything else derives from them:</p>
   <pre><code>:root {
   --dg-ft-item-size:    48px;   /* icon-button size */
   --dg-ft-gap:          6px;    /* space between tray items */
@@ -106,7 +106,7 @@ cp -r skills-zoo/skills/dg-floating-tray ~/.claude/skills/</code></pre>
   --dg-ft-tray-radius:  16px;
   /* …mobile variants + grid caps… */
 }</code></pre>
-  <p><strong>Rows and columns?</strong> You don't set them directly — the JS derives the column count from <em>how many items you add</em>, clamped 2–6 on desktop (4 on mobile, 3 on narrow phones); rows follow. Add links, the grid grows. <strong>Colors aren't knobs</strong> — override your DG theme tokens and the tray follows.</p>
+  <p><strong>Rows and columns?</strong> You don't set them directly - the JS derives the column count from <em>how many items you add</em>, clamped 2–6 on desktop (4 on mobile, 3 on narrow phones); rows follow. Add links, the grid grows. <strong>Colors aren't knobs</strong> - override your DG theme tokens and the tray follows.</p>
 
   <h2>Accessibility</h2>
   <ul>
@@ -119,23 +119,23 @@ cp -r skills-zoo/skills/dg-floating-tray ~/.claude/skills/</code></pre>
 
   <h2>What's in the box</h2>
   <ul class="filelist" role="list">
-    <li><span class="fname">SKILL.md</span> — trigger description + step-by-step instructions</li>
-    <li><span class="fname">assets/zzz-floating-dock.njk</span> — drop-in component</li>
-    <li><span class="fname">assets/floating-tray.scss</span> — drop-in styles (tuning knobs on top)</li>
-    <li><span class="fname">references/component.md</span> — annotated markup + scripts</li>
-    <li><span class="fname">references/styles.md</span> — annotated SCSS</li>
-    <li><span class="fname">references/tuning.md</span> — every adjustable knob</li>
-    <li><span class="fname">references/verify.md</span> — post-build QA checklist</li>
+    <li><span class="fname">SKILL.md</span> - trigger description + step-by-step instructions</li>
+    <li><span class="fname">assets/zzz-floating-dock.njk</span> - drop-in component</li>
+    <li><span class="fname">assets/floating-tray.scss</span> - drop-in styles (tuning knobs on top)</li>
+    <li><span class="fname">references/component.md</span> - annotated markup + scripts</li>
+    <li><span class="fname">references/styles.md</span> - annotated SCSS</li>
+    <li><span class="fname">references/tuning.md</span> - every adjustable knob</li>
+    <li><span class="fname">references/verify.md</span> - post-build QA checklist</li>
   </ul>
 
   <h2>Prerequisites</h2>
   <ul>
     <li>Repo uses the DG plugin with Eleventy; site source under <code>src/site/</code>.</li>
     <li>User-component autoloading via <code>src/site/_data/dynamics.js</code> (globs <code>components/user/common/&lt;slot&gt;/*.njk</code>, iterates the <code>footer</code> slot).</li>
-    <li>A compiled user stylesheet — typically <code>src/site/styles/custom-style.scss</code>.</li>
+    <li>A compiled user stylesheet - typically <code>src/site/styles/custom-style.scss</code>.</li>
     <li>DG theme tokens present: <code>--background-secondary</code>, <code>--text-muted</code>, <code>--text-accent</code>, etc.</li>
   </ul>
-  <p><em>Not for Quartz, Astro, or non-DG sites</em> — the auto-include mechanism and theme tokens are DG-specific.</p>
+  <p><em>Not for Quartz, Astro, or non-DG sites</em> - the auto-include mechanism and theme tokens are DG-specific.</p>
 
   <p class="source-cta">
     <a href="https://github.com/palol/skills-zoo/tree/main/skills/dg-floating-tray">Browse the full source on GitHub →</a>

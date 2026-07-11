@@ -1,4 +1,4 @@
-# Styles walkthrough — `floating-tray.scss`
+# Styles walkthrough - `floating-tray.scss`
 
 Read when tuning layout/sizing. Full file is `assets/floating-tray.scss`.
 
@@ -35,7 +35,7 @@ Read when tuning layout/sizing. Full file is `assets/floating-tray.scss`.
   - `.custom-footer-bottom` adds it too, so the footer clears the rail.
 - Item size drops to 44px, icons to 22px; tray uses `minmax(0,1fr)` columns to fill width.
 
-**If you change item size / gap / padding, keep the offset formula in sync** — otherwise
+**If you change item size / gap / padding, keep the offset formula in sync** - otherwise
 content clips or floats above the dock.
 
 ## Search hide + narrow phones
@@ -46,7 +46,7 @@ content clips or floats above the dock.
 
 ## Integration notes
 
-- Append to your compiled user stylesheet, or `@use`/`@import` as a partial — just ensure it's
+- Append to your compiled user stylesheet, or `@use`/`@import` as a partial - just ensure it's
   in the build output.
 - Uses `:has()` for the rail offset (modern browsers). If you must support old browsers, apply
   the `padding-bottom` to `main.content` unconditionally instead.

@@ -91,7 +91,7 @@ for (const name of skillNames) {
     warn(`${rel}: author is '${fm.metadata.author}' (expected 'palol')`);
   }
   if (fm.metadata?.['risk-level'] && /^L\d$/.test(fm.metadata['risk-level'])) {
-    warn(`${rel}: risk-level is bare '${fm.metadata['risk-level']}' — prefer a descriptive string`);
+    warn(`${rel}: risk-level is bare '${fm.metadata['risk-level']}' - prefer a descriptive string`);
   }
   if (fm.description && !/Trigger on:/i.test(fm.description)) {
     warn(`${rel}: description lacks a 'Trigger on:' clause`);

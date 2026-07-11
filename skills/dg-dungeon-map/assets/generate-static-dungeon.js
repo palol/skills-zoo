@@ -227,7 +227,7 @@ function generateDungeonSVG(dungeonData) {
   atmosphereHexes.forEach(hex => {
     const x = hex.x + offsetX;
     const y = hex.y + offsetY;
-    // Alternate by ring number — no distance calculation needed
+    // Alternate by ring number - no distance calculation needed
     const isDarkSet = hex.ring % 2 === 0;
     svgContent += renderAtmosphereHex(x, y, 28, 24, isDarkSet ? 'dark' : 'light');
   });

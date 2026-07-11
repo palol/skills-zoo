@@ -1,4 +1,4 @@
-# Dungeon Map — Tuning Knobs
+# Dungeon Map - Tuning Knobs
 
 Every safe-to-edit value, where it lives, and what it changes.
 
@@ -48,4 +48,4 @@ Every safe-to-edit value, where it lives, and what it changes.
 | `--dungeon-btn-radius` | `6px` | Overlay toggle button corner radius. |
 | `--dungeon-hint-size` | `0.78rem` | Hint text size. |
 
-Colors are intentionally **not** knobs — they inherit DG theme tokens so light/dark just works.
+Colors are intentionally **not** knobs - they inherit DG theme tokens so light/dark just works.

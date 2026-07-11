@@ -5,19 +5,19 @@ The full walkthrough for producing a DG feature skill, step by step, mirroring h
 
 ---
 
-## 0. Before you start — is this a skill?
+## 0. Before you start - is this a skill?
 
 A DG customization is a good skill candidate when it (a) fits entirely in user-owned paths,
 (b) is generic enough that another DG user would want it, and (c) has a clear trigger. If it's a
-one-off hack that needs a core/layout edit, it's not upstream-safe — don't package it.
+one-off hack that needs a core/layout edit, it's not upstream-safe - don't package it.
 
 ## 1. Scope
 
 Nail down, in one short exchange with the user:
-- **Feature** — what it adds, in one sentence.
-- **Slot** — `footer` / `header` / sidebar-like region. Confirm the slot is iterated in layouts.
-- **Surface area** — component only? + styles? + a helper? + content?
-- **Name** — `dg-<feature>`, lowercase, hyphens, matches the dir name. Check for an existing
+- **Feature** - what it adds, in one sentence.
+- **Slot** - `footer` / `header` / sidebar-like region. Confirm the slot is iterated in layouts.
+- **Surface area** - component only? + styles? + a helper? + content?
+- **Name** - `dg-<feature>`, lowercase, hyphens, matches the dir name. Check for an existing
   same-named skill in the target repo/registry first (the ecosystem has heavy duplication).
 
 ## 2. Scaffold
@@ -68,11 +68,11 @@ theme tokens, a11y, consolidated knobs, and source-grounded inspiration citation
 - `.scss` styles with a `>>> TUNING KNOBS <<<` `:root` block on top; derive all sizes from it;
   verify it compiles (`sass` / the site build) before shipping.
 
-**References** — one file per concern, each linked from SKILL.md with a read-me-when note:
-- `component.md` — annotated markup + any inline `<script>` blocks (event wiring, a11y).
-- `styles.md` — annotated SCSS (base/desktop, responsive math, breakpoints).
-- `tuning.md` — every adjustable knob, with defaults and effects.
-- `verify.md` — post-build QA checklist in plain language ("tap the button — does X happen?").
+**References** - one file per concern, each linked from SKILL.md with a read-me-when note:
+- `component.md` - annotated markup + any inline `<script>` blocks (event wiring, a11y).
+- `styles.md` - annotated SCSS (base/desktop, responsive math, breakpoints).
+- `tuning.md` - every adjustable knob, with defaults and effects.
+- `verify.md` - post-build QA checklist in plain language ("tap the button - does X happen?").
 
 ## 6. Risk level
 
@@ -91,10 +91,10 @@ resources ⇒ ship the zip; SKILL.md-only ⇒ ship the `.md`.
 
 ## 8. Publish to skills-zoo + docs
 
-1. `skills/dg-<feature>/` — the skill folder.
-2. `docs/index.html` — add a `<a class="skill-card">` block (name, version, risk pill, tags,
+1. `skills/dg-<feature>/` - the skill folder.
+2. `docs/index.html` - add a `<a class="skill-card">` block (name, version, risk pill, tags,
    one-line description).
-3. `docs/skills/dg-<feature>/index.html` — copy an existing detail page as a template; update
+3. `docs/skills/dg-<feature>/index.html` - copy an existing detail page as a template; update
    title, description, install steps, tuning, a11y, file manifest, prerequisites.
 4. Build the target Digital Garden and complete the feature's `references/verify.md` checks.
    Capture the actual rendered feature in dark and light themes at 900×560, then save the pair as
@@ -104,7 +104,7 @@ resources ⇒ ship the zip; SKILL.md-only ⇒ ship the `.md`.
 5. Inspect both captures before publishing: the feature is legible, the two files genuinely show
    their respective themes, and every visible label, count, icon, and control came from the built
    site.
-6. `README.md` — add a row to the skills table.
+6. `README.md` - add a row to the skills table.
 7. Commit + push. The Pages workflow (`.github/workflows/pages.yml`) auto-deploys on `docs/**`.
 
 ## Checklist (ship gate)

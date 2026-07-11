@@ -13,7 +13,7 @@ and [pin13.net/mf2](https://pin13.net/mf2/):
 - [ ] `<link rel="webmention">` present in `<head>`, pointing at
       `https://webmention.io/<your-domain>/webmention`.
 - [ ] `<link rel="authorization_endpoint">` / `token_endpoint` present.
-- [ ] `rel="me"` on your identity link(s) — verify with indiewebify.me step 1.
+- [ ] `rel="me"` on your identity link(s) - verify with indiewebify.me step 1.
 
 ## Receiving (build-time)
 - [ ] With `WEBMENTION_IO_TOKEN` set, build logs `Fetched N webmentions`.
@@ -39,7 +39,7 @@ and [pin13.net/mf2](https://pin13.net/mf2/):
       `grep -rn "webmention.io/api" . | grep -i token` should show only
       `process.env` / `secrets.` references, never a literal token string.
 - [ ] `WEBMENTION_IO_TOKEN` lives in repo **secrets**, domains/URLs in repo
-      **variables** — not in code.
+      **variables** - not in code.
 
 ## Upstream safety
 - [ ] Only user-owned paths touched: `components/user/**`, `_data/webmentions.mjs`,

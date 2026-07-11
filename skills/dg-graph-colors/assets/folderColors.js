@@ -1,15 +1,15 @@
-// folderColors.js — single source of truth for folder → graph color.
+// folderColors.js - single source of truth for folder → graph color.
 //
 // Drop-in: place at src/helpers/folderColors.js (new file, no existing file to
 // overwrite in a stock DG fork). Both build-time node coloring and any future
 // legend/UI can require() this one module.
 //
 // ─────────────────────────────────────────────────────────────────────────
-//  TUNING KNOBS — edit this map to match YOUR vault's top-level folders.
+//  TUNING KNOBS - edit this map to match YOUR vault's top-level folders.
 //  Keys are the first path segment under src/site/notes/ (e.g. notes/Maps/x.md
 //  → "Maps"). 'root' colors notes that live directly under notes/ with no
 //  subfolder. 'default' is the fallback for any folder not listed here.
-//  These are PLACEHOLDER names — rename them to your own folders.
+//  These are PLACEHOLDER names - rename them to your own folders.
 // ─────────────────────────────────────────────────────────────────────────
 const folderColors = {
   'Maps':    '#8A784E', // example: index / MOC pages

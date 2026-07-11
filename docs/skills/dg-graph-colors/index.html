@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#121311">
-<title>dg-graph-colors — skills-zoo</title>
-<meta name="description" content="Color an Obsidian Digital Garden's graph nodes and links by top-level folder. The stock Pixi renderer already honors node.color — this populates it via a one-line wrap in the _data graph hook, plus an optional footer legend. No plugin-core edits.">
+<title>dg-graph-colors - skills-zoo</title>
+<meta name="description" content="Color an Obsidian Digital Garden's graph nodes and links by top-level folder. The stock Pixi renderer already honors node.color - this populates it via a one-line wrap in the _data graph hook, plus an optional footer legend. No plugin-core edits.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -13,8 +13,8 @@
 <script src="../../theme.js"></script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236cc79a' stroke-width='2'%3E%3Ccircle cx='6' cy='6' r='2.5'/%3E%3Ccircle cx='18' cy='7' r='2.5'/%3E%3Ccircle cx='12' cy='18' r='2.5'/%3E%3Cpath d='M8 7.5l7.5 .5M7.5 8l3.5 8M16.5 9l-3.5 7'/%3E%3C/svg%3E">
 <meta property="og:type" content="article">
-<meta property="og:title" content="dg-graph-colors — skills-zoo">
-<meta property="og:description" content="Color an Obsidian Digital Garden's graph nodes and links by top-level folder. The stock Pixi renderer already honors node.color — this populates it via a one-line wrap in the _data graph hook, plus an optional footer legend. No plugin-core edits.">
+<meta property="og:title" content="dg-graph-colors - skills-zoo">
+<meta property="og:description" content="Color an Obsidian Digital Garden's graph nodes and links by top-level folder. The stock Pixi renderer already honors node.color - this populates it via a one-line wrap in the _data graph hook, plus an optional footer legend. No plugin-core edits.">
 <meta property="og:image" content="https://palol.github.io/skills-zoo/skills/dg-graph-colors/preview-dark.png">
 <meta property="og:url" content="https://palol.github.io/skills-zoo/skills/dg-graph-colors/">
 <meta name="twitter:card" content="summary_large_image">
@@ -45,7 +45,7 @@
   <a class="backlink" href="../../">← all skills</a>
 
   <h1>dg-graph-colors</h1>
-  <p class="sub">Color the graph by folder — nodes and links, local and full view.</p>
+  <p class="sub">Color the graph by folder - nodes and links, local and full view.</p>
 
   <div class="meta-row">
     <span class="risk-pill risk-pill--l2">L2 · build hook</span>
@@ -62,12 +62,12 @@
 
   <aside class="responsibility-note" aria-label="Responsible use">
     <strong class="note-title">Plan first, review always.</strong>
-    Agent Skills are instructions, not guarantees. Use your agent&apos;s <strong>Plan tool</strong> (or planning mode) before it changes files, and review the proposed approach. Check commands, permissions, changed files, and the final diff yourself before accepting or running anything. Risk labels are guidance, not a substitute for your review. Treat each skill as a <strong>starting template</strong>, then customize it for your project. The fun is in understanding and adapting it—not blindly copying it.
+    Agent Skills are instructions, not guarantees. Use your agent&apos;s <strong>Plan tool</strong> (or planning mode) before it changes files, and review the proposed approach. Check commands, permissions, changed files, and the final diff yourself before accepting or running anything. Risk labels are guidance, not a substitute for your review. Treat each skill as a <strong>starting template</strong>, then customize it for your project. The fun is in understanding and adapting it, not blindly copying it.
   </aside>
-<p>Gives every graph node a <code>color</code> derived from its top-level folder (<code>Maps</code>, <code>Notes</code>, <code>Log</code>, root, …) instead of one flat theme color; links inherit their source node's color. Applies to both the per-note local graph and the full <code>/graph/</code> view. Original work — a cleaner, lower-risk rebuild of the "colored obsidian graph" feature.</p>
+<p>Gives every graph node a <code>color</code> derived from its top-level folder (<code>Maps</code>, <code>Notes</code>, <code>Log</code>, root, …) instead of one flat theme color; links inherit their source node's color. Applies to both the per-note local graph and the full <code>/graph/</code> view. Original work - a cleaner, lower-risk rebuild of the "colored obsidian graph" feature.</p>
 
   <div class="callout">
-    <strong>The renderer already supports this.</strong> The stock DG Pixi graph (<code>graphScript.njk</code>) already draws <code>node.color</code> and colors links by their source node — it just has no color to draw until you add one. So this skill only <em>populates</em> <code>node.color</code> at build time and changes <strong>nothing</strong> in the renderer.
+    <strong>The renderer already supports this.</strong> The stock DG Pixi graph (<code>graphScript.njk</code>) already draws <code>node.color</code> and colors links by their source node - it just has no color to draw until you add one. So this skill only <em>populates</em> <code>node.color</code> at build time and changes <strong>nothing</strong> in the renderer.
   </div>
 
   <h2>How it works</h2>
@@ -86,8 +86,8 @@ cp -r skills-zoo/skills/dg-graph-colors ~/.claude/skills/</code></pre>
 
   <h2>What it touches</h2>
   <ul>
-    <li><strong>New helper</strong>: <code>src/helpers/folderColors.js</code> — the folder→color map (single source of truth).</li>
-    <li><strong>New helper</strong>: <code>src/helpers/graphColors.js</code> — <code>addGraphColors</code>, a read-only build-time transform that stamps <code>color</code> per node.</li>
+    <li><strong>New helper</strong>: <code>src/helpers/folderColors.js</code> - the folder→color map (single source of truth).</li>
+    <li><strong>New helper</strong>: <code>src/helpers/graphColors.js</code> - <code>addGraphColors</code>, a read-only build-time transform that stamps <code>color</code> per node.</li>
     <li><strong>One wrap line</strong>: <code>_data/eleventyComputed.js</code> (user-owned <code>_data</code> path) pipes the graph through <code>addGraphColors</code>.</li>
     <li><strong>Optional legend</strong> (autoloaded footer slot) + SCSS appended to <code>custom-style.scss</code>.</li>
   </ul>
@@ -98,24 +98,24 @@ cp -r skills-zoo/skills/dg-graph-colors ~/.claude/skills/</code></pre>
 
   <h2>What's in the box</h2>
   <ul class="filelist" role="list">
-    <li><span class="fname">SKILL.md</span> — install workflow, invariants, risk</li>
-    <li><span class="fname">assets/folderColors.js</span> — the folder → color map (edit this)</li>
-    <li><span class="fname">assets/graphColors.js</span> — build-time color injector</li>
-    <li><span class="fname">references/eleventyComputed.graph-hook.md</span> — the exact one-line wrap + fallback</li>
-    <li><span class="fname">assets/zz-graph-legend.njk</span> — optional autoloaded footer legend</li>
-    <li><span class="fname">assets/graph-colors.scss</span> — optional legend styles (TUNING KNOBS on top)</li>
-    <li><span class="fname">references/architecture.md</span> — renderer support, data flow, why L2 not L3</li>
-    <li><span class="fname">references/tuning.md</span> — palette, color-by-something-else, legend knobs</li>
-    <li><span class="fname">references/verify.md</span> — build / graph.json / browser / legend QA</li>
+    <li><span class="fname">SKILL.md</span> - install workflow, invariants, risk</li>
+    <li><span class="fname">assets/folderColors.js</span> - the folder → color map (edit this)</li>
+    <li><span class="fname">assets/graphColors.js</span> - build-time color injector</li>
+    <li><span class="fname">references/eleventyComputed.graph-hook.md</span> - the exact one-line wrap + fallback</li>
+    <li><span class="fname">assets/zz-graph-legend.njk</span> - optional autoloaded footer legend</li>
+    <li><span class="fname">assets/graph-colors.scss</span> - optional legend styles (TUNING KNOBS on top)</li>
+    <li><span class="fname">references/architecture.md</span> - renderer support, data flow, why L2 not L3</li>
+    <li><span class="fname">references/tuning.md</span> - palette, color-by-something-else, legend knobs</li>
+    <li><span class="fname">references/verify.md</span> - build / graph.json / browser / legend QA</li>
   </ul>
 
   <h2>Prerequisites</h2>
   <ul>
     <li>An oleeskild Digital Garden (Eleventy) fork with the Pixi graph (<code>graphScript.njk</code> present).</li>
-    <li>The graph global built via <code>linkUtils.getGraph</code> — stock DG wires this in <code>_data/eleventyComputed.js</code>. Confirm with <code>grep -rn "getGraph(" src/site/_data/</code>.</li>
+    <li>The graph global built via <code>linkUtils.getGraph</code> - stock DG wires this in <code>_data/eleventyComputed.js</code>. Confirm with <code>grep -rn "getGraph(" src/site/_data/</code>.</li>
     <li>User-component autoloading (only for the optional legend).</li>
   </ul>
-  <p><em>Scope is Digital Garden only</em> — this is the published-site graph, not Obsidian's in-app graph, and not Quartz.</p>
+  <p><em>Scope is Digital Garden only</em> - this is the published-site graph, not Obsidian's in-app graph, and not Quartz.</p>
 
   <p class="source-cta">
     <a href="https://github.com/palol/skills-zoo/tree/main/skills/dg-graph-colors">Browse the full source on GitHub →</a>

@@ -1,5 +1,5 @@
 /* ============================================================================
-   obsifetch — neofetch-style vault card
+   obsifetch - neofetch-style vault card
    Append to src/site/styles/custom-style.scss.
    Colors inherit DG theme tokens (light/dark automatic). Only sizes/shapes are
    knobs. Tribute to tabibyte/obsifetch.
@@ -15,7 +15,7 @@
   --ob-radius: 8px;           /* card corner radius */
   --ob-accent: var(--text-accent); /* domain + key color */
 
-  /* Swatch palette — 8 theme squares, pulled from DG tokens so they track the
+  /* Swatch palette - 8 theme squares, pulled from DG tokens so they track the
      active theme. Override any of these to taste. */
   --ob-c1: var(--text-normal);
   --ob-c2: var(--text-muted);

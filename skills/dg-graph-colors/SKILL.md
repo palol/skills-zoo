@@ -5,7 +5,7 @@ license: MIT
 metadata:
   author: palol
   version: '1.0'
-  risk-level: "L2 — two additive drop-in helpers plus one wrapping edit to a user-owned _data graph hook. Build-time, read-only transform on the graph object; no network, no plugin-core edits. Fully reversible via git."
+  risk-level: "L2 - two additive drop-in helpers plus one wrapping edit to a user-owned _data graph hook. Build-time, read-only transform on the graph object; no network, no plugin-core edits. Fully reversible via git."
 ---
 
 # Digital Garden Graph Colors
@@ -15,7 +15,7 @@ top-level folder (`Maps`, `Notes`, `Log`, root, …); links inherit their source
 node's color. Applies to both the local (per-note) graph and the full
 `/graph/` view.
 
-Original work — not a tribute. Faithful to the "colored obsidian graph" build
+Original work - not a tribute. Faithful to the "colored obsidian graph" build
 on the source site, re-implemented as a **cleaner, lower-risk** install that
 avoids editing the shared `linkUtils.js` build helper.
 
@@ -33,14 +33,14 @@ Quartz. DG-specific.
 ## How it works (one sentence)
 
 The stock DG Pixi renderer (`graphScript.njk`) **already draws `node.color`**
-and colors links by source-node color — it just has no color to draw until you
+and colors links by source-node color - it just has no color to draw until you
 add one, so this skill injects `color` per node at build time and changes
 nothing in the renderer. Full data flow in `references/architecture.md`.
 
 ## Prerequisites (verify first)
 
 - oleeskild DG fork (Eleventy) with the Pixi graph (`graphScript.njk` present).
-- The graph global built via `linkUtils.getGraph` — stock DG wires this in
+- The graph global built via `linkUtils.getGraph` - stock DG wires this in
   `src/site/_data/eleventyComputed.js`. Confirm with:
   ```bash
   grep -rn "getGraph(" src/site/_data/
@@ -49,7 +49,7 @@ nothing in the renderer. Full data flow in `references/architecture.md`.
 
 ## Quick Install
 
-1. **Drop in two helpers** (both new files — no overwrite in a stock fork):
+1. **Drop in two helpers** (both new files - no overwrite in a stock fork):
    - `assets/folderColors.js` → `src/helpers/folderColors.js`
    - `assets/graphColors.js`  → `src/helpers/graphColors.js`
 
@@ -57,7 +57,7 @@ nothing in the renderer. Full data flow in `references/architecture.md`.
    PLACEHOLDER folder names/hexes with your vault's top-level folders. `root` =
    top-level pages, `default` = fallback. (`references/tuning.md`)
 
-3. **Wrap the graph hook** — the ONLY edit to an existing file. In
+3. **Wrap the graph hook** - the ONLY edit to an existing file. In
    `src/site/_data/eleventyComputed.js` (user-owned `_data` path):
    ```diff
     const { getGraph } = require("../../helpers/linkUtils");
@@ -66,7 +66,7 @@ nothing in the renderer. Full data flow in `references/architecture.md`.
    -  graph: async (data) => await getGraph(data),
    +  graph: async (data) => addGraphColors(await getGraph(data)),
    ```
-   If your fork builds the graph elsewhere, apply the same wrap there — see
+   If your fork builds the graph elsewhere, apply the same wrap there - see
    `references/eleventyComputed.graph-hook.md`.
 
 4. **(Optional) legend.** Copy `assets/zz-graph-legend.njk` →
@@ -94,23 +94,23 @@ nothing in the renderer. Full data flow in `references/architecture.md`.
 **L2.** Two additive drop-in files plus one wrapping edit to a user-owned
 `_data` file. No writes at runtime, no network, no plugin-core modification.
 The transform recursively reads the already-built graph object in memory to add
-a color field — build-time and read-only. Reversible via git. Rated above L1
+a color field - build-time and read-only. Reversible via git. Rated above L1
 because it inserts a step into the graph build pipeline; kept below L3 by
 avoiding any edit to shared build helpers or the renderer.
 
 ## Reference Files
 
-- `references/architecture.md` — renderer support, data flow, why L2 not L3.
-- `references/tuning.md` — palette, color-by-something-else, legend knobs.
-- `references/verify.md` — post-install checks and gotchas.
-- `references/eleventyComputed.graph-hook.md` — the exact one-line wrap + fallback.
+- `references/architecture.md` - renderer support, data flow, why L2 not L3.
+- `references/tuning.md` - palette, color-by-something-else, legend knobs.
+- `references/verify.md` - post-install checks and gotchas.
+- `references/eleventyComputed.graph-hook.md` - the exact one-line wrap + fallback.
 
 ## Assets
 
-- `assets/folderColors.js` — the folder→color map (edit this).
-- `assets/graphColors.js` — build-time color injector (`addGraphColors`).
-- `assets/zz-graph-legend.njk` — optional footer legend (autoloaded).
-- `assets/graph-colors.scss` — optional legend styles (TUNING KNOBS on top).
+- `assets/folderColors.js` - the folder→color map (edit this).
+- `assets/graphColors.js` - build-time color injector (`addGraphColors`).
+- `assets/zz-graph-legend.njk` - optional footer legend (autoloaded).
+- `assets/graph-colors.scss` - optional legend styles (TUNING KNOBS on top).
 
 ## Validate & Package
 

@@ -1,7 +1,7 @@
 # Contributing to skills-zoo
 
 Thanks for helping grow the menagerie. This repo keeps **agent instructions** in
-`skills/<name>/SKILL.md` and **human docs** in `docs/skills/<name>/` — please do not add
+`skills/<name>/SKILL.md` and **human docs** in `docs/skills/<name>/` - please do not add
 per-skill `README.md` files that duplicate either channel.
 
 ## Quick path

@@ -1,4 +1,4 @@
-# Dungeon Map — Architecture
+# Dungeon Map - Architecture
 
 Read this when you need to understand or adapt the pipeline. Files and their jobs, top to bottom.
 
@@ -6,10 +6,10 @@ Read this when you need to understand or adapt the pipeline. Files and their job
 
 ### `assets/hex-spiral.js` → `src/helpers/hex-spiral.js`
 Axial-coordinate hex math (Red Blob Games ring/spiral approach). No dependencies.
-- `axialToPixel(q, r, w, h)` — flat-top hex → pixel center.
-- `hexRing(center, radius)` / `hexRingFrom(...)` — one ring; `From` starts at a hex so the path is
+- `axialToPixel(q, r, w, h)` - flat-top hex → pixel center.
+- `hexRing(center, radius)` / `hexRingFrom(...)` - one ring; `From` starts at a hex so the path is
   continuous between rings.
-- `generateHexSpiral(total, w=28, h=24)` — returns `[{q,r,x,y,ring}]` for `total` hexes, spiraling
+- `generateHexSpiral(total, w=28, h=24)` - returns `[{q,r,x,y,ring}]` for `total` hexes, spiraling
   out from center, each ring joined to the previous for a continuous walk.
 
 ### `assets/generate-dungeon-data.js` → `scripts/generate-dungeon-data.js`
@@ -21,9 +21,9 @@ Enumerates notes and builds the data model. Deps: `node-html-parser`, `gray-matt
   - `noteIcon` mapping: number `N` → `tree-N`; numeric string → `tree-N`; other string → used as-is;
     missing → `tree-1`. `permalink` frontmatter wins for the URL. `dg-home: true` or `home.md` →
     home page. Files literally named `hidden` are skipped.
-- **Order:** `sortContentItemsByDate` — earliest created = first hex.
+- **Order:** `sortContentItemsByDate` - earliest created = first hex.
 - **π rhythm:** `getPiDigits(100)` returns π's digits; `createVirtualTileList` walks them in pairs
-  `(content_count, ambient_count)` — place that many real notes, then that many empty "ambient"
+  `(content_count, ambient_count)` - place that many real notes, then that many empty "ambient"
   hexes, repeat. Leftover notes are appended without ambient padding.
 - **Placement:** `generateHexSpiral(totalSlots, 28, 24)` gives positions; each slot becomes a
   `hexData` entry `{q,r,x,y,ring,item|null,isAtmosphere}`.
@@ -33,7 +33,7 @@ Enumerates notes and builds the data model. Deps: `node-html-parser`, `gray-matt
 
 ### `assets/generate-static-dungeon.js` → `scripts/generate-static-dungeon.js`
 Calls `generateDungeonData()`, then renders the SVG. No extra deps.
-- `generateDungeonSVG` — computes bounds, emits `<defs>` gradients (content/home/exit/void +
+- `generateDungeonSVG` - computes bounds, emits `<defs>` gradients (content/home/exit/void +
   theme-driven ambient), draws the continuous "meditation" spiral path, then content hexes wrapped
   in `<a href="permalink" target="_top">` (so each hex links to its note), then ambient hexes
   (alternating dark/light by ring parity). Icons come from `src/site/img/` via a directory-derived
