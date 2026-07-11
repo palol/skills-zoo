@@ -1,6 +1,6 @@
 ---
 name: dg-summon-cats
-description: "Summon two pixel cats, Greta and Nigel, into an Obsidian Digital Garden (Eleventy) site. Visitors tap or click anywhere to direct the bonded cats across the viewport; they walk, idle, sleep, and scratch using Neko sprite animations. Use when a Digital Garden user wants roaming pixel pets, desktop cats, Neko cats, or the Greta and Nigel interaction from the wedding site. Upstream-safe, theme-independent, and no core/layout edits. Trigger on: summon cats, pixel cats, Neko cats, roaming pets, Greta and Nigel, desktop pet."
+description: "Summon two pixel cats, Greta and Nigel, into an Obsidian Digital Garden (Eleventy) site. Visitors tap or click anywhere to direct the bonded cats across the viewport; they walk, idle, sleep, and scratch using Neko sprite animations inspired by WebNeko. Use when a Digital Garden user wants roaming pixel pets, desktop cats, Neko cats, or Greta and Nigel. Upstream-safe, theme-independent, and no core/layout edits. Trigger on: summon cats, pixel cats, Neko cats, WebNeko, roaming pets, Greta and Nigel, desktop pet."
 license: MIT
 metadata:
   author: palol
@@ -17,8 +17,16 @@ Adds two decorative pixel cats to every page of an Obsidian Digital Garden:
 - Tap or click anywhere and both cats travel toward that point.
 - When left alone they idle, sleep, scratch themselves, or scratch a nearby viewport edge.
 
-The behavior is adapted from the Greta and Nigel cats on the wedding site. Everything installs
-into user-owned paths, so upstream Digital Garden updates do not overwrite it.
+Everything installs into user-owned paths, so upstream Digital Garden updates do not overwrite it.
+
+## Inspirations
+
+- [WebNeko](https://webneko.net/) — the classic browser Neko: click to play chase, with walk /
+  idle / sleep / scratch animations and sprite variants (including spirit and gray). This skill
+  adapts that interaction pattern for a Digital Garden; it does not embed or redistribute
+  WebNeko's runtime.
+- First encountered via [chardidath.ing](https://chardidath.ing/) — discovery path only, not the
+  upstream source.
 
 ## When to Use This Skill
 

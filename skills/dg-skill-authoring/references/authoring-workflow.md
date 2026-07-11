@@ -50,15 +50,16 @@ description: "Add a bottom floating dock + expandable tray to an Obsidian Digita
 
 ## 4. Body
 
-Sections, in order: `When to Use` → `Quick Install (agent-driven)` → `Prerequisites (verify
-first)` → `Instructions` (numbered) → `Key Design Points` → `Risk Level` → `Reference Files` /
-`Assets`. Keep <500 lines; move annotated source to `references/`.
+Sections, in order: `When to Use` → `Inspirations` (when any prior work informed the feature) →
+`Quick Install (agent-driven)` → `Prerequisites (verify first)` → `Instructions` (numbered) →
+`Key Design Points` → `Risk Level` → `Reference Files` / `Assets`. Keep <500 lines; move
+annotated source to `references/`.
 
 The **Prerequisites** section is load-bearing: it makes the target agent confirm the repo is
 DG+Eleventy with the autoloader present before writing anything, and stop cleanly if not.
 
-Bake in the five invariants (see the meta-skill body): user-owned paths, autoload-by-prefix,
-theme tokens, a11y, consolidated knobs.
+Bake in the six invariants (see the meta-skill body): user-owned paths, autoload-by-prefix,
+theme tokens, a11y, consolidated knobs, and source-grounded inspiration citations.
 
 ## 5. Assets + references
 

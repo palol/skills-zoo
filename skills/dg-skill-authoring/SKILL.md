@@ -28,8 +28,8 @@ skills for non-DG stacks (Quartz, Astro, plain Eleventy) — the DG conventions 
 
 ## The DG Skill Pattern (what "good" looks like)
 
-Every DG feature skill this meta-skill produces must satisfy five invariants. These are the
-lessons baked into `dg-floating-tray`:
+Every DG feature skill this meta-skill produces must satisfy six invariants. These are the
+lessons baked into `dg-floating-tray` (plus inspiration citations from later skills):
 
 1. **User-owned paths only.** Write into paths the DG plugin treats as user territory, so
    upstream `git pull` never overwrites them:
@@ -50,6 +50,14 @@ lessons baked into `dg-floating-tray`:
    `:focus-visible`, and `prefers-reduced-motion` respected.
 5. **Consolidate tunables.** Put every safe size/shape value in one `>>> TUNING KNOBS <<<`
    `:root` block at the top of the SCSS; derive everything else from it. Document each knob.
+6. **Cite inspirations with real sources.** Every skill that adapts, tributes, or is visually /
+   conceptually inspired by prior work must include an **Inspirations** section with direct
+   public URLs. For each source, state precisely what it inspired or supplied (interaction,
+   aesthetic, algorithm, tutorial, asset pack). Distinguish inspiration from code/asset
+   provenance — do not imply derivation when the evidence only supports inspiration. Prefer
+   the canonical upstream page over a discovery path; if you mention where you first saw it,
+   label that separately. Never cite private or personal provenance (e.g. unpublished sites,
+   private events) in public skill docs.
 
 If a proposed feature can't respect invariants 1–2 (needs a core/layout edit), say so plainly and
 scope it down or stop — don't ship a skill that breaks on upstream update.
@@ -91,10 +99,16 @@ on: …" list of literal keywords. It's discovery metadata, not marketing.
 
 ### 4. Write the body (progressive disclosure)
 
-Keep `SKILL.md` under ~500 lines. Structure: `When to Use` → `Prerequisites (verify first)` →
-`Quick Install (agent-driven)` → step-by-step `Instructions` → `Key Design Points` →
-`Risk Level` → `Reference Files` / `Assets`. Push verbose annotated source into `references/`
-and link each with a read-me-when note. Assets are drop-in files, never auto-loaded.
+Keep `SKILL.md` under ~500 lines. Structure: `When to Use` → `Inspirations` (when any prior
+work informed the feature) → `Prerequisites (verify first)` → `Quick Install (agent-driven)` →
+step-by-step `Instructions` → `Key Design Points` → `Risk Level` → `Reference Files` / `Assets`.
+Push verbose annotated source into `references/` and link each with a read-me-when note. Assets
+are drop-in files, never auto-loaded.
+
+The **Inspirations** section is required whenever the skill is inspired by, tributes, or packages
+prior public work. Ground every claim in a live public URL; name what each source contributed;
+exclude private provenance. See invariant 6 and `dg-dungeon-map` / `dg-summon-cats` /
+`dg-obsifetch` for models.
 
 Include a **Prerequisites** section that verifies the target repo is actually DG+Eleventy with
 the autoloader present before touching anything (see `dg-floating-tray` for the model).
@@ -139,8 +153,9 @@ If publishing to `skills-zoo`:
 ## Key Design Points
 
 - **Meta, not installer** — this skill *produces* skills; it doesn't install features itself.
-- **Invariants over templates** — the five invariants above are the real product; the template is
+- **Invariants over templates** — the six invariants above are the real product; the template is
   a convenience. A skill that violates invariant 1 or 2 is broken regardless of how it looks.
+  A skill that adapts prior work without invariant-6 citations is incomplete.
 - **Verified spec facts** — frontmatter rules and progressive disclosure come from the
   [agentskills.io](https://agentskills.io) spec; see `references/dg-mechanics.md` for citations.
 

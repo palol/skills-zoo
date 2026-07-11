@@ -13,14 +13,29 @@ metadata:
 Adds an interactive **dungeon map** to a Digital Garden (oleeskild `digital-garden` plugin +
 Eleventy) site. Notes become hexes on a spiral whose spacing follows the digits of **π**; the
 header component renders the generated SVG, marks the **current page** ("you are here"), and can
-toggle a **backlinks / mentions** overlay derived from `graph.json`. Inspired by
-[brad.quest](https://brad.quest/)'s dungeon and [Hermitage](https://hermitage.utsob.me/)'s forest.
-The official Digital Garden docs tip [Creating hex map](https://docs.forestry.md/advanced/tips-and-tricks/#creating-hex-map)
-points readers to the original [Digital Garden Map tutorial](https://www.paologabriel.com/swamp/digital-garden-map/)
-this skill packages.
+toggle a **backlinks / mentions** overlay derived from `graph.json`.
 
 Everything lives in **user-owned paths** (autoloaded components, `custom-style.scss`) plus two
 **build scripts** in `scripts/` — upstream `git pull` never overwrites your files.
+
+## Inspirations
+
+Conceptual / visual inspiration (not code provenance):
+
+- [brad.quest's Dungeon view](https://brad.quest/map/#dungeon) — a garden map mode that presents
+  notes as a dungeon-style exploration surface.
+- [Hermitage's Forest](https://hermitage.utsob.me/writings/technical/how-tos/steal-my-look/#forest)
+  (source in [topobon](https://github.com/uroybd/topobon)) — a home-page forest of notes that
+  treats the garden as a wanderable landscape.
+
+Technical packaging / implementation sources:
+
+- The official Digital Garden docs tip
+  [Creating hex map](https://docs.forestry.md/advanced/tips-and-tricks/#creating-hex-map) points
+  readers to the [Digital Garden Map tutorial](https://www.paologabriel.com/swamp/digital-garden-map/)
+  this skill packages (π spiral, hex layout, header map).
+- Hex ring-walking spiral math follows
+  [Red Blob Games](https://www.redblobgames.com/grids/hexagons/#rings-spiral).
 
 ## When to Use This Skill
 

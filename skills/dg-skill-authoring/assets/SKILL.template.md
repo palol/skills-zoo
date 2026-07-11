@@ -13,6 +13,16 @@ metadata:
 One-paragraph summary: what this adds, where it lives, and the fact that everything sits in
 **user-owned paths** so upstream `git pull` never overwrites it.
 
+## Inspirations
+
+List every public source that informed this skill. For each entry: link the canonical URL, and
+state precisely what it inspired or supplied (interaction, aesthetic, algorithm, tutorial,
+asset pack). Distinguish inspiration from code/asset provenance. If you first encountered a
+source via another site, label that as discovery only. Do **not** cite private or personal
+provenance.
+
+- [SOURCE_NAME](https://example.com/) — WHAT_IT_INSPIRED_OR_SUPPLIED.
+
 ## When to Use This Skill
 
 Use when a Digital Garden (oleeskild `digital-garden` plugin + Eleventy) user wants:

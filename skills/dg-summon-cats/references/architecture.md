@@ -15,9 +15,10 @@ The elements use `pointer-events: none`, so they never block links or controls b
 
 ## Sprite atlases
 
-Both PNGs are 8 columns × 4 rows of 32 px frames. The frame-coordinate table is inherited from
-the original Neko animation used by the wedding site. Greta uses the cream/spirit atlas and moves
-at 7 px per simulation step; Nigel uses the gray atlas and moves at 13 px per step.
+Both PNGs are 8 columns × 4 rows of 32 px frames. The frame-coordinate table follows the classic
+Neko atlas layout popularized by [WebNeko](https://webneko.net/) (walk, idle, sleep, scratch).
+Greta uses the cream/spirit atlas and moves at 7 px per simulation step; Nigel uses the gray
+atlas and moves at 13 px per step.
 
 The skill stores the atlases as PNGs instead of embedding large base64 strings in the component.
 Digital Garden passes `src/site/img` through to `/img`, so no runtime network dependency is
@@ -31,7 +32,9 @@ the controllers stop or resume without duplicating elements or event listeners.
 
 ## Source adaptation
 
-The behavior and sprite data come from the wedding site's single-page implementation. This
-package separates code, styles, and binary assets; replaces duplicate click/touch listeners with
-Pointer Events; adds viewport-resize handling; adds a duplicate-init guard; and restores a
-reduced-motion path suitable for a reusable public skill.
+Behavior and sprite-atlas conventions are inspired by [WebNeko](https://webneko.net/) (first
+encountered via [chardidath.ing](https://chardidath.ing/)). This package separates code, styles,
+and binary assets; replaces duplicate click/touch listeners with Pointer Events; adds
+viewport-resize handling; adds a duplicate-init guard; and restores a reduced-motion path
+suitable for a reusable public skill. Local sprite sheets ship with the skill; WebNeko is not
+loaded at runtime.
