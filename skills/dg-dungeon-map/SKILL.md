@@ -15,6 +15,9 @@ Eleventy) site. Notes become hexes on a spiral whose spacing follows the digits 
 header component renders the generated SVG, marks the **current page** ("you are here"), and can
 toggle a **backlinks / mentions** overlay derived from `graph.json`. Inspired by
 [brad.quest](https://brad.quest/)'s dungeon and [Hermitage](https://hermitage.utsob.me/)'s forest.
+The official Digital Garden docs tip [Creating hex map](https://docs.forestry.md/advanced/tips-and-tricks/#creating-hex-map)
+points readers to the original [Digital Garden Map tutorial](https://www.paologabriel.com/swamp/digital-garden-map/)
+this skill packages.
 
 Everything lives in **user-owned paths** (autoloaded components, `custom-style.scss`) plus two
 **build scripts** in `scripts/` — upstream `git pull` never overwrites your files.
