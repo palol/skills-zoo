@@ -5,15 +5,15 @@ license: MIT
 metadata:
   author: palol
   version: '1.0'
-  risk-level: "L1 — writes one user-owned footer component, appends user styles, and copies two local sprite sheets. No network calls, secrets, or plugin-core edits. Fully reversible via git."
+  risk-level: "L1 - writes one user-owned footer component, appends user styles, and copies two local sprite sheets. No network calls, secrets, or plugin-core edits. Fully reversible via git."
 ---
 
 # Summon Greta and Nigel
 
 Adds two decorative pixel cats to every page of an Obsidian Digital Garden:
 
-- **Greta** — cream/spirit sprite, slower and slightly clumsy.
-- **Nigel** — gray sprite, faster.
+- **Greta** - cream/spirit sprite, slower and slightly clumsy.
+- **Nigel** - gray sprite, faster.
 - Tap or click anywhere and both cats travel toward that point.
 - When left alone they idle, sleep, scratch themselves, or scratch a nearby viewport edge.
 
@@ -21,11 +21,11 @@ Everything installs into user-owned paths, so upstream Digital Garden updates do
 
 ## Inspirations
 
-- [WebNeko](https://webneko.net/) — the classic browser Neko: click to play chase, with walk /
+- [WebNeko](https://webneko.net/) - the classic browser Neko: click to play chase, with walk /
   idle / sleep / scratch animations and sprite variants (including spirit and gray). This skill
   adapts that interaction pattern for a Digital Garden; it does not embed or redistribute
   WebNeko's runtime.
-- First encountered via [chardidath.ing](https://chardidath.ing/) — discovery path only, not the
+- First encountered via [chardidath.ing](https://chardidath.ing/) - discovery path only, not the
   upstream source.
 
 ## When to Use This Skill
@@ -95,28 +95,28 @@ Follow `references/verify.md`, including pointer, resize, reduced-motion, and mo
 
 ## Key Design Points
 
-- **Upstream-safe** — footer autoload, user stylesheet, and user image directory only.
-- **Local sprites** — no runtime CDN or network dependency.
-- **Unified input** — one `pointerdown` listener handles mouse, pen, and touch without duplicate
+- **Upstream-safe** - footer autoload, user stylesheet, and user image directory only.
+- **Local sprites** - no runtime CDN or network dependency.
+- **Unified input** - one `pointerdown` listener handles mouse, pen, and touch without duplicate
   touch/click events.
-- **Decorative and non-blocking** — cats are `aria-hidden`, ignore pointer events, and sit above
+- **Decorative and non-blocking** - cats are `aria-hidden`, ignore pointer events, and sit above
   the page without intercepting controls.
-- **Reduced motion** — with `prefers-reduced-motion: reduce`, cats jump to the requested position
+- **Reduced motion** - with `prefers-reduced-motion: reduce`, cats jump to the requested position
   and remain idle instead of continuously animating.
-- **Single instance** — a global guard prevents duplicate cats if the component initializes twice.
+- **Single instance** - a global guard prevents duplicate cats if the component initializes twice.
 
 ## Reference Files
 
-- `references/architecture.md` — runtime lifecycle, sprite atlas layout, and adaptation notes.
-- `references/tuning.md` — safe speed, size, timing, and start-position adjustments.
-- `references/verify.md` — build and browser QA checklist.
+- `references/architecture.md` - runtime lifecycle, sprite atlas layout, and adaptation notes.
+- `references/tuning.md` - safe speed, size, timing, and start-position adjustments.
+- `references/verify.md` - build and browser QA checklist.
 
 ## Assets
 
-- `assets/zzz-summon-cats.njk` — drop-in runtime component.
-- `assets/summon-cats.scss` — positioning, rendering, focus-safe behavior, and tuning knobs.
-- `assets/greta-neko.png` — cream/spirit 8×4 Neko sprite atlas.
-- `assets/nigel-neko.png` — gray 8×4 Neko sprite atlas.
+- `assets/zzz-summon-cats.njk` - drop-in runtime component.
+- `assets/summon-cats.scss` - positioning, rendering, focus-safe behavior, and tuning knobs.
+- `assets/greta-neko.png` - cream/spirit 8×4 Neko sprite atlas.
+- `assets/nigel-neko.png` - gray 8×4 Neko sprite atlas.
 
 ## Risk Level
 

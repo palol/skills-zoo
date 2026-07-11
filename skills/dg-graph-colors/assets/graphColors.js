@@ -1,4 +1,4 @@
-// graphColors.js — post-process the DG graph object to add a per-node `color`
+// graphColors.js - post-process the DG graph object to add a per-node `color`
 // derived from each node's top-level folder. Build-time, read-only transform.
 //
 // Drop-in: place at src/helpers/graphColors.js (new file). Called from the
@@ -7,7 +7,7 @@
 //
 // The stock DG Pixi renderer (graphScript.njk) already honors `node.color`
 // (falls back to the theme var when absent) and colors links by their source
-// node's color. So injecting `color` here is the ONLY wiring needed — no
+// node's color. So injecting `color` here is the ONLY wiring needed - no
 // renderer edit.
 //
 // Input shape (from linkUtils.getGraph): { nodes: { "<url>": { url, ... } },

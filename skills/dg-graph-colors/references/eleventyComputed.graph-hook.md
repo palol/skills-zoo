@@ -1,8 +1,8 @@
-# eleventyComputed.js — graph color hook
+# eleventyComputed.js - graph color hook
 
 This is the ONE edit the skill makes to an existing file. The file lives at
 `src/site/_data/eleventyComputed.js`, a **user-owned `_data/` path** (safe to
-edit — not plugin-core). Do not overwrite the whole file; change only the
+edit - not plugin-core). Do not overwrite the whole file; change only the
 `graph:` computed key.
 
 The stock DG defines the graph global roughly like this:
@@ -34,7 +34,7 @@ Add the `addGraphColors` require at the top, then wrap the `getGraph` result.
 That is the entire change. `addGraphColors` mutates and returns the same graph
 object, adding `color` (+ `group`) to every node from its top-level folder via
 `folderColors.js`. `graph.njk` already serializes this to `/graph.json`, and
-`graphScript.njk` already renders `node.color` — so no other file changes.
+`graphScript.njk` already renders `node.color` - so no other file changes.
 
 ## If your fork defines `graph` elsewhere
 

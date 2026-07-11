@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#121311">
-<title>dg-dungeon-map — skills-zoo</title>
-<meta name="description" content="Add an interactive hex-grid dungeon map to an Obsidian Digital Garden site — a pi-driven spiral of your notes, a you-are-here marker, and backlink/mention overlays from graph.json.">
+<title>dg-dungeon-map - skills-zoo</title>
+<meta name="description" content="Add an interactive hex-grid dungeon map to an Obsidian Digital Garden site - a pi-driven spiral of your notes, a you-are-here marker, and backlink/mention overlays from graph.json.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -13,8 +13,8 @@
 <script src="../../theme.js"></script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236cc79a' stroke-width='2'%3E%3Cpath d='M4 20V8a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v12'/%3E%3Cpath d='M4 20h16M9 20v-5h6v5'/%3E%3Ccircle cx='9' cy='9' r='1'/%3E%3Ccircle cx='15' cy='9' r='1'/%3E%3C/svg%3E">
 <meta property="og:type" content="article">
-<meta property="og:title" content="dg-dungeon-map — skills-zoo">
-<meta property="og:description" content="Add an interactive hex-grid dungeon map to an Obsidian Digital Garden site — a pi-driven spiral of your notes, a you-are-here marker, and backlink/mention overlays from graph.json.">
+<meta property="og:title" content="dg-dungeon-map - skills-zoo">
+<meta property="og:description" content="Add an interactive hex-grid dungeon map to an Obsidian Digital Garden site - a pi-driven spiral of your notes, a you-are-here marker, and backlink/mention overlays from graph.json.">
 <meta property="og:image" content="https://palol.github.io/skills-zoo/skills/dg-dungeon-map/preview-dark.png">
 <meta property="og:url" content="https://palol.github.io/skills-zoo/skills/dg-dungeon-map/">
 <meta name="twitter:card" content="summary_large_image">
@@ -62,9 +62,9 @@
 
   <aside class="responsibility-note" aria-label="Responsible use">
     <strong class="note-title">Plan first, review always.</strong>
-    Agent Skills are instructions, not guarantees. Use your agent&apos;s <strong>Plan tool</strong> (or planning mode) before it changes files, and review the proposed approach. Check commands, permissions, changed files, and the final diff yourself before accepting or running anything. Risk labels are guidance, not a substitute for your review. Treat each skill as a <strong>starting template</strong>, then customize it for your project. The fun is in understanding and adapting it—not blindly copying it.
+    Agent Skills are instructions, not guarantees. Use your agent&apos;s <strong>Plan tool</strong> (or planning mode) before it changes files, and review the proposed approach. Check commands, permissions, changed files, and the final diff yourself before accepting or running anything. Risk labels are guidance, not a substitute for your review. Treat each skill as a <strong>starting template</strong>, then customize it for your project. The fun is in understanding and adapting it, not blindly copying it.
   </aside>
-<p>Turns every published note into a hexagon on a spiral, rendered as a clickable map in your note header. The current page gets a <strong>“you are here”</strong> marker, and an optional overlay draws lines to that note's <strong>backlinks and mentions</strong> — all pulled from your Digital Garden's <code>graph.json</code>.</p>
+<p>Turns every published note into a hexagon on a spiral, rendered as a clickable map in your note header. The current page gets a <strong>“you are here”</strong> marker, and an optional overlay draws lines to that note's <strong>backlinks and mentions</strong> - all pulled from your Digital Garden's <code>graph.json</code>.</p>
 
   <div class="callout">
     <strong>The path follows π.</strong> Notes are laid out oldest-first along an axial hex spiral; the digits of π decide how many content hexes then how many empty “ambient” hexes to place, so the rhythm of the walk is literally pi.
@@ -96,22 +96,22 @@ cp -r skills-zoo/skills/dg-dungeon-map ~/.claude/skills/</code></pre>
   </ul>
 
   <div class="callout">
-    <strong>Why L2, not L1.</strong> Unlike a pure component skill, this adds Node build scripts that <em>execute at build time</em> and <em>read your notes and sitemap</em> to generate the map. No secrets, no network calls — output is static files — but review <code>assets/*.js</code> before wiring the hook. Fully reversible via git.
+    <strong>Why L2, not L1.</strong> Unlike a pure component skill, this adds Node build scripts that <em>execute at build time</em> and <em>read your notes and sitemap</em> to generate the map. No secrets, no network calls - output is static files - but review <code>assets/*.js</code> before wiring the hook. Fully reversible via git.
   </div>
 
   <h2>What's in the box</h2>
   <ul class="filelist" role="list">
-    <li><span class="fname">SKILL.md</span> — install workflow, prerequisites, design points, risk</li>
-    <li><span class="fname">assets/generate-dungeon-data.js</span> — enumerate notes, date-sort, π tile list</li>
-    <li><span class="fname">assets/generate-static-dungeon.js</span> — build the SVG (hexes, path, icons)</li>
-    <li><span class="fname">assets/hex-spiral.js</span> — axial-coordinate ring-walking spiral</li>
-    <li><span class="fname">assets/dungeon.njk</span> — header slot: map container + overlay controls</li>
-    <li><span class="fname">assets/aa-graph-helpers.njk</span> — head slot: shared graph.json lookups</li>
-    <li><span class="fname">assets/zz-dungeon-map-init.njk</span> — footer slot: current hex + overlays</li>
-    <li><span class="fname">assets/dungeon-map.scss</span> — styles (TUNING KNOBS on top)</li>
-    <li><span class="fname">references/architecture.md</span> — annotated pipeline + data shapes</li>
-    <li><span class="fname">references/tuning.md</span> — every adjustable knob</li>
-    <li><span class="fname">references/verify.md</span> — post-build QA checklist</li>
+    <li><span class="fname">SKILL.md</span> - install workflow, prerequisites, design points, risk</li>
+    <li><span class="fname">assets/generate-dungeon-data.js</span> - enumerate notes, date-sort, π tile list</li>
+    <li><span class="fname">assets/generate-static-dungeon.js</span> - build the SVG (hexes, path, icons)</li>
+    <li><span class="fname">assets/hex-spiral.js</span> - axial-coordinate ring-walking spiral</li>
+    <li><span class="fname">assets/dungeon.njk</span> - header slot: map container + overlay controls</li>
+    <li><span class="fname">assets/aa-graph-helpers.njk</span> - head slot: shared graph.json lookups</li>
+    <li><span class="fname">assets/zz-dungeon-map-init.njk</span> - footer slot: current hex + overlays</li>
+    <li><span class="fname">assets/dungeon-map.scss</span> - styles (TUNING KNOBS on top)</li>
+    <li><span class="fname">references/architecture.md</span> - annotated pipeline + data shapes</li>
+    <li><span class="fname">references/tuning.md</span> - every adjustable knob</li>
+    <li><span class="fname">references/verify.md</span> - post-build QA checklist</li>
   </ul>
 
   <h2>Prerequisites</h2>
@@ -120,7 +120,7 @@ cp -r skills-zoo/skills/dg-dungeon-map ~/.claude/skills/</code></pre>
     <li><code>graph.json</code> emitted at the site root with <code>backLinks</code> / <code>outBound</code> / <code>neighbors</code> (overlays degrade gracefully if absent).</li>
     <li>Icons in <code>src/site/img/</code> and a <code>noteIcon</code> on notes you want mapped.</li>
   </ul>
-  <p><em>Scope is Digital Garden only</em> — the autoloader, theme tokens, and graph.json shape are DG-specific.</p>
+  <p><em>Scope is Digital Garden only</em> - the autoloader, theme tokens, and graph.json shape are DG-specific.</p>
 
   <p class="source-cta">
     <a href="https://github.com/palol/skills-zoo/tree/main/skills/dg-dungeon-map">Browse the full source on GitHub →</a>

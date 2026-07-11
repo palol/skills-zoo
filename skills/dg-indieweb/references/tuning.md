@@ -10,7 +10,7 @@
 | `--wm-radius` | `8px` | Card corner radius. |
 | `--wm-note-face-size` | `28px` | Per-note facepile avatar diameter. |
 
-Colors are **not** knobs — everything inherits DG theme tokens
+Colors are **not** knobs - everything inherits DG theme tokens
 (`--background-secondary`, `--background-modifier-border`, `--text-muted`,
 `--text-normal`, `--text-accent`, `--interactive-accent`,
 `--interactive-accent-hover`, `--text-on-accent`) so light/dark just work.

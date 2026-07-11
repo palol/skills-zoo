@@ -11,7 +11,7 @@
 }
 /* Note: hex fills, ambient tones, overlay line/node colors and the
    "current note" outline are driven by DG theme tokens + JS config
-   (DUNGEON_CURRENT_NOTE_COLOR in zz-dungeon-map-init.njk) — not knobs here. */
+   (DUNGEON_CURRENT_NOTE_COLOR in zz-dungeon-map-init.njk) - not knobs here. */
 
   /* Static Dungeon Map + per-note overlay controls */
   .dungeon-map-root {

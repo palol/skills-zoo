@@ -2,7 +2,7 @@
 // Build-time vault analytics for the obsifetch tribute. Exposes `vaultStats`
 // to templates: file counts + sizes, orphan detection, internal-link count,
 // theme name/appearance, and the site domain. Read-only scan of the built
-// notes/files/img trees — no network, no writes.
+// notes/files/img trees - no network, no writes.
 //
 // CONFIG: the domain is read from SITE_DOMAIN (env) or meta.domain; edit the
 // fallback string below if you prefer to hardcode it.

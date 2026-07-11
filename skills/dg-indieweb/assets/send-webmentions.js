@@ -78,7 +78,7 @@ async function sendWebmentions(isTest = false) {
     for (const item of urls) {
       const d = shouldSendWebmention(item.url, item.lastmod, log[item.url]);
       (d.send ? toProcess : skipped).push(item);
-      console.log(`${d.send ? '✅' : '⏭️ '} ${item.url} — ${d.reason}`);
+      console.log(`${d.send ? '✅' : '⏭️ '} ${item.url} - ${d.reason}`);
     }
     if (!toProcess.length) { console.log(`🎉 Nothing to send in ${mode}`); return; }
 
@@ -88,7 +88,7 @@ async function sendWebmentions(isTest = false) {
         <pubDate>${new Date(i.lastmod).toUTCString()}</pubDate></item>`).join('');
     const rss = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0"><channel>
-  <title>${SITE_TITLE} — Webmentions ${mode}</title>
+  <title>${SITE_TITLE} - Webmentions ${mode}</title>
   <description>Updated pages for webmention ${isTest ? 'testing' : 'processing'}</description>
   <link>${SITE_URL}</link><lastBuildDate>${new Date().toUTCString()}</lastBuildDate>${items}
 </channel></rss>`;

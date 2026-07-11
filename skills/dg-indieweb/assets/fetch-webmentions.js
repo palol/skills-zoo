@@ -4,7 +4,7 @@
 // fetch-webmentions GitHub Action, or locally with a .env file.
 //
 // SECURITY: the API token is read from process.env.WEBMENTION_IO_TOKEN ONLY.
-// Never hardcode it — this file is committed to a public repo.
+// Never hardcode it - this file is committed to a public repo.
 //
 // CONFIG: set WEBMENTION_DOMAINS (comma-separated) to the domain(s) you
 // registered at webmention.io, e.g. "example.com,www.example.com".
@@ -28,7 +28,7 @@ function fetchWebmentionsForDomain(domain, token) {
           const response = JSON.parse(body);
           const webmentions = response.children || [];
           if (webmentions.length >= 1000) {
-            console.log(`Warning: 1000 webmentions for ${domain} — possible pagination limit.`);
+            console.log(`Warning: 1000 webmentions for ${domain} - possible pagination limit.`);
           }
           console.log(`Fetched ${webmentions.length} webmentions for ${domain}`);
           resolve(webmentions);
@@ -41,7 +41,7 @@ function fetchWebmentionsForDomain(domain, token) {
 async function fetchWebmentions() {
   const token = process.env.WEBMENTION_IO_TOKEN || "";
   if (!token) {
-    console.log("No WEBMENTION_IO_TOKEN found — skipping webmentions fetch");
+    console.log("No WEBMENTION_IO_TOKEN found - skipping webmentions fetch");
     return [];
   }
   console.log('Fetching webmentions from API for domains:', DOMAINS.join(', '));

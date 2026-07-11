@@ -21,7 +21,7 @@
 - [ ] Stats match `/neofetch.txt`.
 - [ ] 8 swatches show distinct theme colors; they change with light/dark.
 - [ ] `raw` link opens `/neofetch.txt`; obsifetch link opens the GitHub repo.
-- [ ] ASCII art does not wrap or clip — shrink `--ob-ascii-size` if it does.
+- [ ] ASCII art does not wrap or clip - shrink `--ob-ascii-size` if it does.
 - [ ] Mobile (<520px): card stacks, no horizontal overflow.
 
 ## Theme + a11y
@@ -36,4 +36,4 @@
 
 ## Attribution
 - [ ] The `tabibyte/obsifetch` credit is present in both the text route and the
-      card. This is a tribute — keep it.
+      card. This is a tribute - keep it.

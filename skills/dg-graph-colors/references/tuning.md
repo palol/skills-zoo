@@ -1,4 +1,4 @@
-# Tuning — colors, folders, legend
+# Tuning - colors, folders, legend
 
 ## Change the palette
 
@@ -34,7 +34,7 @@ function decorateNode(node) {
 }
 ```
 
-The node objects carry whatever `linkUtils.getGraph` put on them — inspect
+The node objects carry whatever `linkUtils.getGraph` put on them - inspect
 `/graph.json` in a browser to see available fields.
 
 ## The legend (optional)
@@ -42,7 +42,7 @@ The node objects carry whatever `linkUtils.getGraph` put on them — inspect
 `zz-graph-legend.njk` + `graph-colors.scss` render a small folder→color key in
 the footer. Keep the legend's inline `folderColors` map **in sync** with
 `src/helpers/folderColors.js` (the legend is a template, so it can't `require`
-the JS module directly). If you don't want a legend, delete both files —
+the JS module directly). If you don't want a legend, delete both files -
 coloring still works.
 
 Legend layout knobs live in the `:root` block of `graph-colors.scss`:
@@ -59,6 +59,6 @@ Legend layout knobs live in the `:root` block of `graph-colors.scss`:
 
 The renderer forces the current page's node to the theme's main color
 (`if (n.current) return mainColor`), so it stays recognizable regardless of its
-folder. This is core behavior — leave it. If you want the current node to also
+folder. This is core behavior - leave it. If you want the current node to also
 use its folder color, that would require a renderer edit (raises risk to L3);
 not recommended.

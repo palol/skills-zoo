@@ -11,33 +11,33 @@ common/footer/zz-obsifetch.njk → HTML card (ASCII + stats + swatches) [visual]
 obsifetch.scss        → card styling (theme tokens + knobs)
 ```
 
-## The data engine — `vaultStats.js`
+## The data engine - `vaultStats.js`
 
 Runs once per Eleventy build. Recursively scans `src/site/notes`,
 `src/site/files`, and `src/site/img`, then computes:
 
-- **file counts + human-readable sizes** — total / markdown / attachments
+- **file counts + human-readable sizes** - total / markdown / attachments
   (attachments = jpg/jpeg/png/gif/webp/pdf/svg).
-- **internal links** — count of `[[wikilinks]]` across all markdown.
-- **orphan files** — markdown with neither incoming nor outgoing wikilinks
+- **internal links** - count of `[[wikilinks]]` across all markdown.
+- **orphan files** - markdown with neither incoming nor outgoing wikilinks
   (handles `[[a]]`, `[[a\|alias]]`, `[[a|alias]]`, and path-style targets).
-- **theme** — name + appearance from `THEME` / `BASE_THEME` env (the vars DG
+- **theme** - name + appearance from `THEME` / `BASE_THEME` env (the vars DG
   already sets from your plugin config).
-- **domain** — from `SITE_DOMAIN` env or the fallback string.
+- **domain** - from `SITE_DOMAIN` env or the fallback string.
 
 Pure read-only: no network, no writes. Exposed to every template as
 `vaultStats`.
 
 ## Two surfaces, same data
 
-- **`/neofetch.txt`** — a plain-text route (`neofetch.txt.njk`). The obsifetch
+- **`/neofetch.txt`** - a plain-text route (`neofetch.txt.njk`). The obsifetch
   ASCII mushroom, the domain rule, the stat lines, 8 `■` squares, and the
   tribute credit. Meant to be `curl`ed, embedded, or shared like a real
   neofetch dump.
-- **HTML card** (`zz-obsifetch.njk`) — the same stats rendered as a styled card
+- **HTML card** (`zz-obsifetch.njk`) - the same stats rendered as a styled card
   in the footer slot: ASCII on the left, a `<dl>` of stats on the right, 8 live
   theme-color swatches, and a link to the raw route. Rendered **inline** from
-  `vaultStats` at build time — no client fetch, so no loading flash and it works
+  `vaultStats` at build time - no client fetch, so no loading flash and it works
   with JS off. (The site's original plan fetched `/neofetch.txt` into a `<pre>`;
   this finishes it as a proper inline card instead.)
 

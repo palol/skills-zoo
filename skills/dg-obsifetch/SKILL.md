@@ -1,18 +1,18 @@
 ---
 name: dg-obsifetch
-description: "Add a neofetch-style vault stats readout to an Obsidian Digital Garden (oleeskild digital-garden plugin + Eleventy) site — a tribute to the tabibyte/obsifetch plugin. Ships a build-time vault analytics engine (file counts + sizes, orphan detection, internal-link count, theme info), a curl-able /neofetch.txt plain-text route with ASCII art, and an autoloaded HTML card component (ASCII logo + stats + live theme-color swatches) for the footer. Upstream-safe: user-owned paths only, read-only build scan, no plugin-core edits. Use when a user wants obsifetch, neofetch, a vault-stats card, a colophon/site-stats readout, a /neofetch.txt route, or an about/colophon page showing file counts and theme info for their digital garden. Trigger on: obsifetch, neofetch, vault stats, vaultStats, /neofetch.txt, colophon, site stats, fastfetch, screenfetch."
+description: "Add a neofetch-style vault stats readout to an Obsidian Digital Garden (oleeskild digital-garden plugin + Eleventy) site - a tribute to the tabibyte/obsifetch plugin. Ships a build-time vault analytics engine (file counts + sizes, orphan detection, internal-link count, theme info), a curl-able /neofetch.txt plain-text route with ASCII art, and an autoloaded HTML card component (ASCII logo + stats + live theme-color swatches) for the footer. Upstream-safe: user-owned paths only, read-only build scan, no plugin-core edits. Use when a user wants obsifetch, neofetch, a vault-stats card, a colophon/site-stats readout, a /neofetch.txt route, or an about/colophon page showing file counts and theme info for their digital garden. Trigger on: obsifetch, neofetch, vault stats, vaultStats, /neofetch.txt, colophon, site stats, fastfetch, screenfetch."
 license: MIT
 metadata:
   author: palol
   version: '1.0'
-  risk-level: "L2 — adds a build-time data file that recursively reads your notes/files/img trees to compute stats. Read-only, no network, no writes, no plugin-core edits. Reversible via git."
+  risk-level: "L2 - adds a build-time data file that recursively reads your notes/files/img trees to compute stats. Read-only, no network, no writes, no plugin-core edits. Reversible via git."
 ---
 
-# Digital Garden — obsifetch Tribute
+# Digital Garden - obsifetch Tribute
 
 A neofetch for your vault. Renders a build-time stats readout of an Obsidian
 [Digital Garden](https://github.com/oleeskild/digital-garden) as both a
-`curl`-able `/neofetch.txt` route and a styled HTML card — a tribute to the
+`curl`-able `/neofetch.txt` route and a styled HTML card - a tribute to the
 [tabibyte/obsifetch](https://github.com/tabibyte/obsifetch) Obsidian plugin,
 which does the same thing inside the app.
 
@@ -22,9 +22,9 @@ Use when a DG user wants an **obsifetch / neofetch-style vault readout**: a
 site-stats **colophon**, a `/neofetch.txt` route, or a footer **stats card**
 showing file counts, sizes, orphan files, internal links, and theme. Common
 state on real sites: the text route + data engine work, but the HTML embed was
-left unfinished — this ships the finished card.
+left unfinished - this ships the finished card.
 
-Do **not** use on non-DG stacks (Quartz, Astro, plain Eleventy) — the notes
+Do **not** use on non-DG stacks (Quartz, Astro, plain Eleventy) - the notes
 layout, theme env vars, and theme tokens are DG-specific.
 
 ## DG invariants respected
@@ -49,7 +49,7 @@ layout, theme env vars, and theme tokens are DG-specific.
   `components/user/common/footer/`).
 - Standard DG tree: `src/site/notes`, optional `src/site/files`,
   `src/site/img`.
-- `THEME` / `BASE_THEME` env vars set by your DG build (for the theme line) —
+- `THEME` / `BASE_THEME` env vars set by your DG build (for the theme line) -
   optional; degrades to `default` / `light`.
 
 Abort with a plain explanation if the target isn't DG + Eleventy with the
@@ -61,7 +61,7 @@ autoloader.
    `src/site/_data/vaultStats.js`. Set `SITE_DOMAIN` (env) or edit the fallback
    domain string.
 2. **Text route.** Copy `assets/neofetch.txt.njk` → `src/site/neofetch.txt.njk`
-   (route `/neofetch.txt`). Customize the ASCII if you like — keep the
+   (route `/neofetch.txt`). Customize the ASCII if you like - keep the
    `tabibyte/obsifetch` credit line.
 3. **HTML card.** Copy `assets/zz-obsifetch.njk` →
    `src/site/_includes/components/user/common/footer/zz-obsifetch.njk`. Keep its
@@ -83,22 +83,22 @@ Trims (text-only, card-only, hide swatches) are in `references/tuning.md`.
   fetch-into-`<pre>`.
 - **Swatches track the theme.** 8 squares map to DG theme tokens via
   `--ob-c1..c8`; they follow light/dark and any theme swap for free.
-- **It's a tribute — keep the credit.** Both surfaces cite
+- **It's a tribute - keep the credit.** Both surfaces cite
   `tabibyte/obsifetch`.
 
 ## Risk Level
 
 **L2.** Beyond writing user-owned files, this adds a build-time data file that
 recursively **reads** your `notes`/`files`/`img` trees to compute stats. It is
-read-only — no network, no writes, no plugin-core edits — and fully reversible
+read-only - no network, no writes, no plugin-core edits - and fully reversible
 via git. Review `assets/vaultStats.js` before adding it.
 
 ## Reference Files
 
-- `references/architecture.md` — data engine, the two surfaces, swatch mapping,
+- `references/architecture.md` - data engine, the two surfaces, swatch mapping,
   config surface.
-- `references/tuning.md` — every SCSS/content knob + trims.
-- `references/verify.md` — data, text-route, card, theme/a11y, and attribution
+- `references/tuning.md` - every SCSS/content knob + trims.
+- `references/verify.md` - data, text-route, card, theme/a11y, and attribution
   checks.
 
 ## Assets

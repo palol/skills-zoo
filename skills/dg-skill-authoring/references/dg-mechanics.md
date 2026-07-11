@@ -23,7 +23,7 @@ under these paths is **yours** and survives updates:
 | Content    | `src/site/notes/**`                                      |
 
 Never edit: `layouts/*.njk`, plugin-core `components/*.njk`, `_data/` internals. If a feature
-requires one of these, it can't be a clean upstream-safe skill — scope it down or stop.
+requires one of these, it can't be a clean upstream-safe skill - scope it down or stop.
 
 ### The autoloader (`src/site/_data/dynamics.js`)
 
@@ -35,7 +35,7 @@ as `dynamics.common.<slot>`. Layout templates iterate the slot:
 ```
 
 Consequences for a skill author:
-- **Drop-in, no wiring.** Placing a `.njk` in the right slot folder is the entire install — no
+- **Drop-in, no wiring.** Placing a `.njk` in the right slot folder is the entire install - no
   layout edit.
 - **Order = filename.** Alphabetical sort means a prefix controls render order: `zzz-` renders
   last, `aaa-` first. `dg-floating-tray` uses `zzz-floating-dock.njk` to sit at the bottom.
@@ -44,7 +44,7 @@ Consequences for a skill author:
 
 ### Theme tokens (light/dark for free)
 
-Style with DG CSS variables so both themes work automatically — never hardcode colors:
+Style with DG CSS variables so both themes work automatically - never hardcode colors:
 `--background-secondary`, `--background-modifier-border`, `--text-muted`, `--text-accent`,
 `--link-color`, `--input-shadow`. Color is therefore never a tuning knob; sizes/shapes are.
 
@@ -56,19 +56,19 @@ mode-specific.
 
 ---
 
-## B. Agent-Skills spec — verified rules
+## B. Agent-Skills spec - verified rules
 
 Source: the open [agentskills.io](https://agentskills.io) spec.
 
-### Frontmatter — only these top-level keys validate
+### Frontmatter - only these top-level keys validate
 
 | Field | Notes |
 |---|---|
-| `name` | **required** — 1–64 chars, lowercase alphanumeric + hyphens, must match dir name, no leading/trailing/consecutive hyphens |
-| `description` | **required** — 1–1024 chars; quote it (colons/specials break YAML) |
+| `name` | **required** - 1–64 chars, lowercase alphanumeric + hyphens, must match dir name, no leading/trailing/consecutive hyphens |
+| `description` | **required** - 1–1024 chars; quote it (colons/specials break YAML) |
 | `license` | optional |
-| `compatibility` | optional — env requirements, ≤500 chars |
-| `metadata` | optional — nest any custom keys here |
+| `compatibility` | optional - env requirements, ≤500 chars |
+| `metadata` | optional - nest any custom keys here |
 | `allowed-tools` | optional (experimental) |
 
 **Common mistake:** `version`, `author`, `tags`, `risk-level` are **not** top-level fields.
@@ -91,7 +91,7 @@ auto-loaded into context.
 
 ### Validate & package
 
-- `skills-ref validate <skill-dir>/` — pass the **directory**, not a single file.
+- `skills-ref validate <skill-dir>/` - pass the **directory**, not a single file.
 - SKILL.md-only → ship the bare `.md`. Any bundled files → **zip the whole directory**
   (`.zip`, not tar). Keep ≤100 files / ≤70 MB. Never ship secrets or `node_modules`.
 
@@ -99,7 +99,7 @@ auto-loaded into context.
 
 Label L0 (read-only) → L3 (arbitrary code exec / financial / root). A ~Feb 2026 study of ~40k
 skills sampled from skills.sh found ~9% classified L3
-([Hugging Face, zhongshsh](https://huggingface.co/blog/zhongshsh/agent-skills-analysis)) — so
+([Hugging Face, zhongshsh](https://huggingface.co/blog/zhongshsh/agent-skills-analysis)) - so
 installers rightly distrust unlabeled skills. Clean DG feature skills that only write user-owned
 files with no shell/secrets/network are **L1**; state it in both description and body.
 
@@ -108,5 +108,5 @@ files with no shell/secrets/network are **L1**; state it in both description and
 - **Git** = source of truth (clone into `~/.claude/skills/` or a shared `~/.agents/skills/`).
 - **CLI** installers exist (e.g. Vercel Labs `agent-skills`).
 - **Remote via MCP:** serve a GitHub skills repo with
-  [Skills Over MCP](https://www.skillsovermcp.com/) — one `mcpServers` config line, auto-updates
+  [Skills Over MCP](https://www.skillsovermcp.com/) - one `mcpServers` config line, auto-updates
   on push, `skill://` URIs per the SEP-2640 Skills Extension with a tool-shim fallback.

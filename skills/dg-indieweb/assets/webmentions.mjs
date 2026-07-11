@@ -3,7 +3,7 @@
 // `webmentions.mentions`. Requires WEBMENTION_IO_TOKEN in the environment;
 // with no token it degrades to an empty list (build still succeeds).
 //
-// NEVER hardcode the token here — it would ship in your public repo. Read it
+// NEVER hardcode the token here - it would ship in your public repo. Read it
 // from the environment only.
 import EleventyFetch from "@11ty/eleventy-fetch";
 
@@ -11,7 +11,7 @@ export default async function () {
   const token = process.env.WEBMENTION_IO_TOKEN || "";
 
   if (!token) {
-    console.log("No WEBMENTION_IO_TOKEN found — webmentions disabled");
+    console.log("No WEBMENTION_IO_TOKEN found - webmentions disabled");
     return { mentions: [] };
   }
 

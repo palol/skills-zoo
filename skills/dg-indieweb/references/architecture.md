@@ -14,14 +14,14 @@ notes/head/aa-microformats.njk      → discovery <link>s + rel=me
 **Why runtime decoration for h-entry.** Core `note.njk` renders
 `<article data-page-url>` and `<div class="note-content">` with **no**
 `h-entry` / `e-content` classes, and slot components render *inside* the
-article — a slot can't add a class to an ancestor it lives within. Editing
+article - a slot can't add a class to an ancestor it lives within. Editing
 `note.njk` would break on upstream `git pull`. So `aa-microformats.njk` ships a
 tiny script (in the `notes/head` slot) that, on DOM ready, adds `h-entry` to the
 article, `e-content` to `.note-content`, and injects the required hidden
 `u-url` / `p-name` / `dt-published` / `p-author h-card` properties. Valid mf2
 without touching core; JS-off pages remain valid HTML (just without the hints).
 
-`dt-published` reuses the theme's rendered `.human-date[data-date]` timestamps —
+`dt-published` reuses the theme's rendered `.human-date[data-date]` timestamps -
 the last one (date modified) preferred, falling back to the first (date created),
 matching the site's feed.xml convention.
 
@@ -36,9 +36,9 @@ scripts/fetch-webmentions.js → GH Action: pull to data/webmentions/*.json
 ```
 
 Two independent paths to the same data:
-- **Build-time (`webmentions.mjs`)** — templates read `webmentions.mentions`
+- **Build-time (`webmentions.mjs`)** - templates read `webmentions.mentions`
   live at each build. Fast to set up, needs the token in the build env.
-- **Committed JSON (`fetch-webmentions.js` + workflow)** — a durable archive
+- **Committed JSON (`fetch-webmentions.js` + workflow)** - a durable archive
   under `data/webmentions/`, one file per `wm-id`, landing on a `webmentions`
   branch so `main` stays clean. Merge when you want them permanent.
 
@@ -67,5 +67,5 @@ CLI which crawls each page for external links and pings their endpoints.
 | `meta.webmentionDomain` / `meta.domain` | domain for discovery links + form | your `_data/meta.*` |
 | `meta.author`, `meta.authorBio`, `meta.authorPhoto` | h-card fields | your `_data/meta.*` |
 
-The token is read from the environment **only** — never hardcode it; this code
+The token is read from the environment **only** - never hardcode it; this code
 is committed to a public repo.

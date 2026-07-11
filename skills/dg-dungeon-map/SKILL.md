@@ -5,7 +5,7 @@ license: MIT
 metadata:
   author: palol
   version: '1.0'
-  risk-level: "L2 — writes user-owned components/styles AND adds two Node build scripts + a helper that run at build time (postbuild) and read your notes/sitemap. No secrets, no network calls; output is generated static files. Reversible via git."
+  risk-level: "L2 - writes user-owned components/styles AND adds two Node build scripts + a helper that run at build time (postbuild) and read your notes/sitemap. No secrets, no network calls; output is generated static files. Reversible via git."
 ---
 
 # Digital Garden Dungeon Map
@@ -16,16 +16,16 @@ header component renders the generated SVG, marks the **current page** ("you are
 toggle a **backlinks / mentions** overlay derived from `graph.json`.
 
 Everything lives in **user-owned paths** (autoloaded components, `custom-style.scss`) plus two
-**build scripts** in `scripts/` — upstream `git pull` never overwrites your files.
+**build scripts** in `scripts/` - upstream `git pull` never overwrites your files.
 
 ## Inspirations
 
 Conceptual / visual inspiration (not code provenance):
 
-- [brad.quest's Dungeon view](https://brad.quest/map/#dungeon) — a garden map mode that presents
+- [brad.quest's Dungeon view](https://brad.quest/map/#dungeon) - a garden map mode that presents
   notes as a dungeon-style exploration surface.
 - [Hermitage's Forest](https://hermitage.utsob.me/writings/technical/how-tos/steal-my-look/#forest)
-  (source in [topobon](https://github.com/uroybd/topobon)) — a home-page forest of notes that
+  (source in [topobon](https://github.com/uroybd/topobon)) - a home-page forest of notes that
   treats the garden as a wanderable landscape.
 
 Technical packaging / implementation sources:
@@ -45,7 +45,7 @@ Use when a Digital Garden user wants:
 - A "you are here" marker on the current note, visible even with overlays off.
 - Optional backlink/mention overlays that connect the current note to related rooms.
 
-Do **not** use for Quartz, Astro, or non-DG sites — the autoload mechanism, theme tokens, and
+Do **not** use for Quartz, Astro, or non-DG sites - the autoload mechanism, theme tokens, and
 `graph.json` shape are DG-specific. This skill *installs* the feature; to *author* new DG skills,
 use `dg-skill-authoring`.
 
@@ -65,8 +65,8 @@ notes + frontmatter (noteIcon, dates)
                aa-graph-helpers.njk provides shared graph lookups.
 ```
 
-- **π spiral:** `getPiDigits` + `createVirtualTileList` read π in digit pairs — first digit = how
-  many content hexes, second = how many empty "ambient" hexes — so the path rhythm is literally π.
+- **π spiral:** `getPiDigits` + `createVirtualTileList` read π in digit pairs - first digit = how
+  many content hexes, second = how many empty "ambient" hexes - so the path rhythm is literally π.
   Hex positions come from an axial-coordinate ring-walking spiral (`hex-spiral.js`, per
   [Red Blob Games](https://www.redblobgames.com/grids/hexagons/#rings-spiral)).
 - **Current-note marker** is derived from the page URL (gold "you are here" dot + magenta outline)
@@ -107,11 +107,11 @@ If any path differs, adapt it but keep the structure. If the repo is not DG+Elev
 
 ### 1. Install the components (autoloaded, no layout edits)
 
-Filename prefixes matter — the autoloader sorts alphabetically within a slot:
+Filename prefixes matter - the autoloader sorts alphabetically within a slot:
 
-- `aa-graph-helpers.njk` (head) — `aa-` so the helper window global exists before other head scripts.
-- `zz-dungeon-map-init.njk` (footer) — `zz-` so it runs after the DOM/SVG is in place.
-- `dungeon.njk` (notes/header) — renders the map container.
+- `aa-graph-helpers.njk` (head) - `aa-` so the helper window global exists before other head scripts.
+- `zz-dungeon-map-init.njk` (footer) - `zz-` so it runs after the DOM/SVG is in place.
+- `dungeon.njk` (notes/header) - renders the map container.
 
 Copy each to the path in Quick Install step 3. No layout edit is needed.
 
@@ -160,9 +160,9 @@ comment at the top of `dungeon.njk`.
 
 In `zz-dungeon-map-init.njk`, the CONFIG block at the top exposes:
 
-- `DUNGEON_HIDDEN_PREFIXES` — path prefixes whose backlinks/mentions are suppressed in overlays
+- `DUNGEON_HIDDEN_PREFIXES` - path prefixes whose backlinks/mentions are suppressed in overlays
   unless you're already in that section (default `['/logs/']`; set `[]` to disable).
-- `DUNGEON_CURRENT_NOTE_COLOR` — the current-note outline color (magenta by default).
+- `DUNGEON_CURRENT_NOTE_COLOR` - the current-note outline color (magenta by default).
 
 ### 7. Build + verify
 
@@ -174,16 +174,16 @@ Then run `references/verify.md`.
 
 ## Key Design Points
 
-- **Autoload, don't wire** — three components in `user/*` slots; alphabetical prefixes control
+- **Autoload, don't wire** - three components in `user/*` slots; alphabetical prefixes control
   order. No layout/core edits, so upstream updates never clobber it.
-- **Build-time generation** — the SVG and data are produced by `postbuild`, not committed by hand;
+- **Build-time generation** - the SVG and data are produced by `postbuild`, not committed by hand;
   re-running the build refreshes the map as notes change. This is the L2 part: the scripts read
   your notes/sitemap at build time.
-- **Graceful degradation** — if `graph.json` or the SVG is missing, the map hides overlays / the
+- **Graceful degradation** - if `graph.json` or the SVG is missing, the map hides overlays / the
   backlinks toggle disables itself instead of erroring.
-- **Theme-token styling** — hex fills, ambient tones, and overlay colors track DG light/dark
+- **Theme-token styling** - hex fills, ambient tones, and overlay colors track DG light/dark
   tokens; only a few sizes are knobs.
-- **A11y** — overlay controls are real `<button>`s with `aria-pressed`; the hint uses
+- **A11y** - overlay controls are real `<button>`s with `aria-pressed`; the hint uses
   `aria-live="polite"`; the fallback `<img>` has alt text.
 
 ## Risk Level
@@ -195,19 +195,19 @@ postbuild hook. Fully reversible via git (remove the files + the postbuild line)
 
 ## Reference Files
 
-- `references/architecture.md` — annotated tour of the pipeline, data shapes, and each file's job.
-- `references/tuning.md` — every adjustable knob (π source, hex size, spiral, config constants, SCSS).
-- `references/verify.md` — post-build QA checklist.
+- `references/architecture.md` - annotated tour of the pipeline, data shapes, and each file's job.
+- `references/tuning.md` - every adjustable knob (π source, hex size, spiral, config constants, SCSS).
+- `references/verify.md` - post-build QA checklist.
 
 ## Assets
 
-- `assets/generate-dungeon-data.js` — enumerate notes, sort by date, π virtual-tile list, spiral.
-- `assets/generate-static-dungeon.js` — build the SVG (hexes, path, icons) + coordinate map.
-- `assets/hex-spiral.js` — axial-coordinate ring-walking spiral generator.
-- `assets/dungeon.njk` — notes/header slot: the map container + overlay controls.
-- `assets/aa-graph-helpers.njk` — head slot: shared `graph.json` lookups (`window.DgGraphHelpers`).
-- `assets/zz-dungeon-map-init.njk` — footer slot: fetch SVG, mark current hex, draw overlays.
-- `assets/dungeon-map.scss` — styles (TUNING KNOBS on top; colors inherit theme).
+- `assets/generate-dungeon-data.js` - enumerate notes, sort by date, π virtual-tile list, spiral.
+- `assets/generate-static-dungeon.js` - build the SVG (hexes, path, icons) + coordinate map.
+- `assets/hex-spiral.js` - axial-coordinate ring-walking spiral generator.
+- `assets/dungeon.njk` - notes/header slot: the map container + overlay controls.
+- `assets/aa-graph-helpers.njk` - head slot: shared `graph.json` lookups (`window.DgGraphHelpers`).
+- `assets/zz-dungeon-map-init.njk` - footer slot: fetch SVG, mark current hex, draw overlays.
+- `assets/dungeon-map.scss` - styles (TUNING KNOBS on top; colors inherit theme).
 
 ## Validate & Package
 

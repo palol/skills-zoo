@@ -1,4 +1,4 @@
-# Component walkthrough — `zzz-floating-dock.njk`
+# Component walkthrough - `zzz-floating-dock.njk`
 
 Read when customizing markup or scripts. The full file is `assets/zzz-floating-dock.njk`.
 
@@ -28,18 +28,18 @@ gives a hover tooltip.
 `role="button"` spans (`#theme-switch`, `#more-toggle`) get `tabindex="0"` so they're focusable,
 and are activated by the keyboard handler in `wireDockAction`.
 
-## Script block 1 — activation helpers
+## Script block 1 - activation helpers
 
 - `wireDockAction(el, fn)` binds **click** and **keydown (Enter/Space)** → one path for mouse,
   touch, keyboard. Calls `e.stopPropagation()` on click so dock clicks don't reach the
   outside-click closer (block 3).
 - `wireExternalButton(id, url)` opens `url` in a new tab (`noopener,noreferrer`).
-- Search button calls `window.toggleSearch()` (guarded with a `typeof` check) — the global
+- Search button calls `window.toggleSearch()` (guarded with a `typeof` check) - the global
   exposed by the DG search component.
 
 Customize: change/remove `wireExternalButton(...)` calls; edit or drop the QR handler.
 
-## Script block 2 — theme toggle
+## Script block 2 - theme toggle
 
 - Reads `localStorage['site-theme']` (default `light`), applies `theme-dark`/`theme-light`
   to `<body>`, and swaps the sun/moon icon by toggling `.light`/`.dark` on `.theme-switch`.
@@ -47,7 +47,7 @@ Customize: change/remove `wireExternalButton(...)` calls; edit or drop the QR ha
 
 Matches DG's own theme classes, so it cooperates with the plugin's theming.
 
-## Script block 3 — tray + responsive grid
+## Script block 3 - tray + responsive grid
 
 - `updateTrayLayout()` counts `.floating-dock__item` in the tray and sets two CSS custom
   properties on `:root`: `--dg-floating-tray-column-count` and `--dg-floating-tray-row-count`.

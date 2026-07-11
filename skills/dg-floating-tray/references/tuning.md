@@ -1,7 +1,7 @@
 # Tuning knobs
 
 Everything you can adjust, grouped by where it lives. Most safe tweaks are consolidated in the
-`>>> TUNING KNOBS <<<` block at the top of `assets/floating-tray.scss` — edit there and the rest
+`>>> TUNING KNOBS <<<` block at the top of `assets/floating-tray.scss` - edit there and the rest
 of the file derives from it.
 
 ## CSS knobs (top of `floating-tray.scss`)
@@ -23,7 +23,7 @@ of the file derives from it.
 | `--dg-ft-tray-radius` | `16px` | Expandable tray corner radius |
 | `--dg-ft-z` | `9990` | Stacking order (search overlay sits above at 10000) |
 
-Changing any of these needs **no** other edits — the rail-offset math and grid read from them.
+Changing any of these needs **no** other edits - the rail-offset math and grid read from them.
 
 ## Grid: rows & columns
 
@@ -48,7 +48,7 @@ To **hard-pin** rows/columns instead of auto-sizing: set `--dg-floating-tray-col
 
 ## Breakpoints
 
-Literal values, in **two places** — change both together:
+Literal values, in **two places** - change both together:
 
 | Breakpoint | In `floating-tray.scss` | In `zzz-floating-dock.njk` |
 |---|---|---|
@@ -68,12 +68,12 @@ Literal values, in **two places** — change both together:
 
 ## Not a knob
 
-Colors are **not** set here — they inherit DG theme tokens (`--background-secondary`,
+Colors are **not** set here - they inherit DG theme tokens (`--background-secondary`,
 `--text-muted`, `--text-accent`, `--input-shadow`, `--link-color`), so light/dark follows your
 site automatically. To recolor, override those tokens in your own theme, not in this file.
 
 ## Gotcha
 
 If you change mobile item size / gap / padding, the **`--dg-floating-rail-offset`** formula
-(mobile block) recomputes from the knobs automatically — but if you hand-edit the formula, keep
+(mobile block) recomputes from the knobs automatically - but if you hand-edit the formula, keep
 it consistent or page content will clip behind or float above the dock.

@@ -1,17 +1,17 @@
 ---
 name: dg-skill-authoring
-description: "Author a new Agent Skill that adds a feature to an Obsidian Digital Garden (oleeskild digital-garden plugin + Eleventy) site. Use when a user wants to package a Digital Garden customization — a component, widget, layout tweak, or style — as a reusable, upstream-safe SKILL.md that another DG user's agent can install. Produces a spec-compliant skill (frontmatter, progressive disclosure, references, assets), verifies it with skills-ref validate, and follows the user-owned-paths convention so upstream git pull never clobbers it. Trigger on: make a digital garden skill, package this DG customization, write a skill for my digital garden, meta-skill, skill authoring, turn this into a skill."
+description: "Author a new Agent Skill that adds a feature to an Obsidian Digital Garden (oleeskild digital-garden plugin + Eleventy) site. Use when a user wants to package a Digital Garden customization - a component, widget, layout tweak, or style - as a reusable, upstream-safe SKILL.md that another DG user's agent can install. Produces a spec-compliant skill (frontmatter, progressive disclosure, references, assets), verifies it with skills-ref validate, and follows the user-owned-paths convention so upstream git pull never clobbers it. Trigger on: make a digital garden skill, package this DG customization, write a skill for my digital garden, meta-skill, skill authoring, turn this into a skill."
 license: MIT
 metadata:
   author: palol
   version: '1.1'
-  risk-level: "L1 — scaffolds and writes skill files (SKILL.md, references, assets) into a skills directory. No code execution beyond the local `skills-ref validate` check, no secrets, no network calls. Fully reversible via git."
+  risk-level: "L1 - scaffolds and writes skill files (SKILL.md, references, assets) into a skills directory. No code execution beyond the local `skills-ref validate` check, no secrets, no network calls. Fully reversible via git."
 ---
 
 # Digital Garden Skill Authoring
 
 A meta-skill: it teaches an agent how to **build another Agent Skill** that adds a feature to an
-Obsidian [Digital Garden](https://github.com/oleeskild/digital-garden) (Eleventy) site — following
+Obsidian [Digital Garden](https://github.com/oleeskild/digital-garden) (Eleventy) site - following
 the upstream-safe, progressively-disclosed pattern proven by `dg-floating-tray`.
 
 The output is a spec-compliant skill folder (`SKILL.md` + `assets/` + `references/`), validated
@@ -19,12 +19,12 @@ with `skills-ref validate`, ready to drop into a skills repo or serve over MCP.
 
 ## When to Use This Skill
 
-Use when a Digital Garden user wants to **package a DG customization as a reusable skill** —
+Use when a Digital Garden user wants to **package a DG customization as a reusable skill** -
 e.g. "turn this floating dock into a skill", "make a skill for my custom callout", "write a skill
 another DG user can install to add a guestbook widget".
 
 Do **not** use to *install* an existing DG skill (that's the target skill's job), or to author
-skills for non-DG stacks (Quartz, Astro, plain Eleventy) — the DG conventions below won't apply.
+skills for non-DG stacks (Quartz, Astro, plain Eleventy) - the DG conventions below won't apply.
 
 ## The DG Skill Pattern (what "good" looks like)
 
@@ -54,7 +54,7 @@ lessons baked into `dg-floating-tray` (plus inspiration citations from later ski
    conceptually inspired by prior work must include an **Inspirations** section with direct
    public URLs. For each source, state precisely what it inspired or supplied (interaction,
    aesthetic, algorithm, tutorial, asset pack). Distinguish inspiration from code/asset
-   provenance — do not imply derivation when the evidence only supports inspiration. Prefer
+   provenance - do not imply derivation when the evidence only supports inspiration. Prefer
    the canonical upstream page over a discovery path; if you mention where you first saw it,
    label that separately. Never cite private or personal provenance (e.g. unpublished sites,
    private events) in public skill docs.
@@ -63,13 +63,13 @@ lessons baked into `dg-floating-tray` (plus inspiration citations from later ski
    checks or try/catch around trusted DG paths, no dead fallbacks for scenarios the
    prerequisites already rule out, no deeply nested logic that an early return would flatten,
    and nothing inconsistent with the surrounding file's style. (The one sanctioned comment
-   block is `>>> TUNING KNOBS <<<`, which documents knobs — invariant 5.) In prose (SKILL.md,
+   block is `>>> TUNING KNOBS <<<`, which documents knobs - invariant 5.) In prose (SKILL.md,
    references): no filler ("simply", "just", "powerful"), no marketing adjectives, no
    restating a section in its own intro, no hedge phrases. Every sentence must tell the
    installing agent something it needs.
 
 If a proposed feature can't respect invariants 1–2 (needs a core/layout edit), say so plainly and
-scope it down or stop — don't ship a skill that breaks on upstream update.
+scope it down or stop - don't ship a skill that breaks on upstream update.
 
 ## Instructions
 
@@ -81,7 +81,7 @@ the full annotated walkthrough; `references/dg-mechanics.md` for the plugin inte
 
 Ask the user (briefly): what the feature is, which layout slot it belongs in (`footer`, `header`,
 `sidebar`, …), and whether it needs styles, a helper, or content. Confirm it fits the
-user-owned-paths model (invariant 1). Pick a skill `name` — lowercase, hyphens, prefixed `dg-`
+user-owned-paths model (invariant 1). Pick a skill `name` - lowercase, hyphens, prefixed `dg-`
 by convention (e.g. `dg-callout-box`). Check the target repo/registry for an existing skill of
 the same name first (avoid duplicates).
 
@@ -99,10 +99,10 @@ Copy `assets/SKILL.template.md` to `dg-<feature>/SKILL.md` and fill it in.
 ### 3. Write the frontmatter (spec-compliant)
 
 Only these top-level keys validate: `name`, `description`, `license`, `compatibility`,
-`metadata`, `allowed-tools`. **Nest `author`, `version`, `risk-level`, `tags` under `metadata:`**
-— top-level `version`/`author` fail `skills-ref validate`. See `references/dg-mechanics.md`.
+`metadata`, `allowed-tools`. **Nest `author`, `version`, `risk-level`, `tags` under `metadata:`**;
+top-level `version`/`author` fail `skills-ref validate`. See `references/dg-mechanics.md`.
 
-`description` is the **only field the agent reads to decide activation** — write it as a trigger:
+`description` is the **only field the agent reads to decide activation** - write it as a trigger:
 first clause = what it does, then "Use when [X]" with concrete trigger phrases, plus a "Trigger
 on: …" list of literal keywords. It's discovery metadata, not marketing.
 
@@ -124,10 +124,10 @@ the autoloader present before touching anything (see `dg-floating-tray` for the 
 
 ### 5. Populate assets + references
 
-- `assets/` — the exact files the target agent will copy (`.njk` component, `.scss` styles) with
+- `assets/` - the exact files the target agent will copy (`.njk` component, `.scss` styles) with
   generic placeholder links/URLs the installer customizes. Put the TUNING KNOBS block on top of
   any SCSS.
-- `references/` — one file per concern: annotated markup/scripts, annotated styles, a `tuning.md`
+- `references/` - one file per concern: annotated markup/scripts, annotated styles, a `tuning.md`
   of every knob, and a `verify.md` post-build QA checklist. Mirror `dg-floating-tray`'s set.
 
 Before moving on, make a de-slop pass over everything you wrote (invariant 7): strip narrating
@@ -137,7 +137,7 @@ slop you leave is slop every installer inherits.
 ### 6. Label the risk level
 
 State an L0–L3 risk level in both the description and a `Risk Level` section. DG feature skills
-that only write user-owned files with no shell/secrets/network are **L1** — say so explicitly so
+that only write user-owned files with no shell/secrets/network are **L1** - say so explicitly so
 installers can trust it.
 
 ### 7. Validate & package
@@ -161,33 +161,33 @@ If publishing to `skills-zoo`:
    `preview-light.png`; reference them from both pages. Never substitute generated art or a
    hand-built mockup for product output.
 4. Add a row to the README skills table.
-5. Commit + push — the Pages workflow auto-deploys `docs/**`.
+5. Commit + push - the Pages workflow auto-deploys `docs/**`.
 
 ## Key Design Points
 
-- **Meta, not installer** — this skill *produces* skills; it doesn't install features itself.
-- **Invariants over templates** — the seven invariants above are the real product; the template
+- **Meta, not installer** - this skill *produces* skills; it doesn't install features itself.
+- **Invariants over templates** - the seven invariants above are the real product; the template
   is a convenience. A skill that violates invariant 1 or 2 is broken regardless of how it looks.
   A skill that adapts prior work without invariant-6 citations is incomplete, and one shipped
   without an invariant-7 de-slop pass carries its slop into every repo that installs it.
-- **Verified spec facts** — frontmatter rules and progressive disclosure come from the
+- **Verified spec facts** - frontmatter rules and progressive disclosure come from the
   [agentskills.io](https://agentskills.io) spec; see `references/dg-mechanics.md` for citations.
 
 ## Risk Level
 
 **L1 (low).** Scaffolds and writes skill files into a skills directory and runs the local
 `skills-ref validate` check. No other code execution, no secrets, no network calls. Reversible
-via git. The skills it *produces* carry their own risk labels — enforce step 6.
+via git. The skills it *produces* carry their own risk labels - enforce step 6.
 
 ## Reference Files
 
-- `references/authoring-workflow.md` — full annotated walkthrough of steps 1–8 with examples.
-- `references/dg-mechanics.md` — DG plugin internals (autoloader, slots, theme tokens, page modes)
+- `references/authoring-workflow.md` - full annotated walkthrough of steps 1–8 with examples.
+- `references/dg-mechanics.md` - DG plugin internals (autoloader, slots, theme tokens, page modes)
   and the verified agentskills.io frontmatter/disclosure rules with sources.
 
 ## Assets
 
-- `assets/SKILL.template.md` — starter frontmatter + body skeleton for a new DG feature skill.
+- `assets/SKILL.template.md` - starter frontmatter + body skeleton for a new DG feature skill.
 
 ## Validate & Package
 
