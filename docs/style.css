@@ -65,6 +65,7 @@
     --bg:#121311; --surface:#191b18; --surface-2:#20231f; --border:#2c302a;
     --divider:#23261f; --text:#d6d4cc; --text-muted:#8b8a80; --text-faint:#5c5b53;
     --accent:#6cc79a; --accent-hover:#85d6ae; --accent-soft:#1e2a23;
+    --caution:#e0a04a; --caution-soft:#2b2419;
     --code-bg:#1c1f1b; --tag-bg:#23291f;
   }
 }
@@ -215,22 +216,31 @@ section { padding-block:2.25rem; }
   padding:.3rem .62rem; text-decoration:none; transition:color .15s ease, border-color .15s ease, transform .15s ease;
 }
 .skill-index-pill:hover { color:var(--accent); border-color:var(--accent); text-decoration:none; transform:translateY(-1px); }
+/* meta entries use the amber caution tone as a contrast accent vs. garden green */
 .skill-index-pill--meta {
   border-style:dashed;
+  border-color:color-mix(in srgb, var(--caution) 40%, var(--border));
   color:var(--text-faint);
 }
-.skill-index-pill--meta:hover { color:var(--accent); border-color:var(--accent); }
+.skill-index-pill--meta:hover { color:var(--caution); border-color:var(--caution); }
 .skill-card { scroll-margin-top:1.5rem; }
 .skill-card--meta {
   border-style:dashed;
+  border-color:color-mix(in srgb, var(--caution) 40%, var(--border));
   background:transparent;
   box-shadow:none;
 }
 .skill-card--meta h3 { color:var(--text-muted); }
-/* gray out the preview frame; the later .skill-card:hover .sc-thumb rule restores color on hover */
+/* gray out the preview frame; hover restores color */
 .skill-card--meta .sc-thumb { filter:grayscale(1) contrast(.92); opacity:.85; }
-.skill-card--meta:hover { border-style:dashed; background:var(--surface); }
+.skill-card--meta::before { background:var(--caution); }
+.skill-card--meta:hover {
+  border-style:dashed;
+  border-color:color-mix(in srgb, var(--caution) 72%, var(--border));
+  background:var(--surface);
+}
 .skill-card--meta:hover h3 { color:var(--text); }
+.skill-card--meta:hover h3::after { color:var(--caution); }
 .skill-card--meta:hover .sc-thumb { opacity:1; }
 /* card thumbnail preview */
 .sc-thumb {
