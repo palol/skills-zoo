@@ -58,8 +58,9 @@ annotated source to `references/`.
 The **Prerequisites** section is load-bearing: it makes the target agent confirm the repo is
 DG+Eleventy with the autoloader present before writing anything, and stop cleanly if not.
 
-Bake in the six invariants (see the meta-skill body): user-owned paths, autoload-by-prefix,
-theme tokens, a11y, consolidated knobs, and source-grounded inspiration citations.
+Bake in the seven invariants (see the meta-skill body): user-owned paths, autoload-by-prefix,
+theme tokens, a11y, consolidated knobs, source-grounded inspiration citations, and de-slop
+style.
 
 ## 5. Assets + references
 
@@ -73,6 +74,10 @@ theme tokens, a11y, consolidated knobs, and source-grounded inspiration citation
 - `styles.md` — annotated SCSS (base/desktop, responsive math, breakpoints).
 - `tuning.md` — every adjustable knob, with defaults and effects.
 - `verify.md` — post-build QA checklist in plain language ("tap the button — does X happen?").
+
+Finish with a de-slop pass (invariant 7) over every asset and reference: delete comments that
+narrate the code, defensive checks the prerequisites already rule out, and filler prose. Read
+each file as if you were the installing agent — anything that doesn't inform gets cut.
 
 ## 6. Risk level
 
@@ -114,6 +119,8 @@ resources ⇒ ship the zip; SKILL.md-only ⇒ ship the `.md`.
 - [ ] Styles use DG theme tokens; colors not knobs.
 - [ ] A11y: aria-label/aria-hidden, keyboard-operable, focus-visible, reduced-motion.
 - [ ] Tunables consolidated in one knobs block; SCSS compiles clean.
+- [ ] De-slop pass done: no narrating comments, defensive scaffolding, or filler prose in
+      assets, references, or SKILL.md.
 - [ ] Frontmatter spec-valid (`skills-ref validate` passes); description is a trigger.
 - [ ] Risk level labeled in description + body.
 - [ ] references/ + assets/ complete; SKILL.md <500 lines.

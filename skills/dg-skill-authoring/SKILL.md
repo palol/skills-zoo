@@ -4,7 +4,7 @@ description: "Author a new Agent Skill that adds a feature to an Obsidian Digita
 license: MIT
 metadata:
   author: palol
-  version: '1.0'
+  version: '1.1'
   risk-level: "L1 — scaffolds and writes skill files (SKILL.md, references, assets) into a skills directory. No code execution beyond the local `skills-ref validate` check, no secrets, no network calls. Fully reversible via git."
 ---
 
@@ -28,7 +28,7 @@ skills for non-DG stacks (Quartz, Astro, plain Eleventy) — the DG conventions 
 
 ## The DG Skill Pattern (what "good" looks like)
 
-Every DG feature skill this meta-skill produces must satisfy six invariants. These are the
+Every DG feature skill this meta-skill produces must satisfy seven invariants. These are the
 lessons baked into `dg-floating-tray` (plus inspiration citations from later skills):
 
 1. **User-owned paths only.** Write into paths the DG plugin treats as user territory, so
@@ -58,6 +58,15 @@ lessons baked into `dg-floating-tray` (plus inspiration citations from later ski
    the canonical upstream page over a discovery path; if you mention where you first saw it,
    label that separately. Never cite private or personal provenance (e.g. unpublished sites,
    private events) in public skill docs.
+7. **Apply de-slop style.** Ship assets and docs free of AI-generated slop. In code assets
+   (`.njk`, `.scss`, scripts): no comments that narrate what the code does, no defensive
+   checks or try/catch around trusted DG paths, no dead fallbacks for scenarios the
+   prerequisites already rule out, no deeply nested logic that an early return would flatten,
+   and nothing inconsistent with the surrounding file's style. (The one sanctioned comment
+   block is `>>> TUNING KNOBS <<<`, which documents knobs — invariant 5.) In prose (SKILL.md,
+   references): no filler ("simply", "just", "powerful"), no marketing adjectives, no
+   restating a section in its own intro, no hedge phrases. Every sentence must tell the
+   installing agent something it needs.
 
 If a proposed feature can't respect invariants 1–2 (needs a core/layout edit), say so plainly and
 scope it down or stop — don't ship a skill that breaks on upstream update.
@@ -121,6 +130,10 @@ the autoloader present before touching anything (see `dg-floating-tray` for the 
 - `references/` — one file per concern: annotated markup/scripts, annotated styles, a `tuning.md`
   of every knob, and a `verify.md` post-build QA checklist. Mirror `dg-floating-tray`'s set.
 
+Before moving on, make a de-slop pass over everything you wrote (invariant 7): strip narrating
+comments, defensive scaffolding, and filler prose. Assets ship verbatim into user repos, so any
+slop you leave is slop every installer inherits.
+
 ### 6. Label the risk level
 
 State an L0–L3 risk level in both the description and a `Risk Level` section. DG feature skills
@@ -153,9 +166,10 @@ If publishing to `skills-zoo`:
 ## Key Design Points
 
 - **Meta, not installer** — this skill *produces* skills; it doesn't install features itself.
-- **Invariants over templates** — the six invariants above are the real product; the template is
-  a convenience. A skill that violates invariant 1 or 2 is broken regardless of how it looks.
-  A skill that adapts prior work without invariant-6 citations is incomplete.
+- **Invariants over templates** — the seven invariants above are the real product; the template
+  is a convenience. A skill that violates invariant 1 or 2 is broken regardless of how it looks.
+  A skill that adapts prior work without invariant-6 citations is incomplete, and one shipped
+  without an invariant-7 de-slop pass carries its slop into every repo that installs it.
 - **Verified spec facts** — frontmatter rules and progressive disclosure come from the
   [agentskills.io](https://agentskills.io) spec; see `references/dg-mechanics.md` for citations.
 

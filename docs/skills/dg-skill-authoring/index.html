@@ -49,7 +49,7 @@
 
   <div class="meta-row">
     <span class="risk-pill">L1 · low risk</span>
-    <span class="tag">v1.0</span>
+    <span class="tag">v1.1</span>
     <span class="tag">MIT</span>
     <span class="tag">meta-skill</span>
     <span class="tag">digital-garden</span>
@@ -77,7 +77,7 @@ cp -r skills-zoo/skills/dg-skill-authoring ~/.claude/skills/</code></pre>
   <blockquote><p>Use the <strong>dg-skill-authoring</strong> skill to turn this custom callout box into a reusable Digital Garden skill. Scope it, scaffold the folder, write spec-compliant frontmatter, and validate it.</p></blockquote>
   <p>It walks through scoping → scaffolding → frontmatter → body → assets/references → risk label → <code>skills-ref validate</code> → publishing to the zoo.</p>
 
-  <h2>The five DG invariants</h2>
+  <h2>The seven DG invariants</h2>
   <p>Every skill it produces must satisfy these — the real product of the meta-skill:</p>
   <ol>
     <li><strong>User-owned paths only.</strong> Write into <code>components/user/common/&lt;slot&gt;/</code>, <code>styles/custom-style.scss</code>, <code>helpers/userUtils.js</code>, <code>notes/</code> — never core layouts. Survives upstream <code>git pull</code>.</li>
@@ -85,6 +85,8 @@ cp -r skills-zoo/skills/dg-skill-authoring ~/.claude/skills/</code></pre>
     <li><strong>Theme via tokens.</strong> Style with DG variables (<code>--background-secondary</code>, <code>--text-accent</code>, …) so light/dark work automatically. Colors are never a knob.</li>
     <li><strong>Accessibility is not optional.</strong> Real text in <code>aria-label</code>, icons <code>aria-hidden</code>, keyboard-operable controls, visible focus, reduced-motion respected.</li>
     <li><strong>Consolidate tunables.</strong> One <code>&gt;&gt;&gt; TUNING KNOBS &lt;&lt;&lt;</code> <code>:root</code> block; derive everything from it.</li>
+    <li><strong>Cite inspirations with real sources.</strong> Any skill informed by prior work carries an <em>Inspirations</em> section with public URLs stating what each source inspired or supplied. No private provenance.</li>
+    <li><strong>Apply de-slop style.</strong> No narrating comments, defensive scaffolding, or filler prose in assets or docs — every line either does something or informs the installing agent. Slop in a skill is slop in every repo that installs it.</li>
   </ol>
   <p>If a feature can't respect invariants 1–2 (needs a core/layout edit), the skill scopes it down or stops — it won't ship something that breaks on update.</p>
 
