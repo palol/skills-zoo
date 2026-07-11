@@ -1,0 +1,241 @@
+<script>
+(() => {
+  'use strict';
+
+  if (window.__dgSummonCatsLoaded) return;
+  window.__dgSummonCatsLoaded = true;
+
+  const GRETA_SPRITE = '/img/user/greta-neko.png';
+  const NIGEL_SPRITE = '/img/user/nigel-neko.png';
+  const FRAME_MS = 100;
+  const IDLE_ANIMATION_CHANCE = 1 / 200;
+  const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  const spriteSets = {
+    idle: [[-3, -3]],
+    alert: [[-7, -3]],
+    scratchSelf: [[-5, 0], [-6, 0], [-7, 0]],
+    scratchWallN: [[0, 0], [0, -1]],
+    scratchWallS: [[-7, -1], [-6, -2]],
+    scratchWallE: [[-2, -2], [-2, -3]],
+    scratchWallW: [[-4, 0], [-4, -1]],
+    tired: [[-3, -2]],
+    sleeping: [[-2, 0], [-2, -1]],
+    N: [[-1, -2], [-1, -3]],
+    NE: [[0, -2], [0, -3]],
+    E: [[-3, 0], [-3, -1]],
+    SE: [[-5, -1], [-5, -2]],
+    S: [[-6, -3], [-7, -2]],
+    SW: [[-5, -3], [-6, -1]],
+    W: [[-4, -2], [-4, -3]],
+    NW: [[-1, 0], [-1, -1]],
+  };
+
+  function clampPosition(x, y) {
+    const maxX = Math.max(16, window.innerWidth - 16);
+    const maxY = Math.max(16, window.innerHeight - 16);
+    return {
+      x: Math.min(Math.max(16, x), maxX),
+      y: Math.min(Math.max(16, y), maxY),
+    };
+  }
+
+  function makeCat({ name, sprite, startX, speed }) {
+    const element = document.createElement('div');
+    element.className = `dg-summoned-cat dg-summoned-cat--${name.toLowerCase()}`;
+    element.setAttribute('aria-hidden', 'true');
+    element.style.backgroundImage = `url("${sprite}")`;
+    document.body.appendChild(element);
+
+    const start = clampPosition(startX, window.innerHeight - 80);
+    let posX = start.x;
+    let posY = start.y;
+    let targetX = posX;
+    let targetY = posY;
+    let frameCount = 0;
+    let idleTime = 0;
+    let idleAnimation = null;
+    let idleAnimFrame = 0;
+    let lastTimestamp;
+    let animationFrame;
+
+    function renderPosition() {
+      element.style.left = `${posX - 16}px`;
+      element.style.top = `${posY - 16}px`;
+    }
+
+    function setSprite(animation, frame = 0) {
+      const frames = spriteSets[animation];
+      const sprite = frames[frame % frames.length];
+      element.style.backgroundPosition = `${sprite[0] * 32}px ${sprite[1] * 32}px`;
+    }
+
+    function resetIdle() {
+      idleAnimation = null;
+      idleAnimFrame = 0;
+    }
+
+    function chooseIdleAnimation() {
+      const choices = ['sleeping', 'scratchSelf'];
+      if (posX < 32) choices.push('scratchWallW');
+      if (posY < 32) choices.push('scratchWallN');
+      if (posX > window.innerWidth - 32) choices.push('scratchWallE');
+      if (posY > window.innerHeight - 32) choices.push('scratchWallS');
+      return choices[Math.floor(Math.random() * choices.length)];
+    }
+
+    function idle() {
+      idleTime += 1;
+      if (idleTime > 10 && Math.random() < IDLE_ANIMATION_CHANCE && !idleAnimation) {
+        idleAnimation = chooseIdleAnimation();
+      }
+
+      switch (idleAnimation) {
+        case 'sleeping':
+          if (idleAnimFrame < 8) {
+            setSprite('tired');
+          } else {
+            setSprite('sleeping', Math.floor(idleAnimFrame / 4));
+          }
+          if (idleAnimFrame > 192) resetIdle();
+          break;
+        case 'scratchWallN':
+        case 'scratchWallS':
+        case 'scratchWallE':
+        case 'scratchWallW':
+        case 'scratchSelf':
+          setSprite(idleAnimation, idleAnimFrame);
+          if (idleAnimFrame > 9) resetIdle();
+          break;
+        default:
+          setSprite('idle');
+          return;
+      }
+
+      idleAnimFrame += 1;
+    }
+
+    function move() {
+      frameCount += 1;
+      const dx = posX - targetX;
+      const dy = posY - targetY;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+
+      if (distance < speed || distance < 48) {
+        idle();
+        return;
+      }
+
+      resetIdle();
+      idleTime = 0;
+
+      let direction = '';
+      if (dy / distance > 0.5) direction += 'N';
+      if (dy / distance < -0.5) direction += 'S';
+      if (dx / distance > 0.5) direction += 'W';
+      if (dx / distance < -0.5) direction += 'E';
+      setSprite(direction, frameCount);
+
+      const next = clampPosition(
+        posX - (dx / distance) * speed,
+        posY - (dy / distance) * speed,
+      );
+      posX = next.x;
+      posY = next.y;
+      renderPosition();
+    }
+
+    function tick(timestamp) {
+      if (motionQuery.matches) {
+        animationFrame = undefined;
+        return;
+      }
+      if (!lastTimestamp) lastTimestamp = timestamp;
+      if (timestamp - lastTimestamp > FRAME_MS) {
+        lastTimestamp = timestamp;
+        move();
+      }
+      animationFrame = window.requestAnimationFrame(tick);
+    }
+
+    function startAnimation() {
+      if (animationFrame || motionQuery.matches) return;
+      lastTimestamp = undefined;
+      animationFrame = window.requestAnimationFrame(tick);
+    }
+
+    function stopAnimation() {
+      if (animationFrame) window.cancelAnimationFrame(animationFrame);
+      animationFrame = undefined;
+      setSprite('idle');
+    }
+
+    function setTarget(x, y) {
+      const target = clampPosition(x, y);
+      targetX = target.x;
+      targetY = target.y;
+      idleTime = 0;
+      resetIdle();
+
+      if (motionQuery.matches) {
+        posX = targetX;
+        posY = targetY;
+        renderPosition();
+        setSprite('idle');
+      } else {
+        setSprite('alert');
+        startAnimation();
+      }
+    }
+
+    function clampToViewport() {
+      const position = clampPosition(posX, posY);
+      const target = clampPosition(targetX, targetY);
+      posX = position.x;
+      posY = position.y;
+      targetX = target.x;
+      targetY = target.y;
+      renderPosition();
+    }
+
+    renderPosition();
+    setSprite('idle');
+    startAnimation();
+
+    return { clampToViewport, setTarget, startAnimation, stopAnimation };
+  }
+
+  const greta = makeCat({
+    name: 'Greta',
+    sprite: GRETA_SPRITE,
+    startX: 80,
+    speed: 7,
+  });
+  const nigel = makeCat({
+    name: 'Nigel',
+    sprite: NIGEL_SPRITE,
+    startX: 130,
+    speed: 13,
+  });
+  const cats = [greta, nigel];
+
+  document.addEventListener('pointerdown', (event) => {
+    greta.setTarget(event.clientX - 20, event.clientY);
+    nigel.setTarget(event.clientX + 20, event.clientY);
+  }, { passive: true });
+
+  window.addEventListener('resize', () => {
+    cats.forEach((cat) => cat.clampToViewport());
+  }, { passive: true });
+
+  motionQuery.addEventListener('change', (event) => {
+    cats.forEach((cat) => {
+      if (event.matches) {
+        cat.stopAnimation();
+      } else {
+        cat.startAnimation();
+      }
+    });
+  });
+})();
+</script>
