@@ -227,8 +227,8 @@ section { padding-block:2.25rem; }
   box-shadow:none;
 }
 .skill-card--meta h3 { color:var(--text-muted); }
-/* muted preview; the later .skill-card:hover .sc-thumb rule restores it on hover */
-.skill-card--meta .sc-thumb { filter:saturate(.4); opacity:.8; }
+/* gray out the preview frame; the later .skill-card:hover .sc-thumb rule restores color on hover */
+.skill-card--meta .sc-thumb { filter:grayscale(1) contrast(.92); opacity:.85; }
 .skill-card--meta:hover { border-style:dashed; background:var(--surface); }
 .skill-card--meta:hover h3 { color:var(--text); }
 .skill-card--meta:hover .sc-thumb { opacity:1; }
