@@ -61,7 +61,6 @@ function getPiDigits(n) {
  * Content is in date order
  */
 function createVirtualTileList(contentItems) {
-
   const piDigits = getPiDigits(100);
   const virtualTiles = [];
   let itemIndex = 0;
@@ -87,8 +86,6 @@ function createVirtualTileList(contentItems) {
   while (itemIndex < contentItems.length) {
     virtualTiles.push({ item: contentItems[itemIndex++], isAmbient: false });
   }
-
-
 
   return virtualTiles;
 }
@@ -184,12 +181,9 @@ async function generateDungeonData() {
 }
 
 /**
- * Get dungeon items from multiple sources
+ * Get dungeon items: sitemap first, file system as fallback.
  */
 async function getDungeonItemsFromSources() {
-  const items = [];
-  
-  // Try sitemap first
   try {
     const sitemapItems = await getDungeonItemsFromSitemap();
     if (sitemapItems.length > 0) {
@@ -199,8 +193,7 @@ async function getDungeonItemsFromSources() {
   } catch (error) {
     console.log('[DEBUG] Sitemap method failed, trying file system approach');
   }
-  
-  // Fallback to file system
+
   try {
     const fsItems = await getDungeonItemsFromFileSystem();
     console.log(`[DEBUG] Got ${fsItems.length} items from file system`);
@@ -235,21 +228,20 @@ async function getDungeonItemsFromSitemap() {
   });
   
   console.log(`[DEBUG] Found ${noteUrls.length} note URLs in sitemap`);
-  
-  // Convert URLs back to file paths and extract metadata
+
   const dungeonItems = [];
-  
+
   for (const url of noteUrls) {
     try {
       const item = await extractItemFromUrl(url);
-      if (item) { // Only add non-hidden items
+      if (item) { // null = hidden item
         dungeonItems.push(item);
       }
     } catch (error) {
       console.warn(`[WARN] Failed to process URL ${url}:`, error.message);
     }
   }
-  
+
   return dungeonItems;
 }
 
@@ -259,26 +251,23 @@ async function getDungeonItemsFromSitemap() {
 async function getDungeonItemsFromFileSystem() {
   const notesDir = path.join(__dirname, '../src/site/notes');
   const noteFiles = await findMarkdownFiles(notesDir);
-  
+
   const dungeonItems = [];
-  
+
   for (const filePath of noteFiles) {
     try {
       const item = await extractItemFromFile(filePath);
-      if (item) { // Only add non-hidden items
+      if (item) { // null = hidden item
         dungeonItems.push(item);
       }
     } catch (error) {
       console.warn(`[WARN] Failed to process file ${filePath}:`, error.message);
     }
   }
-  
+
   return dungeonItems;
 }
 
-/**
- * Recursively find all markdown files
- */
 async function findMarkdownFiles(dir) {
   const files = [];
   
@@ -301,35 +290,30 @@ async function findMarkdownFiles(dir) {
 }
 
 /**
- * Extract item data from URL (reverse engineering)
+ * Extract item data from a sitemap URL by locating its source note file.
+ * Falls back to a minimal item built from the URL when no file is found.
  */
 async function extractItemFromUrl(url) {
-  // Extract slug from URL
   const urlParts = url.split('/');
   const slug = urlParts[urlParts.length - 1];
-  
-  // Try to find corresponding file
+
   const notesDir = path.join(__dirname, '../src/site/notes');
   const possiblePaths = [
     path.join(notesDir, `${slug}.md`),
-    // Add more possible path patterns if needed
   ];
-  
+
   for (const filePath of possiblePaths) {
     if (fs.existsSync(filePath)) {
       const item = await extractItemFromFile(filePath, url);
-      return item; // This will be null for hidden files
+      return item; // null for hidden files
     }
   }
-  
-  // If file not found, check if it's a hidden URL and skip it
-  // But don't skip the exit URL or home URL
+
   if (slug.toLowerCase() === 'hidden' && slug !== 'exit' && slug !== 'home') {
     console.log(`[DEBUG] Skipping hidden URL: ${url}`);
     return null;
   }
-  
-  // If file not found, create minimal item from URL
+
   return [
     'tree-1', // default icon
     url,
@@ -341,22 +325,21 @@ async function extractItemFromUrl(url) {
 }
 
 /**
- * Extract item data from file
+ * Extract item data from a note file's frontmatter.
+ * Returns null for files named "hidden" (excluded from the map).
  */
 async function extractItemFromFile(filePath, url = null) {
   const fileContent = await fs.promises.readFile(filePath, 'utf8');
   const frontMatter = matter(fileContent);
-  
+
   const fileName = path.basename(filePath, '.md').toLowerCase();
-  
-  // Check if file should be hidden from dungeon
-  // Don't hide the exit file or home page even if they contain "hidden" logic
+
   if (fileName === 'hidden') {
     console.log(`[DEBUG] Skipping hidden file: ${filePath}`);
-    return null; // Return null for hidden files
+    return null;
   }
-  
-  // Use permalink field if available, otherwise generate URL
+
+  // Prefer the frontmatter permalink; otherwise derive /notes/<slug> from the path.
   if (!url) {
     if (frontMatter.data.permalink) {
       url = frontMatter.data.permalink;
@@ -386,16 +369,13 @@ async function extractItemFromFile(filePath, url = null) {
     icon = String(rawIcon);
   }
   
-  // Extract dates
   const createdDate = frontMatter.data['date created'] || 
                      frontMatter.data.created || 
                      frontMatter.data.date || 
                      new Date();
-  
-  // Check if home page
+
   const isHomePage = frontMatter.data['dg-home'] === true || fileName === 'home';
-  
-  // Extract title
+
   const title = frontMatter.data.title || 
                 path.basename(filePath, '.md');
   
@@ -411,9 +391,6 @@ async function extractItemFromFile(filePath, url = null) {
   ];
 }
 
-/**
- * Create empty dungeon data (compatible with new hex-spiral shape)
- */
 function createEmptyDungeonData() {
   return {
     hexGridData: {
@@ -427,7 +404,6 @@ function createEmptyDungeonData() {
   };
 }
 
-// Run if called directly
 if (require.main === module) {
   generateDungeonData()
     .then(() => {

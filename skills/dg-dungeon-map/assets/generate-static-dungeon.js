@@ -1,4 +1,5 @@
-// Enhanced script to generate both dungeon data AND static SVG
+// Post-build script: renders dungeon data as a static SVG map plus a
+// slug -> pixel coordinate map for CSS positioning.
 const fs = require('fs');
 const path = require('path');
 const { generateDungeonData } = require('./generate-dungeon-data.js');
@@ -30,59 +31,39 @@ function buildIconMapFromDirectory() {
   }
 }
 
-/**
- * Generate static SVG dungeon map and coordinate mappings
- */
 async function generateStaticDungeon() {
   console.log('[DEBUG] Generating static dungeon map...');
-  
-  try {
-    // Get the dungeon data (reuse existing logic)
-    const dungeonData = await generateDungeonData();
-    
-    if (!dungeonData || dungeonData.hexGridData.hexData.length === 0) {
-      console.log('[DEBUG] No dungeon data available, skipping SVG generation');
-      return;
-    }
-    
-    // Generate SVG
-    const svg = generateDungeonSVG(dungeonData);
-    
-    // Generate coordinate mapping for star positioning
-    const coordinateMap = generateCoordinateMapping(dungeonData);
-    
-    // Write SVG file
-    const svgPath = path.join(__dirname, '../dist/img/dungeon-map.svg');
-    await fs.promises.mkdir(path.dirname(svgPath), { recursive: true });
-    await fs.promises.writeFile(svgPath, svg);
-    
-    // Write coordinate mapping
-    const coordPath = path.join(__dirname, '../dist/data/dungeon-coordinates.json');
-    await fs.promises.writeFile(coordPath, JSON.stringify(coordinateMap, null, 2));
-    
-    console.log(`[DEBUG] Static dungeon map generated:`);
-    console.log(`  SVG: ${svgPath}`);
-    console.log(`  Coordinates: ${coordPath}`);
-    
-    return { svg, coordinateMap };
-    
-  } catch (error) {
-    console.error('[ERROR] Failed to generate static dungeon:', error);
-    throw error;
+
+  const dungeonData = await generateDungeonData();
+
+  if (!dungeonData || dungeonData.hexGridData.hexData.length === 0) {
+    console.log('[DEBUG] No dungeon data available, skipping SVG generation');
+    return;
   }
+
+  const svg = generateDungeonSVG(dungeonData);
+  const coordinateMap = generateCoordinateMapping(dungeonData);
+
+  const svgPath = path.join(__dirname, '../dist/img/dungeon-map.svg');
+  await fs.promises.mkdir(path.dirname(svgPath), { recursive: true });
+  await fs.promises.writeFile(svgPath, svg);
+
+  const coordPath = path.join(__dirname, '../dist/data/dungeon-coordinates.json');
+  await fs.promises.writeFile(coordPath, JSON.stringify(coordinateMap, null, 2));
+
+  console.log(`[DEBUG] Static dungeon map generated:`);
+  console.log(`  SVG: ${svgPath}`);
+  console.log(`  Coordinates: ${coordPath}`);
+
+  return { svg, coordinateMap };
 }
 
-/**
- * Generate SVG content from dungeon data
- */
 function generateDungeonSVG(dungeonData) {
-
   const { hexGridData } = dungeonData;
-  // Compute bounds of all hexes (including atmosphere and content)
   const allHexes = hexGridData.hexData;
   if (!allHexes.length) return '';
 
-  // Find min/max x/y
+  // Bounds over all hexes (content + atmosphere), padded, define the viewBox.
   let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
   allHexes.forEach(hex => {
     if (hex.x < minX) minX = hex.x;
@@ -91,7 +72,6 @@ function generateDungeonSVG(dungeonData) {
     if (hex.y > maxY) maxY = hex.y;
   });
 
-  // Add padding
   const padding = 20;
   minX -= padding;
   maxX += padding;
@@ -101,7 +81,6 @@ function generateDungeonSVG(dungeonData) {
   const width = maxX - minX;
   const height = maxY - minY;
 
-  // All hexes will be offset by (-minX, -minY) to fit in the new viewBox
   const offsetX = -minX;
   const offsetY = -minY;
 
@@ -161,14 +140,12 @@ function generateDungeonSVG(dungeonData) {
   <!-- No background rect: SVG will be fully transparent -->
 `;
 
-  // Render pathway connections first (behind everything) - continuous white lines through pathways
+  // Pathway connections render first so they sit behind everything else.
   if (hexGridData.pathwayConnections && hexGridData.pathwayConnections.length > 0) {
     hexGridData.pathwayConnections.forEach(pathway => {
-      // Draw lines connecting each hex in the pathway
       for (let i = 0; i < pathway.hexes.length - 1; i++) {
         const currentHex = pathway.hexes[i];
         const nextHex = pathway.hexes[i + 1];
-        // Use pre-calculated pixel coordinates from hexagonGrid
         const x1 = currentHex.x + offsetX;
         const y1 = currentHex.y + offsetY;
         const x2 = nextHex.x + offsetX;
@@ -179,9 +156,9 @@ function generateDungeonSVG(dungeonData) {
     });
   }
 
-  // Render the main spiral path - one continuous line from start to end
-  // Connect ALL hexes in spiral order (content + ambient) to form the meditation path... clock-wise. 
-  const allHexesInOrder = hexGridData.hexData; // Already in spiral order
+  // The spiral path connects ALL hexes (content + ambient) in spiral order,
+  // forming one continuous clockwise line from center to edge.
+  const allHexesInOrder = hexGridData.hexData;
   if (allHexesInOrder.length > 1) {
     for (let i = 0; i < allHexesInOrder.length - 1; i++) {
       const fromHex = allHexesInOrder[i];
@@ -194,13 +171,13 @@ function generateDungeonSVG(dungeonData) {
     }
   }
   
-  // Render content hexes with embedded permalinks
+  // Content hexes render as links wrapping the hexagon + icon.
   hexGridData.hexData.filter(hex => hex.item).forEach(hex => {
     const x = hex.x + offsetX;
     const y = hex.y + offsetY;
     const isHome = hex.item[5]; // isHomePage flag
-    const isExit = hex.item[0] === 'exit'; // Check if icon type is 'exit'
-    const isVoid = hex.item[0] === 'void'; // Check if icon type is 'void'
+    const isExit = hex.item[0] === 'exit';
+    const isVoid = hex.item[0] === 'void';
     let hexType;
     if (isHome) {
       hexType = 'homeHex';
@@ -211,23 +188,19 @@ function generateDungeonSVG(dungeonData) {
     } else {
       hexType = 'contentHex';
     }
-    // If this is the home hex, force permalink to '/'
     const permalink = isHome ? '/' : (hex.item[1] || '#');
     svgContent += `\n<a href="${permalink}" target="_top">`;
     svgContent += renderHexagon(x, y, 28, 24, hexType);
-    svgContent += renderIcon(x, y, hex.item[0], permalink, hex.item[2], iconMap); // icon, url, title, iconMap
+    svgContent += renderIcon(x, y, hex.item[0], permalink, hex.item[2], iconMap);
     svgContent += `</a>`;
   });
-  
-  // Render atmosphere hexes with alternating dark/light colors that match website themes
-  // Group atmosphere hexes by "sets" (rings) and alternate between dark/light for each set
-  // In generateDungeonSVG, replace the atmosphere sorting/grouping with:
+
+  // Atmosphere hexes alternate dark/light by ring so themes stay balanced.
   const atmosphereHexes = hexGridData.hexData.filter(hex => hex.isAtmosphere);
 
   atmosphereHexes.forEach(hex => {
     const x = hex.x + offsetX;
     const y = hex.y + offsetY;
-    // Alternate by ring number - no distance calculation needed
     const isDarkSet = hex.ring % 2 === 0;
     svgContent += renderAtmosphereHex(x, y, 28, 24, isDarkSet ? 'dark' : 'light');
   });
@@ -235,9 +208,6 @@ function generateDungeonSVG(dungeonData) {
   return svgContent;
 }
 
-/**
- * Render a hexagon at given position
- */
 function renderHexagon(x, y, width, height, fillId) {
   const points = generateHexagonPoints(width, height);
   return `
@@ -250,14 +220,10 @@ function renderHexagon(x, y, width, height, fillId) {
   </g>`;
 }
 
-/**
- * Render an atmosphere hexagon with theme-aware colors and center point
- */
 function renderAtmosphereHex(x, y, width, height, themeType) {
   const points = generateHexagonPoints(width, height);
   const isDark = themeType === 'dark';
-  
-  // Define border colors that match the theme
+
   const borderColor = isDark 
     ? 'rgba(31, 25, 59, 1)'  // Darker border for dark ambient cells
     : 'rgba(190, 182, 232, 1)'; // Lighter border for light ambient cells 
@@ -276,11 +242,8 @@ function renderAtmosphereHex(x, y, width, height, themeType) {
   </g>`;
 }
 
-/**
- * Generate hexagon points for flat-top hexagon
- */
+// Flat-top hexagon proportions.
 function generateHexagonPoints(width, height) {
-  // Flat-top hexagon proportions
   const w = width;
   const h = height;
   return `${w*0.25},0 ${w*0.75},0 ${w},${h*0.5} ${w*0.75},${h} ${w*0.25},${h} 0,${h*0.5}`;
@@ -304,9 +267,7 @@ function renderIcon(x, y, iconType, url, title, iconMap) {
   </g>`;
 }
 
-/**
- * Generate coordinate mapping for CSS positioning
- */
+// Slug -> pixel position map, used for CSS positioning of markers.
 function generateCoordinateMapping(dungeonData) {
   const { hexGridData } = dungeonData;
   const centerX = 225; // Half of 450px width
@@ -331,37 +292,23 @@ function generateCoordinateMapping(dungeonData) {
 }
 
 
-/**
- * Generate a meditation garden style path between two points
- * Uses simple, clean lines for clarity and zen aesthetics
- */
 function generateMeditationPath(x1, y1, x2, y2) {
-  // Always use straight lines for simplicity and clarity
-  // In real meditation gardens, paths are often simple and direct
   return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" 
     stroke="rgba(255,255,255,0.6)" stroke-width="0.75" opacity="0.6"/>`;
 }
 
-/**
- * Extract slug from URL for coordinate mapping
- */
 function extractSlugFromUrl(url) {
-  // Remove leading and trailing slashes, then get the last segment
   const cleanUrl = url.replace(/^\/+|\/+$/g, '');
-  
+
   if (!cleanUrl || url === '/') {
     return 'home';
   }
-  
-  // Split by / and get the last part as the slug
+
   const parts = cleanUrl.split('/');
   const slug = parts[parts.length - 1];
-  
-  // Return the slug, or 'unknown' if empty
   return slug || 'unknown';
 }
 
-// Run if called directly
 if (require.main === module) {
   generateStaticDungeon()
     .then(() => {
