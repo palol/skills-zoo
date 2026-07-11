@@ -1,11 +1,11 @@
 ---
 name: dg-random-note
-description: "Add a '/random' route to an Obsidian Digital Garden (oleeskild digital-garden plugin + Eleventy) site that redirects visitors to a randomly chosen published note. Use when a user wants a 'surprise me' / random-note / shuffle link for their digital garden, or a destination for a random button. Installs one self-contained page (src/site/random.njk) — no build scripts, no core edits, upstream-safe. Trigger on: add a random link, random note route, /random page, surprise me link, shuffle to a random note, random page redirect for my digital garden."
+description: "Add a '/random' route to an Obsidian Digital Garden (oleeskild digital-garden plugin + Eleventy) site that redirects visitors to a randomly chosen published note. Use when a user wants a 'surprise me' / random-note / shuffle link for their digital garden, or a destination for a random button. Installs one self-contained page (src/site/~random.njk) — no build scripts, no core edits, upstream-safe. Trigger on: add a random link, random note route, /random page, surprise me link, shuffle to a random note, random page redirect for my digital garden."
 license: MIT
 metadata:
   author: palol
   version: '1.0'
-  risk-level: "L1 — adds a single new page file (src/site/random.njk). No build scripts, no code execution beyond the local `skills-ref validate` check, no secrets, no network calls, no core/layout edits. Fully reversible: delete the one file."
+  risk-level: "L1 — adds a single new page file (src/site/~random.njk). No build scripts, no code execution beyond the local `skills-ref validate` check, no secrets, no network calls, no core/layout edits. Fully reversible: delete the one file."
 ---
 
 # Digital Garden — Random Note Route
@@ -13,7 +13,7 @@ metadata:
 Adds a `/random` route to an Obsidian [Digital Garden](https://github.com/oleeskild/digital-garden)
 (Eleventy) site. Visiting `/random/` redirects the visitor to a randomly chosen **published** note.
 
-The whole feature is **one file** — `src/site/random.njk`. It builds an inline list of published
+The whole feature is **one file** — `src/site/~random.njk`. It builds an inline list of published
 note URLs at build time, then a tiny script picks one and redirects. No build scripts, no
 dependencies, no plugin-core edits.
 
@@ -31,9 +31,10 @@ the `collections.note` collection and `dg-publish` flag are DG-specific.
 
 ## DG invariants respected
 
-1. **User-owned path.** `src/site/random.njk` is a **new** file the plugin never ships, so upstream
-   `git pull` never clobbers it. It's a root page (not a `components/user/` slot) because a route
-   needs its own permalink — see `references/architecture.md` for why that's still upstream-safe.
+1. **User-owned path.** `src/site/~random.njk` is a **new** file the plugin never ships, so upstream
+   `git pull` never clobbers it. The `~` prefix avoids clashing with a potential `random.md` note.
+   It's a root page (not a `components/user/` slot) because a route needs its own permalink — see
+   `references/architecture.md` for why that's still upstream-safe.
 2. **No autoloading needed.** A page route is not a slot component, so there's no `dynamics.js`
    glob or filename-prefix ordering to worry about.
 3. **Theme via tokens.** The redirect page reuses the site's own `pageheader.njk` and theme body
@@ -55,7 +56,7 @@ the `collections.note` collection and `dg-publish` flag are DG-specific.
    repo.
 2. **Copy the route file** into the site root:
    ```
-   assets/random.njk  →  src/site/random.njk
+   assets/~random.njk  →  src/site/~random.njk
    ```
 3. **(Optional) Set the fallback.** Edit `FALLBACK_URL` at the top of the `<script>` if `/` isn't
    the desired empty-pool destination.
@@ -75,11 +76,11 @@ the `collections.note` collection and `dg-publish` flag are DG-specific.
 
 ## Assets
 
-- `assets/random.njk` — the single self-contained route (build-time list + runtime redirect).
+- `assets/~random.njk` — the single self-contained route (build-time list + runtime redirect).
 
 ## Risk Level
 
-**L1 (low).** Adds a single new page file (`src/site/random.njk`). No build scripts, no secrets,
+**L1 (low).** Adds a single new page file (`src/site/~random.njk`). No build scripts, no secrets,
 no network calls, no core/layout edits. Fully reversible: delete the one file.
 
 ## Validate & Package

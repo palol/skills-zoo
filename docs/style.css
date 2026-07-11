@@ -172,7 +172,16 @@ section { padding-block:2rem; }
   padding:.28rem .6rem; text-decoration:none; transition:color .15s ease, border-color .15s ease;
 }
 .skill-index-pill:hover { color:var(--accent); border-color:var(--accent); }
+.skill-index-pill--meta {
+  border-style:dashed;
+  color:var(--text-faint);
+}
+.skill-index-pill--meta:hover { color:var(--accent); border-color:var(--accent); }
 .skill-card { scroll-margin-top:1.5rem; }
+.skill-card--meta {
+  border-style:dashed;
+}
+.skill-card--meta:hover { border-style:dashed; }
 /* card thumbnail preview */
 .sc-thumb {
   display:block; width:calc(100% + 3rem); margin:-1.4rem -1.5rem 1.1rem;

@@ -76,19 +76,19 @@ cp -r skills-zoo/skills/dg-random-note ~/.claude/skills/</code></pre>
 
   <h2>What it touches</h2>
   <ul>
-    <li><strong>One new page</strong>: <code>src/site/random.njk</code> → permalink <code>/random/</code>. A new file the plugin never ships, so upstream <code>git pull</code> never touches it.</li>
+    <li><strong>One new page</strong>: <code>src/site/~random.njk</code> → permalink <code>/random/</code>. A new file the plugin never ships, so upstream <code>git pull</code> never touches it.</li>
     <li><strong>Pool</strong>: only notes with <code>dg-publish: true</code>, and (by default) not flagged <code>dg-hide</code> — so utility/index pages stay out of the shuffle.</li>
     <li><strong>No build scripts, no SCSS, no autoloaded components.</strong> The redirect page reuses your site's <code>pageheader.njk</code> and theme classes, so light/dark just work.</li>
   </ul>
 
   <div class="callout">
-    <strong>Why a root page, not a slot component.</strong> A route needs its own permalink, which a footer/header slot can't provide — so this lives at <code>src/site/random.njk</code> instead of <code>components/user/</code>. Still upstream-safe: it's a brand-new file you own. One config knob: <code>FALLBACK_URL</code>.
+    <strong>Why a root page, not a slot component.</strong> A route needs its own permalink, which a footer/header slot can't provide — so this lives at <code>src/site/~random.njk</code> instead of <code>components/user/</code>. Still upstream-safe: it's a brand-new file you own. One config knob: <code>FALLBACK_URL</code>.
   </div>
 
   <h2>What's in the box</h2>
   <ul class="filelist" role="list">
     <li><span class="fname">SKILL.md</span> — install workflow, prerequisites, invariants, risk</li>
-    <li><span class="fname">assets/random.njk</span> — the single self-contained route (build-time list + runtime redirect)</li>
+    <li><span class="fname">assets/~random.njk</span> — the single self-contained route (build-time list + runtime redirect)</li>
     <li><span class="fname">references/architecture.md</span> — build-time loop + runtime pick, and why a root page is upstream-safe</li>
     <li><span class="fname">references/verify.md</span> — post-build QA (route, pool, back-button, fallback)</li>
   </ul>

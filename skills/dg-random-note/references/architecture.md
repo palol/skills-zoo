@@ -3,7 +3,7 @@
 ## One file, build-time list + runtime pick
 
 ```
-src/site/random.njk   →   /random/   (single self-contained page)
+src/site/~random.njk   →   /random/   (single self-contained page)
 ```
 
 There is no separate layout and no build script. The whole feature is one Eleventy
@@ -31,10 +31,11 @@ If the published list is empty, it redirects to `FALLBACK_URL` (default `/`).
 
 Unlike component-based DG skills (e.g. `dg-floating-tray`), the random route is a
 **new top-level page**, not a slot component — it needs its own permalink (`/random/`),
-which a footer/header slot can't provide. `src/site/random.njk` is safe because it is a
-**new file you own**: the oleeskild plugin ships no `random.njk`, so upstream `git pull`
-never touches it. It sits outside the `components/user/**` convention only because a page
-route must live at the site root.
+which a footer/header slot can't provide. `src/site/~random.njk` is safe because it is a
+**new file you own**: the oleeskild plugin ships no `~random.njk`, so upstream `git pull`
+never touches it. The `~` prefix also avoids clashing with a potential `random.md` note.
+It sits outside the `components/user/**` convention only because a page route must live
+at the site root.
 
 ## Data source: `collections.note`
 
